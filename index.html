@@ -599,19 +599,39 @@ const GitSync = {
   KEY:LS_KEY+'-gh', busy:false, timer:null, last:null, err:'',
   cfg(){ try{ return JSON.parse(localStorage.getItem(this.KEY)||'null'); }catch(e){ return null; } },
   setCfg(c){ try{ if(c) localStorage.setItem(this.KEY,JSON.stringify(c)); else localStorage.removeItem(this.KEY); }catch(e){} },
-  on(){ const c=this.cfg(); return !!(c&&c.repo&&c.token) && !Store.col; },
+  on(){ const c=this.cfg(); return !!(c&&c.repo&&c.token&&c.pass) && !Store.col && !!(window.crypto&&crypto.subtle); },
   times(){ try{ return JSON.parse(localStorage.getItem(LS_KEY+'-t')||'{}'); }catch(e){ return {}; } },
   soon(){ if(!this.on()) return; clearTimeout(this.timer); this.timer=setTimeout(()=>this.sync(),4000); },
-  api(path,opt={}){ const c=this.cfg(); return fetch('https://api.github.com/repos/'+c.repo+'/contents/'+path,{...opt,headers:{'Authorization':'Bearer '+c.token,'Accept':'application/vnd.github+json',...(opt.body?{'Content-Type':'application/json'}:{})},cache:'no-store'}); },
+  api(path,opt={},raw){ const c=this.cfg(); const br=c.branch||'daten'; return fetch('https://api.github.com/repos/'+c.repo+'/contents/'+path+(opt.method==='PUT'?'':'?ref='+encodeURIComponent(br)),{...opt,headers:{'Authorization':'Bearer '+c.token,'Accept':raw?'application/vnd.github.raw':'application/vnd.github+json',...(opt.body?{'Content-Type':'application/json'}:{})},cache:'no-store'}); },
+  // Verschlüsselung: AES-GCM 256, Schlüssel aus dem Passwort per PBKDF2-SHA256. Das Passwort verlässt das Gerät nie.
+  ITER:310000, keyCache:{},
+  bytesB64(u){ let s=''; for(let i=0;i<u.length;i+=0x8000) s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000)); return btoa(s); },
+  b64Bytes(b){ const bin=atob(b); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u; },
+  async key(pass,salt,iter){ const id=pass+'|'+salt+'|'+iter; if(this.keyCache[id]) return this.keyCache[id];
+    const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
+    const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:this.b64Bytes(salt),iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+    this.keyCache={[id]:k}; return k; },
+  async zip(u,dir){ if(typeof CompressionStream==='undefined') return null; const st=new Blob([u]).stream().pipeThrough(dir?new CompressionStream('gzip'):new DecompressionStream('gzip')); return new Uint8Array(await new Response(st).arrayBuffer()); },
+  async seal(obj,salt){ const c=this.cfg(); salt=salt||this.bytesB64(crypto.getRandomValues(new Uint8Array(16)));
+    let plain=new TextEncoder().encode(JSON.stringify(obj)); const z=await this.zip(plain,true); if(z) plain=z;
+    const iv=crypto.getRandomValues(new Uint8Array(12)); const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},await this.key(c.pass,salt,this.ITER),plain));
+    return {app:'Hantelwoche',hinweis:'Verschlüsselt. Lesbar nur in der App mit deinem Passwort.',v:1,enc:'AES-GCM-256',kdf:'PBKDF2-SHA256',iter:this.ITER,zip:!!z,salt,iv:this.bytesB64(iv),data:this.bytesB64(ct),saved:new Date().toISOString()}; },
+  async open(f){ const c=this.cfg(); if(!f.enc) return f;
+    let pt; try{ pt=new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM',iv:this.b64Bytes(f.iv)},await this.key(c.pass,f.salt,f.iter||this.ITER),this.b64Bytes(f.data))); }
+    catch(e){ throw new Error('Passwort passt nicht zu den gespeicherten Daten'); }
+    if(f.zip){ const u=await this.zip(pt,false); if(!u) throw new Error('Dieser Browser kann die Daten nicht entpacken'); pt=u; }
+    return JSON.parse(new TextDecoder().decode(pt)); },
   b64(str){ const b=new TextEncoder().encode(str); let s=''; for(let i=0;i<b.length;i+=0x8000) s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000)); return btoa(s); },
   unb64(b){ const bin=atob(b.replace(/\n/g,'')); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new TextDecoder().decode(u); },
   async sync(tries=0){
     if(!this.on()) return; if(this.busy){ this.soon(); return; } this.busy=true; this.err='';
     try{
       const r=await this.api('data.json');
-      let remote={docs:{},t:{}}, sha;
-      if(r.status===200){ const j=await r.json(); sha=j.sha; remote=JSON.parse(this.unb64(j.content)); remote.docs=remote.docs||{}; remote.t=remote.t||{}; }
-      else if(r.status!==404) throw new Error(r.status===401?'Token ungültig oder abgelaufen':r.status===403?'Token hat keine Schreibrechte für dieses Repository':'GitHub antwortet mit Fehler '+r.status);
+      let remote={docs:{},t:{}}, sha, salt;
+      if(r.status===200){ const j=await r.json(); sha=j.sha;
+        let txt=j.content&&j.encoding==='base64'?this.unb64(j.content):await (await this.api('data.json',{},true)).text();
+        const f=JSON.parse(txt); salt=f.salt; remote=await this.open(f); remote.docs=remote.docs||{}; remote.t=remote.t||{}; }
+      else if(r.status!==404) throw new Error(r.status===401?'Token ungültig oder abgelaufen':r.status===403?'Token hat keine Rechte für dieses Repository':'GitHub antwortet mit Fehler '+r.status);
       const lt=this.times(); const keys=new Set([...Object.keys(remote.docs),...Object.keys(remote.t),...Object.keys(Store.cache),...Object.keys(lt)]);
       const out={docs:{},t:{}}; let changedLocal=false, changedRemote=false;
       keys.forEach(k=>{ if(!/^(profile|mob|d-|w-)/.test(k)) return;
@@ -622,10 +642,10 @@ const GitSync = {
       try{ localStorage.setItem(LS_KEY+'-t',JSON.stringify(lt)); }catch(e){}
       if(changedLocal){ Store.saveLocal(); onData(); }
       if(changedRemote||!sha){
-        out.app='Hantelwoche'; out.saved=new Date().toISOString();
-        const w=await this.api('data.json',{method:'PUT',body:JSON.stringify({message:'Daten '+todayKey(),content:this.b64(JSON.stringify(out,null,1)),...(sha?{sha}:{})})});
+        const file=await this.seal(out,salt);
+        const w=await this.api('data.json',{method:'PUT',body:JSON.stringify({message:'Daten '+todayKey()+' (verschlüsselt)',branch:this.cfg().branch||'daten',content:this.b64(JSON.stringify(file)),...(sha?{sha}:{})})});
         if(w.status===409||w.status===422){ this.busy=false; if(tries<3) return this.sync(tries+1); throw new Error('Konflikt beim Speichern'); }
-        if(!w.ok) throw new Error(w.status===403||w.status===404?'Token hat keine Schreibrechte für dieses Repository':'Speichern fehlgeschlagen ('+w.status+')');
+        if(!w.ok) throw new Error(w.status===403||w.status===404?'Token hat keine Schreibrechte (Contents: Read and write) für dieses Repository':'Speichern fehlgeschlagen ('+w.status+')');
       }
       this.last=new Date();
     }catch(e){ this.err=(e&&e.message)||'Keine Verbindung'; }
@@ -1111,10 +1131,11 @@ function openSettings(){
     <p class="small muted">${Store.mode==='cloud'?'Deine Einträge liegen in deinem Claude-Konto, privat für dich, und erscheinen auf jedem Gerät, auf dem du diese Seite öffnest.':GitSync.on()?'Deine Einträge liegen in diesem Browser und werden automatisch in deinem GitHub-Repository gesichert.':'Deine Einträge liegen nur in diesem Browser. Sichere sie ab und zu als Datei oder verbinde unten GitHub.'}</p>
     <div class="row"><button class="btn" data-act="export">Daten als Datei sichern</button><label class="btn" for="imp">Sicherung laden</label><input id="imp" type="file" accept="application/json,.json" hidden data-act="import"></div>
     ${Store.mode==='cloud'?'':(()=>{ const c=GitSync.cfg()||{}; return `<div class="card" style="margin-top:10px"><h3>Online speichern mit GitHub</h3>
-      <p class="small muted" style="margin:4px 0 10px">Speichert alle Einträge automatisch in einem <b>privaten</b> GitHub-Repository und gleicht sie zwischen Handy und Laptop ab. Du brauchst ein privates Repository und einen Token, der nur dieses Repository lesen und schreiben darf.</p>
+      <p class="small muted" style="margin:4px 0 10px">Speichert alle Einträge automatisch <b>verschlüsselt</b> im Zweig „daten“ deines GitHub-Repositorys und gleicht sie zwischen Handy und Laptop ab. Auf GitHub steht nur unlesbarer Zeichensalat; lesen kann man die Daten nur in der App mit deinem Passwort. Auf jedem Gerät dasselbe Passwort verwenden. <b>Passwort gut merken:</b> Ohne es lassen sich die Online-Daten nicht wiederherstellen.</p>
       <form class="formgrid" data-form="gh">
-        <div class="field"><label class="label" for="gh-repo">Repository (Name/Repo)</label><input id="gh-repo" name="repo" placeholder="paulflacko/hantelwoche-daten" value="${esc(c.repo||'')}" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+        <div class="field"><label class="label" for="gh-repo">Repository (Name/Repo)</label><input id="gh-repo" name="repo" placeholder="paulflacko/Hantelwoche-v1" value="${esc(c.repo||'paulflacko/Hantelwoche-v1')}" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
         <div class="field"><label class="label" for="gh-token">Token</label><input id="gh-token" name="token" type="password" placeholder="github_pat_…" value="${esc(c.token||'')}" autocomplete="off"></div>
+        <div class="field"><label class="label" for="gh-pass">Passwort für die Verschlüsselung</label><input id="gh-pass" name="pass" type="password" minlength="8" placeholder="mind. 8 Zeichen" value="${esc(c.pass||'')}" autocomplete="new-password"></div>
         <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">${GitSync.on()?'Speichern und abgleichen':'Verbinden'}</button>${GitSync.on()?'<button class="btn" type="button" data-act="ghsync">Jetzt abgleichen</button><button class="btn ghost" type="button" data-act="ghoff">Trennen</button>':''}</div>
       </form>
       ${GitSync.on()?`<p class="small" style="margin-top:8px;color:${GitSync.err?'var(--amber)':'var(--good)'}">${GitSync.err?esc('Fehler: '+GitSync.err):GitSync.last?'Zuletzt abgeglichen um '+GitSync.last.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'Noch nicht abgeglichen'}</p>`:''}
@@ -1194,9 +1215,11 @@ document.addEventListener('submit',e=>{
   e.preventDefault(); const f=e.target, fd=new FormData(f), k=todayKey();
   if(f.dataset.form==='extra'){ const d=dayDoc(k); d.extra=[...(d.extra||[]),{n:fd.get('n'),kcal:+fd.get('kcal')||0,p:+fd.get('p')||0}]; saveDay(k,d); render(); toast('Eingetragen'); }
   if(f.dataset.form==='bw'){ const p=prof(), d=fd.get('d'), kg=parseFloat(String(fd.get('kg')).replace(',','.')); if(!kg) return; p.bw=p.bw.filter(x=>x.d!==d); p.bw.push({d,kg}); saveProf(p); render(); toast('Gewicht gespeichert'); }
-  if(f.dataset.form==='gh'){ const repo=String(fd.get('repo')||'').trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$|\/$/g,''), token=String(fd.get('token')||'').trim();
+  if(f.dataset.form==='gh'){ const repo=String(fd.get('repo')||'').trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$|\/$/g,''), token=String(fd.get('token')||'').trim(), pass=String(fd.get('pass')||'');
     if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token){ toast('Bitte Repository als Name/Repo und den Token eintragen'); return; }
-    GitSync.setCfg({repo,token}); toast('Verbinde mit GitHub …'); GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Mit GitHub abgeglichen'); if(UI.modal==='settings') openSettings(); }); return; }
+    if(pass.length<8){ toast('Bitte ein Passwort mit mindestens 8 Zeichen wählen'); return; }
+    if(!(window.crypto&&crypto.subtle)){ toast('Verschlüsselung geht nur über https, nicht in der Offline-Datei'); return; }
+    GitSync.setCfg({repo,token,pass,branch:'daten'}); toast('Verbinde mit GitHub …'); GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Mit GitHub abgeglichen'); if(UI.modal==='settings') openSettings(); }); return; }
   if(f.dataset.form==='settings'){ const p=prof(); const s=p.settings;
     s.start=mondayOf(parseKey(fd.get('start')||s.start)); s.kcal=+fd.get('kcal')||s.kcal; s.protein=+fd.get('protein')||s.protein; s.renegade=+fd.get('renegade')||1;
     ['plates','vary','bar','circuit45','iron','zinc'].forEach(x=>s[x]=fd.get(x)==='on'); ['barlh','barsz','barkh'].forEach(x=>{ const v=parseFloat(String(fd.get(x)).replace(',','.')); if(!isNaN(v)) s[x]=v; }); saveProf(p); UI.modal=null; $('#overlay').innerHTML=''; render(); toast('Einstellungen gespeichert'); }
