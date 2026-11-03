@@ -565,8 +565,9 @@ const Store = {
   load(){ try{ const raw=localStorage.getItem(LS_KEY); if(raw) this.cache=JSON.parse(raw)||{}; }catch(e){} },
   saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(this.cache)); }catch(e){} },
   get(k){ return this.cache[k]; },
-  put(k,v){ this.cache[k]=JSON.parse(JSON.stringify(v)); this.saveLocal(); this.queue(k); },
-  del(k){ delete this.cache[k]; this.saveLocal(); this.queue(k); },
+  put(k,v){ this.cache[k]=JSON.parse(JSON.stringify(v)); this.touch(k); this.saveLocal(); this.queue(k); },
+  del(k){ delete this.cache[k]; this.touch(k); this.saveLocal(); this.queue(k); },
+  touch(k){ try{ const m=JSON.parse(localStorage.getItem(LS_KEY+'-t')||'{}'); m[k]=Date.now(); localStorage.setItem(LS_KEY+'-t',JSON.stringify(m)); }catch(e){} if(typeof GitSync!=='undefined') GitSync.soon(); },
   queue(k){ if(!this.col) return; this.dirty[k]=true; clearTimeout(this.timers[k]); this.timers[k]=setTimeout(()=>this.flush(k),700); },
   async flush(k){
     if(this.writing[k]){ this.timers[k]=setTimeout(()=>this.flush(k),400); return; }
@@ -591,6 +592,44 @@ const Store = {
         this.mode='cloud'; this.saveLocal(); onData();
       }, ()=>{ this.mode='local'; this.col=null; onData(); });
     }catch(e){}
+  }
+};
+/* GitHub-Sync: speichert alle Einträge als data.json in einem privaten GitHub-Repository (nur in der Handy-App/Offline-Version) */
+const GitSync = {
+  KEY:LS_KEY+'-gh', busy:false, timer:null, last:null, err:'',
+  cfg(){ try{ return JSON.parse(localStorage.getItem(this.KEY)||'null'); }catch(e){ return null; } },
+  setCfg(c){ try{ if(c) localStorage.setItem(this.KEY,JSON.stringify(c)); else localStorage.removeItem(this.KEY); }catch(e){} },
+  on(){ const c=this.cfg(); return !!(c&&c.repo&&c.token) && !Store.col; },
+  times(){ try{ return JSON.parse(localStorage.getItem(LS_KEY+'-t')||'{}'); }catch(e){ return {}; } },
+  soon(){ if(!this.on()) return; clearTimeout(this.timer); this.timer=setTimeout(()=>this.sync(),4000); },
+  api(path,opt={}){ const c=this.cfg(); return fetch('https://api.github.com/repos/'+c.repo+'/contents/'+path,{...opt,headers:{'Authorization':'Bearer '+c.token,'Accept':'application/vnd.github+json',...(opt.body?{'Content-Type':'application/json'}:{})},cache:'no-store'}); },
+  b64(str){ const b=new TextEncoder().encode(str); let s=''; for(let i=0;i<b.length;i+=0x8000) s+=String.fromCharCode.apply(null,b.subarray(i,i+0x8000)); return btoa(s); },
+  unb64(b){ const bin=atob(b.replace(/\n/g,'')); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return new TextDecoder().decode(u); },
+  async sync(tries=0){
+    if(!this.on()) return; if(this.busy){ this.soon(); return; } this.busy=true; this.err='';
+    try{
+      const r=await this.api('data.json');
+      let remote={docs:{},t:{}}, sha;
+      if(r.status===200){ const j=await r.json(); sha=j.sha; remote=JSON.parse(this.unb64(j.content)); remote.docs=remote.docs||{}; remote.t=remote.t||{}; }
+      else if(r.status!==404) throw new Error(r.status===401?'Token ungültig oder abgelaufen':r.status===403?'Token hat keine Schreibrechte für dieses Repository':'GitHub antwortet mit Fehler '+r.status);
+      const lt=this.times(); const keys=new Set([...Object.keys(remote.docs),...Object.keys(remote.t),...Object.keys(Store.cache),...Object.keys(lt)]);
+      const out={docs:{},t:{}}; let changedLocal=false, changedRemote=false;
+      keys.forEach(k=>{ if(!/^(profile|mob|d-|w-)/.test(k)) return;
+        const tl=lt[k]||0, tr=remote.t[k]||0;
+        if(tr>tl){ if(k in remote.docs){ if(JSON.stringify(Store.cache[k])!==JSON.stringify(remote.docs[k])){ Store.cache[k]=remote.docs[k]; changedLocal=true; } } else if(k in Store.cache){ delete Store.cache[k]; changedLocal=true; } lt[k]=tr; }
+        else if(tl>tr || (!(k in remote.docs) && k in Store.cache)){ changedRemote=true; }
+        const t=Math.max(tl,tr)||Date.now(); lt[k]=t; out.t[k]=t; if(k in Store.cache) out.docs[k]=Store.cache[k]; });
+      try{ localStorage.setItem(LS_KEY+'-t',JSON.stringify(lt)); }catch(e){}
+      if(changedLocal){ Store.saveLocal(); onData(); }
+      if(changedRemote||!sha){
+        out.app='Hantelwoche'; out.saved=new Date().toISOString();
+        const w=await this.api('data.json',{method:'PUT',body:JSON.stringify({message:'Daten '+todayKey(),content:this.b64(JSON.stringify(out,null,1)),...(sha?{sha}:{})})});
+        if(w.status===409||w.status===422){ this.busy=false; if(tries<3) return this.sync(tries+1); throw new Error('Konflikt beim Speichern'); }
+        if(!w.ok) throw new Error(w.status===403||w.status===404?'Token hat keine Schreibrechte für dieses Repository':'Speichern fehlgeschlagen ('+w.status+')');
+      }
+      this.last=new Date();
+    }catch(e){ this.err=(e&&e.message)||'Keine Verbindung'; }
+    finally{ this.busy=false; if(typeof syncBadge==='function') syncBadge(); }
   }
 };
 const DEFAULT_SETTINGS = {start:defaultStart(), bar:false, plates:true, barlh:10, barsz:7, barkh:2, vary:true, kcal:2850, protein:135, iron:false, zinc:false, circuit45:false, renegade:1};
@@ -644,9 +683,11 @@ const ICONS = {
   progress:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>'};
 const TABS=[['today','Heute'],['week','Woche'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
 
-function onData(){
-  const s=$('#sync'); s.className='sync'+(Store.mode==='cloud'?' on':''); s.querySelector('span').textContent=Store.mode==='cloud'?'Gespeichert in deinem Konto':'Nur auf diesem Gerät';
+function onData(){ syncBadge();
   if(!UI.session && !UI.guide && !UI.modal) render();
+}
+function syncBadge(){
+  const s=$('#sync'); if(!s) return; s.className='sync'+(Store.mode==='cloud'?' on':''); s.querySelector('span').textContent=Store.mode==='cloud'?'Gespeichert in deinem Konto':GitSync.on()?(GitSync.err?'GitHub: '+GitSync.err:GitSync.last?'Gespeichert auf GitHub':'GitHub verbinden …'):'Nur auf diesem Gerät'; if(GitSync.on()&&!GitSync.err&&GitSync.last) s.className='sync on';
 }
 
 /* ============================== ANSICHTEN ============================== */
@@ -1067,8 +1108,17 @@ function openSettings(){
     <div class="row"><button class="btn primary" type="submit">Speichern</button></div>
   </form>
   <section class="section"><h2>Daten</h2>
-    <p class="small muted">${Store.mode==='cloud'?'Deine Einträge liegen in deinem Claude-Konto, privat für dich, und erscheinen auf jedem Gerät, auf dem du diese Seite öffnest.':'Deine Einträge liegen nur in diesem Browser. Sichere sie ab und zu als Datei.'}</p>
+    <p class="small muted">${Store.mode==='cloud'?'Deine Einträge liegen in deinem Claude-Konto, privat für dich, und erscheinen auf jedem Gerät, auf dem du diese Seite öffnest.':GitSync.on()?'Deine Einträge liegen in diesem Browser und werden automatisch in deinem GitHub-Repository gesichert.':'Deine Einträge liegen nur in diesem Browser. Sichere sie ab und zu als Datei oder verbinde unten GitHub.'}</p>
     <div class="row"><button class="btn" data-act="export">Daten als Datei sichern</button><label class="btn" for="imp">Sicherung laden</label><input id="imp" type="file" accept="application/json,.json" hidden data-act="import"></div>
+    ${Store.mode==='cloud'?'':(()=>{ const c=GitSync.cfg()||{}; return `<div class="card" style="margin-top:10px"><h3>Online speichern mit GitHub</h3>
+      <p class="small muted" style="margin:4px 0 10px">Speichert alle Einträge automatisch in einem <b>privaten</b> GitHub-Repository und gleicht sie zwischen Handy und Laptop ab. Du brauchst ein privates Repository und einen Token, der nur dieses Repository lesen und schreiben darf.</p>
+      <form class="formgrid" data-form="gh">
+        <div class="field"><label class="label" for="gh-repo">Repository (Name/Repo)</label><input id="gh-repo" name="repo" placeholder="paulflacko/hantelwoche-daten" value="${esc(c.repo||'')}" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+        <div class="field"><label class="label" for="gh-token">Token</label><input id="gh-token" name="token" type="password" placeholder="github_pat_…" value="${esc(c.token||'')}" autocomplete="off"></div>
+        <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">${GitSync.on()?'Speichern und abgleichen':'Verbinden'}</button>${GitSync.on()?'<button class="btn" type="button" data-act="ghsync">Jetzt abgleichen</button><button class="btn ghost" type="button" data-act="ghoff">Trennen</button>':''}</div>
+      </form>
+      ${GitSync.on()?`<p class="small" style="margin-top:8px;color:${GitSync.err?'var(--amber)':'var(--good)'}">${GitSync.err?esc('Fehler: '+GitSync.err):GitSync.last?'Zuletzt abgeglichen um '+GitSync.last.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'Noch nicht abgeglichen'}</p>`:''}
+    </div>`; })()}
     <div id="dangerzone" class="row"><button class="btn ghost small" data-act="askwipe">Alle Daten löschen…</button></div>
   </section></div></div>`;
 }
@@ -1082,6 +1132,8 @@ document.addEventListener('click',e=>{
   const k=todayKey();
   switch(a){
     case 'settings': openSettings(); break;
+    case 'ghsync': GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Abgeglichen'); if(UI.modal==='settings') openSettings(); }); break;
+    case 'ghoff': GitSync.setCfg(null); GitSync.last=null; GitSync.err=''; toast('GitHub getrennt, Daten bleiben auf dem Gerät'); openSettings(); render(); break;
     case 'closeModal': UI.modal=null; $('#overlay').innerHTML=''; render(); break;
     case 'train': startTraining(t.dataset.w); break;
     case 'seq': startSeq(t.dataset.seq,t.dataset.key); break;
@@ -1132,7 +1184,7 @@ document.addEventListener('change',e=>{
   else if(a==='sleep'||a==='steps'){ const d=dayDoc(k); d[a]=t.value===''?null:+t.value; saveDay(k,d); }
   else if(a==='warm'){ const s=sessObj(); s.warm[t.dataset.i]=t.checked; saveSess(s); renderSession(); }
   else if(a==='setv'){ const s=sessObj(), x=s.sets[t.dataset.g][+t.dataset.i]; x[t.dataset.f]=t.value; if(t.dataset.f==='kg') x.tot=totalKg(EX[s.exmap[t.dataset.g]],t.value); saveSess(s); }
-  else if(a==='import'){ const f=t.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); const docs=data.docs||data; let n=0; for(const key in docs){ if(/^(profile|d-|w-)/.test(key)){ Store.put(key,docs[key]); n++; } } toast(n+' Einträge geladen'); openSettings(); }catch(err){ toast('Die Datei ist keine gültige Sicherung (JSON aus „Daten als Datei sichern“).'); } }; r.readAsText(f); }
+  else if(a==='import'){ const f=t.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); const docs=data.docs||data; let n=0; for(const key in docs){ if(/^(profile|mob|d-|w-)/.test(key)){ Store.put(key,docs[key]); n++; } } toast(n+' Einträge geladen'); openSettings(); }catch(err){ toast('Die Datei ist keine gültige Sicherung (JSON aus „Daten als Datei sichern“).'); } }; r.readAsText(f); }
 });
 document.addEventListener('input',e=>{
   const t=e.target; if(t.dataset.act!=='setv'||t.dataset.f!=='kg'||!UI.session) return;
@@ -1142,6 +1194,9 @@ document.addEventListener('submit',e=>{
   e.preventDefault(); const f=e.target, fd=new FormData(f), k=todayKey();
   if(f.dataset.form==='extra'){ const d=dayDoc(k); d.extra=[...(d.extra||[]),{n:fd.get('n'),kcal:+fd.get('kcal')||0,p:+fd.get('p')||0}]; saveDay(k,d); render(); toast('Eingetragen'); }
   if(f.dataset.form==='bw'){ const p=prof(), d=fd.get('d'), kg=parseFloat(String(fd.get('kg')).replace(',','.')); if(!kg) return; p.bw=p.bw.filter(x=>x.d!==d); p.bw.push({d,kg}); saveProf(p); render(); toast('Gewicht gespeichert'); }
+  if(f.dataset.form==='gh'){ const repo=String(fd.get('repo')||'').trim().replace(/^https?:\/\/github\.com\//,'').replace(/\.git$|\/$/g,''), token=String(fd.get('token')||'').trim();
+    if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token){ toast('Bitte Repository als Name/Repo und den Token eintragen'); return; }
+    GitSync.setCfg({repo,token}); toast('Verbinde mit GitHub …'); GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Mit GitHub abgeglichen'); if(UI.modal==='settings') openSettings(); }); return; }
   if(f.dataset.form==='settings'){ const p=prof(); const s=p.settings;
     s.start=mondayOf(parseKey(fd.get('start')||s.start)); s.kcal=+fd.get('kcal')||s.kcal; s.protein=+fd.get('protein')||s.protein; s.renegade=+fd.get('renegade')||1;
     ['plates','vary','bar','circuit45','iron','zinc'].forEach(x=>s[x]=fd.get(x)==='on'); ['barlh','barsz','barkh'].forEach(x=>{ const v=parseFloat(String(fd.get(x)).replace(',','.')); if(!isNaN(v)) s[x]=v; }); saveProf(p); UI.modal=null; $('#overlay').innerHTML=''; render(); toast('Einstellungen gespeichert'); }
@@ -1158,9 +1213,11 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 
 /* ============================== START ============================== */
 Store.load();
-if(!Store.get('profile')) Store.put('profile',{settings:{...DEFAULT_SETTINGS},bw:[]});
+if(!Store.get('profile')){ Store.cache.profile={settings:{...DEFAULT_SETTINGS},bw:[]}; Store.saveLocal(); Store.queue('profile'); } // ohne Zeitstempel, damit eine Online-Sicherung Vorrang hat
 onData();
 (function resume(){ const open=workouts().find(w=>!w.finished && w.date===todayKey()); if(open) toast('Offene Einheit von heute: auf „Fortsetzen“ tippen'); })();
 Store.connect();
+setTimeout(()=>GitSync.sync(),300);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') GitSync.sync(); });
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script></body></html>
