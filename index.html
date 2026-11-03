@@ -87,6 +87,7 @@ nav.tabs svg{width:22px;height:22px}
 .tl.main .c::before{border-color:var(--accent)}
 .tl .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .tl.main .box{border-color:var(--accent)}
+.zone-pill{color:var(--fg);background:var(--surface-2);gap:6px}.zone-pill i{width:9px;height:9px;border-radius:50%;background:#ff5436;box-shadow:0 0 6px #ff5436}
 .actcol{display:flex;gap:8px;flex-basis:100%;padding-left:36px}
 .actcol .btn{flex:1;white-space:nowrap}
 .mobwrap{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
@@ -277,10 +278,10 @@ const EX = {
   catcow:{n:'Katze-Kuh',img:'yoga-katze-kuh',eq:'Matte',unit:'sec',cue:'Im Vierfüßlerstand, langsam mit dem Atem.',mg:'Wirbelsäule'},
   wgs:{n:"World's Greatest Stretch",img:'worlds-greatest-stretch',eq:'Matte',unit:'sec',cue:'Tiefer Ausfallschritt, Ellbogen zum Fuß, dann Arm zur Decke aufdrehen.',mg:'Hüfte, Brustwirbelsäule'},
   deadbug:{n:'Dead Bug',img:'dead-bug',eq:'Matte',unit:'sec',cue:'Unterer Rücken bleibt am Boden, Gegenarm und -bein langsam strecken.',mg:'Core'},
-  birddog:{n:'Bird Dog',img:'bird-dogs',eq:'Matte',unit:'sec',cue:'Rücken stabil, 2 s halten.',mg:'Core, Rücken'},
+  birddog:{n:'Bird Dog',img:'bird-dog',eq:'Matte',unit:'sec',cue:'Rücken stabil, 2 s halten.',mg:'Core, Rücken'},
   plank:{n:'Unterarmstütz',img:'unterarmstuetz',eq:'Matte',unit:'sec',cue:'Ganzkörperspannung, Po nicht hoch.',mg:'Core'},
   warmsets:{n:'Aufwärmsätze',img:'aufwaermsaetze',eq:'Gerät der ersten Übung',unit:'sec',cue:'Erste Übung des Tages: 8 Wdh. mit leerer Stange, 5 Wdh. mit ca. 50 %, 3 Wdh. mit ca. 75 % vom Arbeitsgewicht. Locker, kein Satz bis an die Grenze.',mg:'Technik, Gelenke'},
-  bridge:{n:'Hüftbrücke ohne Gewicht',img:'hip-raises',eq:'Matte',unit:'sec',cue:'Po wecken, oben kurz halten.',mg:'Po'},
+  bridge:{n:'Hüftbrücke ohne Gewicht',img:'hueftbruecke',eq:'Matte',unit:'sec',cue:'Po wecken, oben kurz halten.',mg:'Po'},
   pullapart:{n:'Band Pull-Aparts',img:'band-pull-aparts',eq:'Band',unit:'sec',cue:'Arme gestreckt, Band auf Brusthöhe auseinanderziehen.',mg:'Hintere Schulter'},
   thruster:{n:'Thruster mit Kurzhanteln',img:'dumbbell-squat-thrusters',eq:'Kurzhanteln',unit:'sec',cue:'Aus tiefer Hocke explosiv hochdrücken, erst Beine, dann Arme.',mg:'Ganzkörper'},
   climber:{n:'Mountain Climber',img:'mountain-climbers',eq:'–',unit:'sec',cue:'Hände unter den Schultern, Po nicht hoch, Knie zügig zur Brust.',mg:'Core, Kondition'},
@@ -288,7 +289,7 @@ const EX = {
   burpee:{n:'Burpees',img:'burpees',eq:'–',unit:'sec',cue:'Runter ins Brett, hoch in den Strecksprung. Ohne Sprung geht auch.',mg:'Kondition'},
   woodchop:{n:'Holzhacker mit Band',img:'downward-cable-wood-chops',eq:'Band',unit:'sec',cue:'Band oben seitlich, diagonal zur Hüfte ziehen. Seite jede Runde wechseln.',mg:'Core (Rotation)'},
   hollow:{n:'Hollow Hold',img:'hollow-body-rock-hold',eq:'Matte',unit:'sec',cue:'Unterer Rücken drückt in den Boden, Arme und Beine knapp darüber.',mg:'Core'},
-  hipflex:{n:'Hüftbeuger-Dehnung kniend',img:'kneeling-hip-flexor-stretch',eq:'Matte',unit:'sec',cue:'Po anspannen, Becken nach vorne schieben. Gegen das lange Sitzen.',mg:'Hüftbeuger'},
+  hipflex:{n:'Hüftbeuger-Dehnung kniend',img:'hueftbeuger-dehnung',eq:'Matte',unit:'sec',cue:'Po anspannen, Becken nach vorne schieben. Gegen das lange Sitzen.',mg:'Hüftbeuger'},
   // Yoga und Dehnen (eigene Animationen, img/yoga-*.gif)
   seiza:{n:'Fersensitz',img:'yoga-fersensitz',eq:'Matte',unit:'sec',cue:'Po auf den Fersen, Rücken lang, Hände auf den Oberschenkeln. Durch die Nase in den Bauch atmen.',mg:'Atmung, Ankommen'},
   sun:{n:'Sonnengruß A',img:'yoga-sonnengruss-a',eq:'Matte',unit:'sec',cue:'Arme hoch, Vorbeuge, halbe Vorbeuge, Brett, tief, heraufschauender Hund, herabschauender Hund, nach vorn, aufrichten. Eine Bewegung pro Atemzug.',mg:'Ganzkörper'},
@@ -308,6 +309,8 @@ const EX = {
   shroll:{n:'Schulterkreisen',img:'schulterkreisen',eq:'–',unit:'sec',cue:'Schultern hoch zu den Ohren, nach hinten und weit nach unten kreisen. Langsam und groß.',mg:'Nacken, Schultern'},
   calfst:{n:'Waden-Dehnung an der Wand',img:'waden-dehnung',eq:'Wand',unit:'sec',cue:'Hände an die Wand, hinteres Bein gestreckt, Ferse bleibt am Boden.',mg:'Waden'},
 };
+// Eigene Animationen mit leuchtendem Zielbereich
+const GLOW_EX = new Set(['catcow','tspine','wgs','lowlunge','pigeon','pyramid','dog','child','frog','twist','baby','warrior','chest','calfst','pullapart','neck','shroll','hipflex','bridge','birddog']);
 const GUIDE = slug => WL + slug + '/';
 const GUIDE_SLUG = {deadlift:'barbell-deadlifts',bss:'bulgarian-split-squats',dbbench:'dumbbell-bench-press',pullup:'pullups',chinup:'underhand-grip-chin-ups-pull-ups-pullups',lateral:'dumbbell-lateral-shoulder-raises-power-partials',pallof:'palloff-press-oblique-iso-hold',calf:'standing-dumbbell-calf-raises',goblet:'goblet-squats',hipbridge:'hip-raises',ohp:'standing-overhead-military-barbell-shoulder-press',row:'one-arm-dumbbell-rows',curl:'barbell-curls',french:'flat-bench-barbell-skull-crushers',carry:'single-arm-dumbbell-suitcase-carry',rdl:'romanian-deadlifts',lunge:'dumbbell-walking-lunges',pushup:'pushups',pullover:'dumbbell-pullovers',facepull:'face-pull',jj:'jumping-jacks',deadbug:'dead-bug',birddog:'bird-dogs',plank:'plank',bridge:'hip-raises',thruster:'dumbbell-squat-thrusters',climber:'mountain-climbers',renegade:'renegade-row-alternating-plank-row-commando-row',burpee:'burpees',woodchop:'downward-cable-wood-chops',hollow:'hollow-body-rock-hold',hipflex:'kneeling-hip-flexor-stretch'};
 
@@ -1169,6 +1172,7 @@ function renderGuide(){
       ${visual}
       <h2 class="stepname">${esc(st.n)}</h2>
       ${st.note?`<p class="muted" style="max-width:520px">${esc(st.note)}</p>`:''}
+      ${ex&&GLOW_EX.has(st.ex)&&ex.mg?`<span class="pill zone-pill"><i></i>Zielbereich: ${esc(ex.mg)}</span>`:''}
       ${ex&&!st.note?.includes(ex.cue)?`<p class="small" style="max-width:520px">${esc(ex.cue)}</p>`:''}
       ${st.sec?`<div class="clock" id="gclock">${mmss(g.remain)}</div>`:''}
       ${next?`<p class="small muted">Danach: ${esc(next.n)}${next.sec?' · '+mmss(next.sec):''}</p>`:'<p class="small muted">Letzter Schritt</p>'}
