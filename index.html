@@ -502,7 +502,89 @@ function renderMobPick(){
     <button class="btn primary" data-act="mobgo" style="width:100%">Geführte Session starten</button>
   </div></div>`;
 }
-function mobSave(){ const m=UI.mob; Store.put('mob',{areas:m.areas,feel:m.feel,min:m.min}); }
+function mobSave(){ const m=UI.mob, old=Store.get('mob')||{}; Store.put('mob',{...old,areas:m.areas,feel:m.feel,min:m.min}); }
+function renderPick(){ if(UI.mob&&UI.mob.mode==='yoga') renderYogaPick(); else renderMobPick(); }
+
+/* ============================== YOGA ZUM ANPASSEN ============================== */
+// act: 0 ruhig, 1 mittel, 2 kräftigend; pos wie MOB_POS; r = Körperbereiche (Keys aus MOB_AREAS)
+const YOGA_POOL = [
+  {ex:'shroll',sec:45,act:1,r:['nacken','schulter'],note:'10 Kreise rückwärts, 5 vorwärts, mit dem Atem'},
+  {ex:'chest',sec:40,side:1,act:0,r:['schulter']},
+  {ex:'calfst',sec:40,side:1,act:0,r:['waden']},
+  {ex:'warrior',sec:60,side:1,act:2,r:['huefte','leiste','schulter'],note:'Vorderes Knie über der Ferse, Arme aktiv lang'},
+  {ex:'lowlunge',sec:60,side:1,act:1,r:['huefte']},
+  {ex:'pyramid',sec:45,side:1,act:1,r:['hinten']},
+  {ex:'wgs',sec:90,act:1,r:['huefte','bws'],note:'4 pro Seite, fließend mit dem Atem'},
+  {ex:'hipflex',sec:45,side:1,act:0,r:['huefte']},
+  {ex:'dog',sec:60,act:1,r:['hinten','waden','schulter']},
+  {ex:'plank',sec:30,act:2,r:[],min:2,note:'Ganzkörperspannung, ruhig weiteratmen'},
+  {ex:'tspine',sec:45,side:1,act:1,r:['bws','schulter'],note:'8 Wiederholungen'},
+  {ex:'birddog',sec:60,act:2,r:['lws'],note:'6 pro Seite, je 2 s halten'},
+  {ex:'child',sec:90,act:0,r:['lws','bws','schulter']},
+  {ex:'frog',sec:90,act:0,r:['leiste','huefte']},
+  {ex:'neck',sec:40,side:1,act:0,r:['nacken']},
+  {ex:'pigeon',sec:90,side:1,act:0,r:['po','huefte']},
+  {ex:'bridge',sec:30,act:2,r:['po','lws'],sets:1},
+  {ex:'twist',sec:60,side:1,act:0,r:['bws','lws','po']},
+  {ex:'baby',sec:60,act:0,r:['huefte','lws','leiste']},
+];
+const YOGA_STYLE = {aktiv:{n:'Aktiv',d:'Fließend und kräftigend, mehr Sonnengrüße und Stehhaltungen'},ruhig:{n:'Entspannend',d:'Langsam, lange Haltungen am Boden, längere Endentspannung'}};
+const YOGA_INT = {1:{n:'Sanft',f:.8},2:{n:'Mittel',f:1},3:{n:'Kräftig',f:1.25}};
+function yogaCfg(){ const m=Store.get('mob')||{}, y=m.yoga||{}; return {areas:{...(y.areas||{})},style:y.style||'aktiv',int:y.int||2,min:y.min||20}; }
+function openYogaPick(key){ UI.mob={...yogaCfg(),key,mode:'yoga'}; UI.modal='mob'; renderYogaPick(); }
+function yogaSave(){ const m=UI.mob, old=Store.get('mob')||{}; Store.put('mob',{...old,yoga:{areas:m.areas,style:m.style,int:m.int,min:m.min}}); }
+function yogaPlan(cfg){
+  const relax=cfg.style==='ruhig', int=+cfg.int||2, total=(cfg.min||20)*60, f=YOGA_INT[int].f;
+  const sel=Object.keys(cfg.areas||{}).filter(k=>cfg.areas[k]>0), all=!sel.length;
+  const hold=x=>Math.round(x.sec*(relax?(x.act===2?1:1.6):1)*(x.act>0&&!relax?f:1)*(relax&&int===1?1.15:1)/5)*5;
+  const cost=x=>x.sets?x.sets*hold(x)+(x.sets-1)*15:hold(x)*(x.side?2:1);
+  // feste Teile
+  const opener={ex:'seiza',sec:relax?120:60,note:relax?'Augen schließen, lang ausatmen, ankommen':'Ankommen, ruhig in den Bauch atmen'};
+  const warm={ex:'catcow',sec:relax?90:60,note:'Langsam mit dem Atem, 8 Wiederholungen'};
+  const rounds=relax?(int===1?0:int===2?2:3):[2,4,6][int-1]+(total>=1800?2:0);
+  const sun=rounds?{ex:'sun',sec:rounds*(relax?75:60),note:rounds+' Runden'+(relax?', sehr langsam, jede Haltung 2 Atemzüge':' in deinem Atemtempo')}:null;
+  const sava={ex:'sava',sec:Math.max(90,Math.round(total*(relax?.15:.08)/30)*30),note:'Alles loslassen, Atem kommen und gehen lassen'};
+  let budget=total-opener.sec-warm.sec-(sun?sun.sec:0)-sava.sec;
+  const seed=Math.floor(Date.now()/864e5);
+  const pool=YOGA_POOL.filter(x=>!(x.min&&(relax||int<x.min))).map((x,i)=>{
+    const rs=all?1:x.r.reduce((t,k)=>t+(cfg.areas[k]||0),0);
+    const st=relax?2-x.act:x.act;
+    return {...x,sets:x.sets?(relax?1:int):0,score:rs*(all?1:3)+st*(all?1.5:1)+(relax&&(MOB_POS[x.ex]??2)>=2?1:0)+((i*7+seed)%5)/10};
+  }).sort((a,b)=>b.score-a.score);
+  const picked=[];
+  for(const x of pool){ if(budget<30) break; if(!all&&!x.r.some(k=>cfg.areas[k])) continue; const c=cost(x); if(c<=budget+15){ picked.push(x); budget-=c; } }
+  const focus=picked.reduce((t,x)=>t+cost(x),0); let fill=budget-focus*.4; // Schwerpunkt etwas länger halten, Rest mit passenden Haltungen füllen
+  for(const x of pool){ if(fill<60) break; if(picked.includes(x)) continue; const c=cost(x); if(c<=fill){ picked.push(x); budget-=c; fill-=c; } }
+  // Rest auf Haltungen verteilen
+  const base=picked.reduce((t,x)=>t+cost(x),0), k=budget>20&&base?Math.min(1.6,1+budget/base):1;
+  picked.sort((a,b)=>(MOB_POS[a.ex]??2)-(MOB_POS[b.ex]??2)||b.act-a.act);
+  const steps=[]; const sec=x=>Math.round(hold(x)*k/5)*5;
+  const add=(x,kind)=>{ const e=EX[x.ex], note=x.note||'';
+    if(x.sets>1){ for(let i=1;i<=x.sets;i++){ steps.push(S('Brücke halten',sec(x),x.ex,i+' von '+x.sets)); if(i<x.sets) steps.push(S('Lösen',15,null,'','rest')); } }
+    else if(x.side){ steps.push(S(e.n+' · links',sec(x),x.ex,note,kind)); steps.push(S(e.n+' · rechts',sec(x),x.ex,note,kind)); }
+    else steps.push(S(x.ex==='bridge'?'Brücke halten':e.n,x.fixed?x.sec:sec(x),x.ex,note,kind)); };
+  [opener,warm,sun].filter(Boolean).forEach(x=>{ x.fixed=1; add(x); });
+  picked.forEach(x=>add(x)); sava.fixed=1; add(sava,'rest');
+  const names=all?['Ganzkörper']:MOB_AREAS.filter(a=>cfg.areas[a.k]).map(a=>a.s);
+  return {steps,short:names,title:'Yoga · '+(relax?'entspannend':'aktiv')+' · '+YOGA_INT[int].n.toLowerCase()};
+}
+function renderYogaPick(){
+  const m=UI.mob, plan=yogaPlan(m), tot=plan.steps.reduce((t,x)=>t+x.sec,0), lvTxt=['','etwas','deutlich'];
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>Yoga-Flow anpassen</h2><div class="small muted">Stil, Intensität, Dauer und Schwerpunkt wählen</div></div></div>
+  <div class="ov-body">
+    <section class="card"><h3>Stil</h3><div class="chips" style="margin-top:8px">${Object.entries(YOGA_STYLE).map(([k,v])=>`<button class="chip" data-act="yogastyle" data-v="${k}" aria-pressed="${m.style===k}">${esc(v.n)}</button>`).join('')}</div><p class="small muted" style="margin-top:8px">${esc(YOGA_STYLE[m.style].d)}</p></section>
+    <section class="card"><h3>Intensität</h3><div class="chips" style="margin-top:8px">${[1,2,3].map(n=>`<button class="chip" data-act="yogaint" data-v="${n}" aria-pressed="${+m.int===n}">${YOGA_INT[n].n}</button>`).join('')}</div></section>
+    <section class="card"><h3>Dauer</h3><div class="chips" style="margin-top:8px">${[15,20,30,45].map(n=>`<button class="chip" data-act="yogamin" data-v="${n}" aria-pressed="${m.min===n}">${n} min</button>`).join('')}</div></section>
+    <section class="card"><h3>Schwerpunkt (optional)</h3><p class="small muted" style="margin:2px 0 10px">Einmal tippen heißt etwas, zweimal deutlich. Ohne Auswahl wird der ganze Körper bedacht.</p>
+      <div class="mobwrap"><div class="body">${bodySvg(m.areas)}</div>
+      <div class="chips">${MOB_AREAS.map(a=>{ const lv=m.areas[a.k]||0; return `<button class="chip" data-act="mobzone" data-area="${a.k}" aria-pressed="${lv>0}">${esc(a.n)}${lv?`<span class="lv">· ${lvTxt[lv]}</span>`:''}</button>`; }).join('')}</div></div></section>
+    <section class="card mobprev"><div style="display:flex;align-items:baseline;gap:8px"><h3 class="grow">Dein Flow</h3><span class="pill accent">${Math.round(tot/60)} min · ${plan.steps.length} Schritte</span></div>
+      <p class="small muted" style="margin:2px 0 6px">Schwerpunkt: ${esc(plan.short.join(', '))}</p>
+      <div>${plan.steps.map(st=>{ const e=st.ex?EX[st.ex]:null; return `<div class="li">${e&&e.img?`<img src="${imgSrc(e.img)}" alt="" loading="lazy">`:''}<span class="grow">${esc(st.n)}${st.note&&/Runden|von \d/.test(st.note)?` <span class="small muted">· ${esc(st.note)}</span>`:''}</span><span class="small muted">${mmss(st.sec)}</span></div>`; }).join('')}</div></section>
+    <button class="btn primary" data-act="yogago" style="width:100%">Geführten Flow starten</button>
+    <button class="btn ghost" data-act="seq" data-seq="yoga20" data-key="${esc(m.key||'yoga')}" style="width:100%">Oder den Standard-Flow (20 min)</button>
+  </div></div>`;
+}
 
 // Tagesplan. getDay(): 0 = Sonntag
 const DAYS = [
@@ -731,7 +813,8 @@ function vToday(){
     let detail=b.d; if(b.seq==='med') detail=medMinutes()+' min · Box-Atmung und Body-Scan'; if(b.seq==='z2') detail=z2Minutes()+' min Zone 2, Puls 120–140';
     let act='';
     if(b.train) act=`<button class="btn primary" data-act="train" data-w="${b.train}">${open&&open.type===b.train?'Fortsetzen':'Training starten'}</button>`;
-    else if(b.pick) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="mobpick" data-key="${b.key}" data-min="${b.pickMin||''}">Nach Gefühl</button><button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">${esc(b.seqLabel||'Starten')}</button></div>`;
+    else if(b.pick) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="mobpick" data-key="${b.key}" data-min="${b.pickMin||''}">Nach Gefühl</button>${/^yoga/.test(b.seq)?`<button class="btn" data-act="yogapick" data-key="${b.key}">${esc(b.seqLabel||'Yoga')}</button>`:`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">${esc(b.seqLabel||'Starten')}</button>`}</div>`;
+    else if(b.seq&&/^yoga/.test(b.seq)) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="yogapick" data-key="${b.key}">Anpassen</button></div>`;
     else if(b.seq) act=`<button class="btn ${b.main?'primary':''}" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button>`;
     else if(b.go) act=`<button class="btn" data-tab="${b.go}">Öffnen</button>`;
     const chk=b.train?'':`<input type="checkbox" class="check" data-act="done" data-key="${b.key}" ${done?'checked':''} aria-label="${esc(b.n)} erledigt">`;
@@ -1157,11 +1240,16 @@ document.addEventListener('click',e=>{
     case 'ghoff': GitSync.setCfg(null); GitSync.last=null; GitSync.err=''; toast('GitHub getrennt, Daten bleiben auf dem Gerät'); openSettings(); render(); break;
     case 'closeModal': UI.modal=null; $('#overlay').innerHTML=''; render(); break;
     case 'train': startTraining(t.dataset.w); break;
-    case 'seq': startSeq(t.dataset.seq,t.dataset.key); break;
+    case 'seq': if(UI.modal==='mob'){ UI.modal=null; UI.mob=null; } startSeq(t.dataset.seq,t.dataset.key); break;
     case 'mobpick': openMobPick(t.dataset.key,+t.dataset.min||0); break;
-    case 'mobzone': { const a=t.dataset.area||t.closest('[data-area]').dataset.area; UI.mob.areas[a]=((UI.mob.areas[a]||0)+1)%3; if(!UI.mob.areas[a]) delete UI.mob.areas[a]; renderMobPick(); break; }
+    case 'mobzone': { const a=t.dataset.area||t.closest('[data-area]').dataset.area; UI.mob.areas[a]=((UI.mob.areas[a]||0)+1)%3; if(!UI.mob.areas[a]) delete UI.mob.areas[a]; renderPick(); break; }
     case 'mobfeel': UI.mob.feel=t.dataset.feel; renderMobPick(); break;
     case 'mobmin': UI.mob.min=+t.dataset.min; renderMobPick(); break;
+    case 'yogapick': openYogaPick(t.dataset.key); break;
+    case 'yogastyle': UI.mob.style=t.dataset.v; renderYogaPick(); break;
+    case 'yogaint': UI.mob.int=+t.dataset.v; renderYogaPick(); break;
+    case 'yogamin': UI.mob.min=+t.dataset.v; renderYogaPick(); break;
+    case 'yogago': { const m=UI.mob, plan=yogaPlan(m); yogaSave(); UI.modal=null; UI.mob=null; startSteps(plan.title,plan.steps,m.key); break; }
     case 'mobgo': { const m=UI.mob, plan=mobPlan(m); mobSave(); UI.modal=null; UI.mob=null;
       startSteps('Mobility · '+(plan.short.length>2?plan.short.length+' Bereiche':plan.short.join(' + ')),plan.steps,m.key); break; }
     case 'wk': UI.weekOffset+=+t.dataset.d; render(); break;
