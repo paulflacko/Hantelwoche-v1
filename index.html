@@ -181,6 +181,21 @@ nav.tabs svg{width:22px;height:22px}
 .excard .thumb.none{background:var(--surface-2);color:var(--muted);font-size:.7rem;text-align:center;padding:6px}
 .gnum{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1.1rem;margin-right:6px}
 .hint{font-size:.85rem;padding:8px 12px;background:var(--surface-2);border-radius:8px}
+.tips{background:var(--surface-2);border-radius:10px;padding:0;text-align:left;width:100%;max-width:560px}
+.tips summary{cursor:pointer;padding:10px 12px;font-weight:600;font-size:.9rem;list-style-position:inside}
+.tips .tipbody{padding:0 14px 12px;font-size:.88rem;line-height:1.45}
+.tips h4{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.tips ol,.tips ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.tips ul.warn li::marker{color:var(--warn)}
+.tips p{margin:0}
+.gcue{display:flex;gap:10px;align-items:flex-start;text-align:left;max-width:560px;width:100%;padding:10px 14px;border-radius:10px;background:var(--surface-2);border-left:4px solid var(--accent);font-weight:600;line-height:1.35}
+.gcue .lab{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding-top:3px;flex:none}
+.gcue.flash{animation:cueflash .6s ease}
+@keyframes cueflash{from{background:color-mix(in srgb,var(--accent) 22%,var(--surface-2))}to{background:var(--surface-2)}}
+.regbars{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.regbars .rb{display:grid;grid-template-columns:minmax(0,9.5em) 1fr 4.5em;gap:8px;align-items:center;font-size:.85rem}
+.regbars .rb small{color:var(--muted);text-align:right}
+.regen.done{opacity:.85}
 .hint.up{color:var(--good);font-weight:600}
 .sets{display:flex;flex-direction:column;border-top:1px solid var(--line)}
 .set{display:grid;grid-template-columns:34px 1fr 1fr 48px;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line)}
@@ -342,6 +357,121 @@ const EX = {
 };
 // Eigene Animationen mit leuchtendem Zielbereich
 const GLOW_EX = new Set(['catcow','tspine','wgs','lowlunge','pigeon','pyramid','dog','child','frog','twist','baby','warrior','chest','calfst','pullapart','neck','shroll','hipflex','bridge','birddog']);
+// Technik- und Haltungstipps: a = Ausrichtung (wird in der Session nacheinander eingeblendet), f = häufige Fehler, b = Atmung, s = was du spüren solltest
+const TIPS = {
+  // ---------- Mobility und Yoga ----------
+  catcow:{a:['Hände genau unter den Schultern, Knie unter den Hüften, Finger weit gespreizt.','Ausatmen: Rücken rund wie eine Katze, Steißbein nach unten, Kinn zur Brust.','Einatmen: Brustbein nach vorn schieben, Becken kippt, Blick leicht nach vorn.','Die Bewegung beginnt am Becken und rollt Wirbel für Wirbel bis zum Kopf.','Arme bleiben lang, die Schultern ziehen weg von den Ohren.'],
+    f:['Nur den Kopf bewegen statt die Wirbelsäule.','In der Kuh ins Hohlkreuz fallen und die Schultern hochziehen.','Zu schnell: eine Phase pro Atemzug reicht.'],b:'Einatmen in die Kuh, ausatmen in die Katze. Langsam, etwa 4 s pro Richtung.',s:'Wohlige Bewegung im ganzen Rücken, kein Ziehen im Nacken.'},
+  wgs:{a:['Großer Ausfallschritt, vorderer Fuß komplett neben der gleichseitigen Hand.','Hinteres Bein lang und aktiv, Ferse schiebt nach hinten.','Ellbogen innen am vorderen Fuß Richtung Boden sinken lassen, Brust bleibt lang.','Dann den Arm zur Decke aufdrehen, Blick folgt der Hand.','Vorderes Knie bleibt über dem Sprunggelenk und kippt nicht nach innen.'],
+    f:['Schritt zu kurz, das vordere Knie schiebt weit über die Zehen.','Beim Aufdrehen nur den Arm bewegen statt den Brustkorb.','Hüfte des hinteren Beins sackt durch.'],b:'Ausatmen, wenn der Ellbogen sinkt. Einatmen beim Aufdrehen.',s:'Hüftbeuger hinten, Leiste vorn, Drehung im oberen Rücken.'},
+  hipflex:{a:['Hinteres Knie auf einer weichen Unterlage, vorderer Fuß flach, Knie über dem Sprunggelenk.','Becken aufrichten: Steißbein leicht nach unten, Bauchnabel zur Wirbelsäule.','Po des hinteren Beins fest anspannen, dann erst das Becken nach vorn schieben.','Oberkörper aufrecht, Schultern über den Hüften.','Für mehr Dehnung den Arm der hinteren Seite nach oben und leicht zur Gegenseite strecken.'],
+    f:['Ins Hohlkreuz fallen: dann dehnt sich der untere Rücken, nicht der Hüftbeuger.','Zu weit nach vorn schieben ohne Po-Spannung.','Vordere Hüfte dreht nach außen weg.'],b:'Ruhig weiteratmen. Mit jedem Ausatmen das Becken einen Millimeter weiter schieben.',s:'Ziehen vorne in der Leiste und am Oberschenkel des hinteren Beins.'},
+  seiza:{a:['Knie zusammen, Po sinkt auf die Fersen. Ist es zu steil: Kissen zwischen Po und Fersen.','Sitzbeinhöcker schwer, Scheitel wächst zur Decke.','Kinn minimal einziehen, Nacken lang.','Schultern sinken, Hände liegen locker auf den Oberschenkeln.'],
+    f:['Rundrücken oder bewusstes Hohlkreuz.','Schmerz im Knie oder Spann aushalten: dann Unterlage nutzen.'],b:'Durch die Nase in den Bauch atmen. Ausatmen etwas länger als einatmen.',s:'Ruhe, aufrechte Haltung ohne Anstrengung.'},
+  sun:{a:['Berghaltung: Füße hüftbreit, Gewicht gleichmäßig, Arme mit dem Einatmen nach oben.','Vorbeuge aus der Hüfte, Knie dürfen gebeugt sein, Rücken möglichst lang.','Halbe Vorbeuge: Hände an die Schienbeine, Rücken flach, Blick nach vorn.','Brett: Schultern über den Handgelenken, Körper eine Linie, dann kontrolliert absenken.','Heraufschauender Hund: Hüfte tief, Brust nach vorn oben, Schultern weg von den Ohren.','Herabschauender Hund: Hüfte nach hinten oben, 3 Atemzüge, dann nach vorn kommen.'],
+    f:['Atem anhalten oder hetzen.','Beim Absenken die Ellbogen weit nach außen.','Im Hund den Rücken rund ziehen, nur um die Fersen auf den Boden zu bekommen.'],b:'Eine Bewegung pro Atemzug: Arme hoch einatmen, vorbeugen ausatmen.',s:'Wärme im ganzen Körper, Puls leicht erhöht.'},
+  dog:{a:['Hände schulterbreit, Finger weit, Druck über Zeigefinger und Daumenballen.','Hüfte nach hinten oben schieben, als zöge jemand am Becken.','Rücken lang machen hat Vorrang: Knie dürfen deutlich gebeugt sein.','Oberarme drehen leicht nach außen, Schulterblätter breit.','Kopf hängt locker zwischen den Oberarmen, Ohren auf Höhe der Arme.','Fersen abwechselnd Richtung Boden treten.'],
+    f:['Runder Rücken mit gestreckten Knien.','Schultern ziehen zu den Ohren.','Gewicht nur auf den Handballen, das Handgelenk wird überlastet.'],b:'Lang und gleichmäßig durch die Nase. Ausatmen: Hüfte weiter nach hinten.',s:'Ziehen in Waden und Beinrückseite, Streckung in Schultern und Flanken.'},
+  warrior:{a:['Füße weit auseinander, vorderer Fuß zeigt nach vorn, hinterer leicht nach innen gedreht.','Vorderes Knie beugen, bis es über der Ferse steht und Richtung kleiner Zeh zeigt.','Becken und Brust zeigen zur Seite, Oberkörper mittig über dem Becken.','Arme auf Schulterhöhe lang, Schultern tief, Blick über die vordere Hand.','Umgekehrter Krieger: vorderen Arm nach hinten oben, das Knie bleibt gebeugt.'],
+    f:['Knie fällt nach innen.','Oberkörper lehnt nach vorn über das gebeugte Bein.','Außenkante des hinteren Fußes hebt ab.'],b:'Gleichmäßig weiteratmen. Im umgekehrten Krieger in die gestreckte Flanke einatmen.',s:'Arbeit im vorderen Oberschenkel, Öffnung in Leiste und Flanke.'},
+  lowlunge:{a:['Vorderes Knie über dem Sprunggelenk, hinteres Knie weich abgelegt.','Becken sinkt nach vorn unten, Steißbein zeigt zum Boden.','Po des hinteren Beins aktiv anspannen.','Arme nach oben, Rippen bleiben unten, kein Hohlkreuz.','Optional mit der Hüfte leicht vor und zurück wippen, dann halten.'],
+    f:['Ins Hohlkreuz kippen, um tiefer zu kommen.','Vorderes Knie fällt nach innen.'],b:'Einatmen: Arme hoch und lang. Ausatmen: Becken sinkt.',s:'Vorne in der Leiste des hinteren Beins, bis in den Oberschenkel.'},
+  pigeon:{a:['Vorderes Schienbein möglichst quer, je steifer die Hüfte, desto näher die Ferse zur Leiste.','Vorderen Fuß aktiv anziehen, das schützt das Knie.','Hinteres Bein lang nach hinten, Zehen zeigen gerade nach unten.','Becken gerade ausrichten: Kissen unter die Po-Seite des vorderen Beins, wenn sie schwebt.','Erst aufrecht, dann mit langem Rücken auf Unterarme oder Stirn ablegen.'],
+    f:['Becken kippt zur Seite des vorderen Beins.','Schmerz im vorderen Knie: Fuß näher zur Hüfte oder Figur-4 im Liegen nehmen.'],b:'Tief in den Bauch, mit jedem Ausatmen etwas weiter sinken.',s:'Ziehen tief im Po und an der Hüftaußenseite des vorderen Beins.'},
+  pyramid:{a:['Schrittstellung etwa ein Bein lang, beide Füße flach, hinterer Fuß ca. 45° gedreht.','Beide Hüftknochen zeigen nach vorn wie Scheinwerfer.','Beine gestreckt, aber Knie nicht durchdrücken.','Aus der Hüfte mit langem Rücken nach vorn kippen, Hände auf Blöcke oder Schienbein.','Erst wenn der Rücken lang bleibt, darf der Oberkörper weiter sinken.'],
+    f:['Rücken rund ziehen, um tiefer zu kommen.','Hüfte des hinteren Beins dreht auf.'],b:'Einatmen: Rücken lang. Ausatmen: aus der Hüfte etwas tiefer.',s:'Dehnung in der Beinrückseite des vorderen Beins.'},
+  frog:{a:['Vierfüßlerstand, Knie weit auseinander auf weicher Unterlage.','Unterschenkel parallel, Sprunggelenke auf Höhe der Knie, Füße zeigen nach außen.','Auf die Unterarme gehen, Rücken neutral, Bauch leicht aktiv.','Hüfte langsam nach hinten schieben, bis es innen zieht, dann halten.'],
+    f:['Rücken hängt ins Hohlkreuz durch.','Zu weit auf einmal: Knie und Leiste reagieren empfindlich.'],b:'Ruhig weiteratmen, beim Ausatmen Hüfte minimal nach hinten.',s:'Innenseite der Oberschenkel bis zur Leiste.'},
+  twist:{a:['Auf dem Rücken, Arme in T-Form, Handflächen nach oben.','Knie angewinkelt zusammen, langsam zu einer Seite sinken lassen.','Beide Schulterblätter bleiben am Boden, sonst Knie auf ein Kissen.','Kopf dreht optional zur Gegenseite.'],
+    f:['Die obere Schulter hebt ab.','Die Knie mit Kraft nach unten drücken.'],b:'In die oben liegende Flanke und Brust atmen. Jedes Ausatmen lässt die Knie schwerer werden.',s:'Sanfte Drehung in der Wirbelsäule, Dehnung an Po und Brust.'},
+  baby:{a:['Auf dem Rücken, Knie Richtung Achseln ziehen.','Füße von außen greifen, Fußsohlen zeigen zur Decke.','Schienbeine senkrecht, Knie weiter als die Hüfte.','Kreuzbein und Hinterkopf bleiben am Boden, sanft seitlich schaukeln.'],
+    f:['Kopf und Schultern heben ab. Dann lieber die Kniekehlen greifen.','Steißbein rollt hoch.'],b:'Langsam in den Bauch und unteren Rücken atmen.',s:'Öffnung in Hüfte und Leiste, Entspannung im unteren Rücken.'},
+  sava:{a:['Auf dem Rücken, Beine etwas breiter als die Hüfte, Füße fallen locker nach außen.','Arme etwas vom Körper weg, Handflächen nach oben.','Kinn leicht zur Brust, Nacken lang. Bei Bedarf Kissen unter die Knie.','Augen schließen, Gesicht weich, Kiefer lösen.'],
+    f:['Gedanklich schon beim nächsten Termin sein: den Atem einfach beobachten.'],b:'Nichts steuern. Atem kommen und gehen lassen.',s:'Schwere, Wärme, ruhiger Puls.'},
+  child:{a:['Knie hüftbreit oder weiter, große Zehen berühren sich.','Po sinkt Richtung Fersen, Stirn liegt auf dem Boden oder einem Kissen.','Arme lang nach vorn oder locker neben dem Körper.','Schultern lösen und schwer werden lassen.'],
+    f:['Druck auf die Knie aushalten: Kissen zwischen Po und Fersen.','Nacken verdrehen statt die Stirn abzulegen.'],b:'In den Rücken und die Flanken atmen, der Rücken hebt sich beim Einatmen.',s:'Sanfte Dehnung im ganzen Rücken, Entspannung.'},
+  tspine:{a:['Vierfüßlerstand, Hüfte bleibt über den Knien, die Stützhand unter der Schulter.','Freie Hand an den Hinterkopf, Ellbogen zeigt zur Seite.','Ellbogen unter dem Körper Richtung Stützarm führen.','Dann den Ellbogen weit zur Decke aufdrehen, Blick folgt.','Die Drehung kommt aus dem Brustkorb, nicht aus der Lendenwirbelsäule.'],
+    f:['Hüfte schiebt zur Seite oder nach hinten.','Den Kopf in den Nacken reißen.'],b:'Einatmen beim Aufdrehen, ausatmen beim Einrollen.',s:'Bewegung zwischen den Schulterblättern.'},
+  chest:{a:['Unterarm an den Türrahmen, Ellbogen etwa auf Schulterhöhe.','Schulter bleibt tief und hinten, nicht zum Ohr ziehen.','Mit dem Körper einen kleinen Schritt nach vorn und leicht vom Arm wegdrehen.','Bauch fest, kein Hohlkreuz.','Ellbogen höher = obere Brust, tiefer = mittlere Brust.'],
+    f:['Schulter rollt nach vorn und zieht vorne im Gelenk.','Zu stark gedreht, sodass Kribbeln im Arm entsteht: dann lockerer.'],b:'Ruhig weiteratmen, mit dem Ausatmen etwas weiter drehen.',s:'Ziehen in Brust und vorderer Schulter, nicht im Gelenk.'},
+  neck:{a:['Aufrecht sitzen oder stehen, Scheitel lang nach oben.','Ohr langsam Richtung Schulter sinken lassen, Nase zeigt nach vorn.','Die Gegenschulter aktiv nach unten schieben, Hand ggf. unter den Po klemmen.','Für mehr Dehnung den Kopf leicht nach vorn unten drehen (Nase zur Achsel).'],
+    f:['Die Schulter zum Ohr hochziehen.','Mit der Hand am Kopf ziehen.'],b:'Ins Ziehen hineinatmen, beim Ausatmen sinkt der Kopf von allein.',s:'Seitlich am Hals bis in die obere Schulter.'},
+  shroll:{a:['Aufrecht, Arme hängen locker.','Schultern hoch zu den Ohren, dann weit nach hinten.','Schulterblätter nach unten in die Gesäßtaschen ziehen.','Große, langsame Kreise, der Kopf bleibt ruhig.'],
+    f:['Kleine, hastige Kreise.','Den Kopf mitbewegen.'],b:'Einatmen beim Hochziehen, ausatmen beim Absenken.',s:'Lockerheit in Nacken und Schultern.'},
+  calfst:{a:['Hände an die Wand, hinteres Bein gestreckt, Ferse fest am Boden.','Fuß zeigt gerade nach vorn.','Hüfte nach vorn zur Wand schieben, Körper bleibt eine Linie.','Danach das hintere Knie leicht beugen, so dehnt sich die tiefe Wadenmuskulatur.'],
+    f:['Fuß dreht nach außen.','Ferse hebt ab.'],b:'Gleichmäßig atmen, beim Ausatmen etwas weiter zur Wand.',s:'Ziehen in der Wade bis zur Achillessehne.'},
+  pullapart:{a:['Band auf Brusthöhe, Hände schulterbreit, Arme fast gestreckt.','Schultern tief und von den Ohren weg.','Band auseinanderziehen, bis es die Brust berührt, Schulterblätter zusammen.','Langsam zurück, 2 s für den Rückweg.'],
+    f:['Ins Hohlkreuz ausweichen.','Ellbogen stark beugen und mit dem Bizeps ziehen.'],b:'Ausatmen beim Auseinanderziehen.',s:'Arbeit zwischen den Schulterblättern und hinten an der Schulter.'},
+  bridge:{a:['Rückenlage, Füße hüftbreit, Fersen etwa eine Handbreit vor dem Po.','Becken leicht einrollen, unterer Rücken nah am Boden.','Durch die Fersen drücken und die Hüfte heben, bis Knie, Hüfte und Schulter eine Linie bilden.','Oben den Po fest anspannen, Rippen bleiben unten.','Knie zeigen nach vorn und fallen nicht zusammen.'],
+    f:['Oben ins Hohlkreuz drücken.','Aus den Zehen statt aus den Fersen drücken.'],b:'Ausatmen beim Hochheben, einatmen beim Absenken.',s:'Arbeit im Po, nicht im unteren Rücken.'},
+  birddog:{a:['Vierfüßlerstand, Rücken flach wie ein Tisch.','Bauch fest, als käme gleich ein leichter Stoß.','Gegenarm und -bein langsam strecken, bis sie mit dem Rücken eine Linie bilden.','Becken bleibt waagerecht, die Hüfte dreht nicht auf.','2 s halten, kontrolliert zurück.'],
+    f:['Bein zu hoch, dann folgt das Hohlkreuz.','Gewicht kippt zur Seite.'],b:'Ausatmen beim Strecken, einatmen beim Zurückkommen.',s:'Rumpfspannung, Po und Rückenstrecker arbeiten.'},
+  deadbug:{a:['Rückenlage, Arme zur Decke, Knie und Hüfte 90°.','Unterer Rücken drückt sanft in den Boden.','Gegenarm und -bein langsam strecken, knapp über dem Boden stoppen.','Zurück zur Mitte, dann Seite wechseln.'],
+    f:['Der untere Rücken hebt ab.','Zu schnell und mit Schwung.'],b:'Lang ausatmen, während du streckst.',s:'Tiefe Bauchspannung.'},
+  plank:{a:['Ellbogen unter den Schultern, Unterarme parallel.','Körper eine Linie von Kopf bis Ferse.','Po anspannen und Becken leicht einrollen.','Ellbogen gedanklich zu den Zehen ziehen, Bauch wird fester.','Blick zum Boden, Nacken lang.'],
+    f:['Po hoch oder Hüfte hängt durch.','Schultern sinken zwischen die Schulterblätter.'],b:'Kurz und ruhig weiteratmen, nicht pressen.',s:'Bauch und Po arbeiten, nicht der untere Rücken.'},
+  jj:{a:['Leicht auf den Fußballen landen.','Knie bleiben weich und zeigen in Richtung der Zehen.','Arme locker über den Kopf.'],f:['Mit gestreckten Knien landen.'],b:'Gleichmäßig weiteratmen.',s:'Puls steigt, Körper wird warm.'},
+  hollow:{a:['Rückenlage, unterer Rücken drückt fest in den Boden.','Schultern und Beine knapp vom Boden heben.','Arme lang neben die Ohren oder zu den Hüften (leichter).','Bananenform: Rippen zum Becken ziehen.'],
+    f:['Hohlkreuz: dann Beine höher oder Knie beugen.'],b:'Kurze, flache Atemzüge, Spannung halten.',s:'Ganzer Bauch brennt.'},
+
+  // ---------- Kraftübungen aus dem Plan ----------
+  deadlift:{a:['Füße hüftbreit, Stange über der Fußmitte, etwa 3 cm vor dem Schienbein.','Griff knapp außerhalb der Beine, Arme senkrecht.','Schienbeine an die Stange, Brust hoch, Rücken neutral.','Lat anspannen: Achseln zu den Hosentaschen.','Boden wegdrücken, Stange bleibt am Bein, oben Hüfte strecken und Po anspannen.'],
+    f:['Hüfte schießt zuerst hoch, der Rücken macht die Arbeit.','Stange entfernt sich vom Körper.','Oben nach hinten überstrecken.'],b:'Unten tief einatmen und den Bauch fest machen, oben ausatmen.',s:'Beine und Po drücken, der Rücken hält nur.'},
+  bss:{a:['Hinterer Fußrücken auf der Bank, vorderer Fuß so weit vorn, dass das Knie unten etwa über dem Fuß ist.','Gewicht zu 80 % auf dem vorderen Bein.','Oberkörper aufrecht oder leicht nach vorn, Rumpf fest.','Knie zeigt in Richtung zweiter Zeh.','Durch die ganze Fußsohle hochdrücken.'],
+    f:['Vorderes Knie fällt nach innen.','Zu kurzer Abstand: Ferse hebt ab.','Mit dem hinteren Bein mitdrücken.'],b:'Einatmen beim Absenken, ausatmen beim Hochdrücken.',s:'Oberschenkel vorn und Po des vorderen Beins.'},
+  dbbench:{a:['Füße fest am Boden, Schulterblätter zusammen und nach unten.','Leichtes natürliches Hohlkreuz, Po bleibt auf der Bank.','Hanteln über der Brust, Unterarme senkrecht.','Ellbogen ca. 45° zum Körper absenken, bis die Hanteln neben der Brust sind.','Kraftvoll hochdrücken, oben nicht zusammenschlagen.'],
+    f:['Ellbogen 90° zur Seite: belastet die Schulter.','Schulterblätter lösen sich beim Drücken.'],b:'Einatmen beim Absenken, ausatmen beim Drücken.',s:'Brust und Trizeps.'},
+  bench1:{a:['Beide Hanteln oben halten, Schulterblätter fest zusammen.','Nur eine Hantel absenken, die andere bleibt gestreckt.','Rumpf und Becken bleiben ruhig.'],f:['Oberkörper dreht mit.'],b:'Ausatmen beim Drücken.',s:'Brust, dazu Rumpfspannung.'},
+  pullup:{a:['Griff etwas breiter als schulterbreit.','Aus dem toten Hang erst die Schulterblätter nach unten ziehen.','Brust zur Stange, Ellbogen zu den Hüften führen.','Beine leicht vor dem Körper, Bauch fest, kein Schwung.','Unten wieder ganz strecken.'],
+    f:['Halbe Wiederholungen.','Kinn reckt sich nach vorn über die Stange.','Schwingen mit den Beinen.'],b:'Ausatmen beim Hochziehen, einatmen beim Ablassen.',s:'Breiter Rücken, Bizeps.'},
+  chinup:{a:['Untergriff schulterbreit.','Schulterblätter zuerst nach unten ziehen.','Brust zur Stange, Ellbogen eng am Körper.','Kontrolliert ganz nach unten ablassen.'],f:['Nur mit den Armen ziehen.','Hohlkreuz und Schwung.'],b:'Ausatmen beim Hochziehen.',s:'Rücken und Bizeps.'},
+  bandpull:{a:['Kniend, Band oben fixiert, Arme gestreckt.','Brust leicht raus, Rumpf aufrecht.','Ellbogen nach unten zu den Hüften ziehen.','Unten Schulterblätter zusammen, langsam zurück.'],f:['Mit dem Oberkörper nach hinten lehnen.'],b:'Ausatmen beim Ziehen.',s:'Seitlicher Rücken.'},
+  lateral:{a:['Leicht nach vorn geneigt, Knie weich.','Ellbogen minimal gebeugt, führen die Bewegung.','Arme seitlich bis Schulterhöhe heben, kleine Finger leicht höher.','Schultern bleiben tief, Hals entspannt.','2 s ablassen.'],
+    f:['Schwung aus dem Oberkörper.','Schultern ziehen zu den Ohren.'],b:'Ausatmen beim Heben.',s:'Seitliche Schulter.'},
+  bandlat:{a:['Mittig auf dem Band stehen, Knie weich.','Ellbogen leicht gebeugt, seitlich bis Schulterhöhe.','Schultern tief, langsam zurück.'],f:['Schulter zuckt hoch.'],b:'Ausatmen beim Heben.',s:'Seitliche Schulter.'},
+  pallof:{a:['Seitlich zum Ankerpunkt, Füße schulterbreit, Knie weich.','Band auf Brusthöhe, Hände an der Brust.','Arme gerade nach vorn drücken, der Rumpf bleibt frontal.','Vorne 2 s halten, langsam zurück.'],f:['Oberkörper dreht zum Band.','Hohlkreuz.'],b:'Ausatmen beim Rausdrücken.',s:'Seitliche Bauchmuskeln.'},
+  shtaps:{a:['Hohe Brettposition, Füße etwas breiter.','Hände unter den Schultern.','Langsam eine Schulter antippen, die Hüfte bleibt waagerecht.'],f:['Hüfte schaukelt hin und her.'],b:'Ruhig weiteratmen.',s:'Rumpf gegen Drehung.'},
+  kneeraise:{a:['Toter Hang, Schultern leicht aktiv.','Becken einrollen, dann Knie bis Hüfthöhe oder höher.','Langsam ablassen, kein Schwingen.'],f:['Nur die Beine anheben, ohne das Becken einzurollen.'],b:'Ausatmen beim Hochziehen.',s:'Unterer Bauch.'},
+  revcrunch:{a:['Rückenlage, Hände halten die Bank hinter dem Kopf.','Knie 90°, Becken einrollen und vom Boden heben.','Langsam Wirbel für Wirbel ablassen.'],f:['Schwung mit den Beinen.'],b:'Ausatmen beim Einrollen.',s:'Unterer Bauch.'},
+  calf:{a:['Ballen auf der Stufe, Fersen frei.','Körper aufrecht, Knie gestreckt aber nicht durchgedrückt.','Ganz nach unten in die Dehnung, dann auf die Zehenspitzen.','Oben 1 s halten, Gewicht über dem Großzehenballen.'],f:['Wippen mit Schwung.','Fuß knickt nach außen.'],b:'Ausatmen beim Hochdrücken.',s:'Waden.'},
+  goblet:{a:['Füße schulterbreit, Fußspitzen leicht nach außen.','Hantel eng vor der Brust, Ellbogen zeigen nach unten.','Hüfte nach hinten und unten, Knie folgen den Fußspitzen.','Oberkörper aufrecht, Brust bleibt oben.','Unten kurz halten, über die ganze Sohle hochdrücken.'],
+    f:['Knie fallen nach innen.','Fersen heben ab.','Rücken rundet unten.'],b:'Oben einatmen und Bauch fest, beim Hochdrücken ausatmen.',s:'Oberschenkel vorn und Po.'},
+  hipbridge:{a:['Rücken am Boden, Stange mit Polster in der Hüftfalte.','Füße hüftbreit, Fersen nah am Po.','Kinn leicht zur Brust, Rippen unten.','Durch die Fersen drücken, oben Po 2 s anspannen.'],f:['Oben ins Hohlkreuz.','Knie fallen nach innen.'],b:'Ausatmen beim Hochdrücken.',s:'Po.'},
+  ohp:{a:['Griff knapp schulterbreit, Stange auf der vorderen Schulter.','Po und Bauch fest, Rippen unten.','Kopf kurz zurück, Stange gerade nach oben drücken.','Oben Kopf durch die Arme schieben, Stange über der Fußmitte.'],f:['Hohlkreuz, um das Gewicht hochzubekommen.','Stange vor dem Körper nach vorn drücken.'],b:'Einatmen und Bauch fest vor jeder Wiederholung, oben ausatmen.',s:'Schultern und Trizeps, Rumpf hält.'},
+  row:{a:['Knie und Hand der gleichen Seite auf der Bank, Rücken flach.','Arm hängt gestreckt senkrecht unter der Schulter.','Ellbogen nah am Körper Richtung Hüfte ziehen.','Oben Schulterblatt zur Wirbelsäule, langsam ablassen.'],f:['Oberkörper dreht auf.','Mit dem Bizeps statt dem Rücken ziehen.'],b:'Ausatmen beim Ziehen.',s:'Rücken und hintere Schulter.'},
+  curl:{a:['Aufrecht, Ellbogen am Körper.','Stange kontrolliert hochbeugen, Handgelenke gerade.','Oben kurz anspannen, langsam ablassen.'],f:['Schwung mit dem Oberkörper.','Ellbogen wandern nach vorn.'],b:'Ausatmen beim Hochbeugen.',s:'Bizeps.'},
+  revcurl:{a:['Obergriff, Ellbogen am Körper.','Handgelenke gerade halten.','Langsam ablassen.'],f:['Handgelenke knicken ab.'],b:'Ausatmen beim Hochbeugen.',s:'Unterarme und Oberarm.'},
+  french:{a:['Auf der Bank liegend, Oberarme senkrecht.','Ellbogen zeigen zur Decke und bleiben eng.','Stange Richtung Stirn oder knapp dahinter absenken.','Nur aus dem Ellbogen strecken.'],f:['Ellbogen gehen nach außen.','Oberarme bewegen mit.'],b:'Ausatmen beim Strecken.',s:'Trizeps.'},
+  closepush:{a:['Hände unter der Brust, eng.','Körper eine Linie, Po fest.','Ellbogen streifen beim Absenken den Körper.'],f:['Ellbogen nach außen.'],b:'Ausatmen beim Hochdrücken.',s:'Trizeps.'},
+  benchdip:{a:['Hände schulterbreit an der Bankkante, Finger nach vorn.','Rücken nah an der Bank.','Ellbogen nach hinten bis ca. 90° beugen.'],f:['Schultern rollen nach vorn.','Zu tief absenken.'],b:'Ausatmen beim Hochdrücken.',s:'Trizeps.'},
+  sideplank:{a:['Ellbogen unter der Schulter, Unterarm nach vorn.','Füße übereinander oder versetzt.','Hüfte hoch, Körper eine gerade Linie.','Obere Schulter leicht nach hinten, Brust offen.'],f:['Hüfte sackt ab.','Oberkörper kippt nach vorn.'],b:'Ruhig weiteratmen.',s:'Seitlicher Bauch.'},
+  sideplankhip:{a:['Aus dem Seitstütz die Hüfte langsam senken.','Wieder über die Linie heben.','Schulter bleibt stabil.'],f:['Schwung.'],b:'Ausatmen beim Heben.',s:'Seitlicher Bauch.'},
+  rdl:{a:['Hüftbreiter Stand, Knie leicht gebeugt und fest.','Hüfte nach hinten schieben wie beim Schließen einer Tür mit dem Po.','Stange gleitet an den Oberschenkeln entlang.','Rücken bleibt neutral, Lat angespannt.','Runter bis knapp unter das Knie oder bis der Rücken rund würde.'],
+    f:['Knie zu stark beugen: wird zur Kniebeuge.','Stange weg vom Bein.','Runder Rücken unten.'],b:'Einatmen beim Absenken, ausatmen beim Hochkommen.',s:'Beinrückseite und Po.'},
+  revlunge:{a:['Großer Schritt zurück.','Vorderes Knie bleibt über dem Fuß.','Oberkörper aufrecht, Rumpf fest.','Hinteres Knie fast bis zum Boden.'],f:['Knie fällt nach innen.','Oberkörper kippt nach vorn.'],b:'Ausatmen beim Hochdrücken.',s:'Oberschenkel und Po.'},
+  fwdlunge:{a:['Großer Schritt nach vorn, Fuß zeigt gerade.','Knie über dem Fuß.','Kräftig zurück in den Stand.'],f:['Zu kurzer Schritt.'],b:'Ausatmen beim Zurückdrücken.',s:'Oberschenkel und Po.'},
+  lunge:{a:['Großer Schritt.','Knie über dem Fuß.','Oberkörper aufrecht.'],f:['Knie fällt nach innen.'],b:'Ausatmen beim Hochdrücken.',s:'Oberschenkel und Po.'},
+  pushup:{a:['Hände etwas breiter als die Schultern.','Körper eine Linie, Po und Bauch fest.','Ellbogen ca. 45° zum Körper.','Brust bis knapp über den Boden.'],f:['Hüfte hängt durch.','Kopf zuerst zum Boden.'],b:'Einatmen beim Absenken, ausatmen beim Drücken.',s:'Brust und Trizeps.'},
+  bandpush:{a:['Band über den oberen Rücken, Enden unter den Händen.','Körper eine Linie.','Oben voll strecken.'],f:['Hüfte sackt durch.'],b:'Ausatmen beim Hochdrücken.',s:'Brust und Trizeps.'},
+  pullover:{a:['Quer auf der Bank, Schultern aufgelegt, Hüfte tief.','Hantel mit beiden Händen über der Brust.','Mit leicht gebeugten Armen hinter den Kopf absenken.','Rippen bleiben unten.'],f:['Hohlkreuz beim Absenken.'],b:'Einatmen beim Absenken, ausatmen beim Zurückholen.',s:'Lat und Brust.'},
+  facepull:{a:['Band auf Kopfhöhe.','Ellbogen hoch, Hände Richtung Ohren ziehen.','Am Ende Daumen nach hinten drehen.'],f:['Mit dem Oberkörper lehnen.'],b:'Ausatmen beim Ziehen.',s:'Hintere Schulter.'},
+  bandfly:{a:['Arme fast gestreckt auf Brusthöhe.','Weit auseinanderziehen.','Schulterblätter zusammen.'],f:['Schultern ziehen hoch.'],b:'Ausatmen beim Ziehen.',s:'Hintere Schulter.'},
+  rollout:{a:['Kniend, Hände schulterbreit an der Stange.','Becken leicht eingerollt, Bauch fest.','Nur so weit rollen, wie der Rücken gerade bleibt.','Mit Bauchspannung zurückziehen.'],f:['Hohlkreuz am weitesten Punkt.'],b:'Einatmen beim Rausrollen, ausatmen beim Zurückkommen.',s:'Bauch.'},
+  plankreach:{a:['Hohe Brettposition.','Füße breiter für mehr Stabilität.','Einen Arm nach vorn strecken, Hüfte bleibt ruhig.'],f:['Hüfte kippt.'],b:'Ruhig weiteratmen.',s:'Rumpf.'},
+  thruster:{a:['Hanteln auf den Schultern.','Tiefe Hocke, Knie folgen den Zehen.','Explosiv hochkommen und den Schwung in den Druck mitnehmen.'],f:['Erst stehen, dann drücken: Schwung geht verloren.'],b:'Ausatmen beim Drücken.',s:'Ganzkörper.'},
+  climber:{a:['Hände unter den Schultern.','Po auf Schulterhöhe.','Knie zügig zur Brust.'],f:['Po hoch.'],b:'Rhythmisch atmen.',s:'Bauch und Puls.'},
+  renegade:{a:['Stütz auf den Hanteln, Füße breit.','Hüfte bleibt waagerecht.','Ellbogen zur Hüfte ziehen.'],f:['Hüfte dreht auf.'],b:'Ausatmen beim Ziehen.',s:'Rumpf und Rücken.'},
+  burpee:{a:['Hände schulterbreit aufsetzen.','Brett mit fester Mitte.','Kraftvoll hoch.'],f:['Hohlkreuz im Brett.'],b:'Rhythmisch atmen.',s:'Puls.'},
+  woodchop:{a:['Band oben seitlich.','Diagonal zur Hüfte ziehen.','Drehung aus dem Rumpf, Füße fest.'],f:['Nur mit den Armen ziehen.'],b:'Ausatmen beim Ziehen.',s:'Seitlicher Bauch.'},
+};
+function tipFor(k){ return TIPS[k]||null; }
+function tipsHtml(k,open){ const t=tipFor(k); if(!t) return '';
+  const li=a=>a.map(x=>`<li>${esc(x)}</li>`).join('');
+  return `<details class="tips" ${open?"open":""}><summary>Haltung und Technik</summary><div class="tipbody">
+    <h4>Ausrichtung</h4><ol>${li(t.a)}</ol>
+    ${t.f&&t.f.length?`<h4>Häufige Fehler</h4><ul class="warn">${li(t.f)}</ul>`:''}
+    ${t.b?`<h4>Atmung</h4><p>${esc(t.b)}</p>`:''}
+    ${t.s?`<h4>Spüren</h4><p>${esc(t.s)}</p>`:''}</div></details>`; }
 const GUIDE = slug => WL + slug + '/';
 const GUIDE_SLUG = {deadlift:'barbell-deadlifts',bss:'bulgarian-split-squats',dbbench:'dumbbell-bench-press',pullup:'pullups',chinup:'underhand-grip-chin-ups-pull-ups-pullups',lateral:'dumbbell-lateral-shoulder-raises-power-partials',pallof:'palloff-press-oblique-iso-hold',calf:'standing-dumbbell-calf-raises',goblet:'goblet-squats',hipbridge:'hip-raises',ohp:'standing-overhead-military-barbell-shoulder-press',row:'one-arm-dumbbell-rows',curl:'barbell-curls',french:'flat-bench-barbell-skull-crushers',carry:'single-arm-dumbbell-suitcase-carry',rdl:'romanian-deadlifts',lunge:'dumbbell-walking-lunges',pushup:'pushups',pullover:'dumbbell-pullovers',facepull:'face-pull',jj:'jumping-jacks',deadbug:'dead-bug',birddog:'bird-dogs',plank:'plank',bridge:'hip-raises',thruster:'dumbbell-squat-thrusters',climber:'mountain-climbers',renegade:'renegade-row-alternating-plank-row-commando-row',burpee:'burpees',woodchop:'downward-cable-wood-chops',hollow:'hollow-body-rock-hold',hipflex:'kneeling-hip-flexor-stretch'};
 
@@ -524,6 +654,7 @@ function renderMobPick(){
   const lvTxt=['','etwas','deutlich'];
   $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>Mobility nach Gefühl</h2><div class="small muted">Wähle, wo es zwickt. Die App stellt die Session zusammen.</div></div></div>
   <div class="ov-body">
+    ${(()=>{ const r=regenInfo(), same=JSON.stringify(r.areas)===JSON.stringify(m.areas)&&r.feel===m.feel; return `<section class="card regen-sug"><div class="row"><div class="grow" style="min-width:180px"><h3>Vorschlag aus deinem Training</h3><p class="small muted">${esc(r.office?r.why:r.srcTxt)}</p><p class="small" style="margin-top:4px">${esc(Object.keys(r.areas).map(a=>MOB_AREAS.find(x=>x.k===a).n).join(', '))} · ${esc(MOB_FEEL[r.feel].n)}</p></div>${same?'<span class="pill good">Übernommen</span>':'<button class="btn small primary" data-act="mobauto">Übernehmen</button>'}</div></section>`; })()}
     <section class="card"><h3>Wo spürst du heute etwas?</h3><p class="small muted" style="margin:2px 0 10px">Einmal tippen heißt etwas, zweimal deutlich, dreimal wieder aus. Nichts gewählt ergibt eine Ganzkörper-Session.</p>
       <div class="mobwrap"><div class="body">${bodySvg(m.areas)}</div>
       <div class="chips">${MOB_AREAS.map(a=>{ const lv=m.areas[a.k]||0; return `<button class="chip" data-act="mobzone" data-area="${a.k}" aria-pressed="${lv>0}">${esc(a.n)}${lv?`<span class="lv">· ${lvTxt[lv]}</span>`:''}</button>`; }).join('')}</div></div></section>
@@ -538,6 +669,81 @@ function renderMobPick(){
 }
 function mobSave(){ const m=UI.mob, old=Store.get('mob')||{}; Store.put('mob',{...old,areas:m.areas,feel:m.feel,min:m.min}); }
 function renderPick(){ if(UI.mob&&UI.mob.mode==='yoga') renderYogaPick(); else renderMobPick(); }
+
+/* ============================== REGENERATION AUTOMATISCH ============================== */
+// Leitet aus dem Training der letzten 3 Tage ab, welche Bereiche heute Regeneration brauchen.
+// Muskel-Stichwort (aus EX.mg) -> Körperbereiche aus MOB_AREAS mit Gewicht
+const LOAD_MAP = [
+  [/unterer rücken/i,{lws:1}],
+  [/nacken|trapez/i,{nacken:1,schulter:.4}],
+  [/brust/i,{schulter:1,bws:.4}],
+  [/schulter|rotatoren/i,{schulter:1,nacken:.3,bws:.2}],
+  [/trizeps|bizeps|arme|unterarm|griff/i,{schulter:.4}],
+  [/^(?!.*unter).*(rücken|\blat\b)/i,{bws:1,lws:.4,schulter:.3}],
+  [/(^|\s)po(\s|$)/i,{po:1,huefte:.4}],
+  [/beinbeuger|rückseite/i,{hinten:1,lws:.3}],
+  [/oberschenkel innen|adduktor/i,{leiste:1}],
+  [/oberschenkel(?! innen)|beine/i,{huefte:.7,po:.4,leiste:.3}],
+  [/waden|schienbein/i,{waden:1}],
+  [/hüft/i,{huefte:1}],
+  [/core/i,{lws:.5,huefte:.3}],
+  [/ganzkörper|kondition|schnellkraft/i,{huefte:.4,waden:.3,schulter:.3,lws:.3,hinten:.3}],
+];
+const _exLoad={};
+function exLoad(k){ if(_exLoad[k]) return _exLoad[k]; const e=EX[k], out={};
+  if(e && e.cat!=='mobil' && !GLOW_EX.has(k)){
+    const parts=String(e.mg||'').split(/,\s*/).filter(Boolean);
+    parts.forEach((p,i)=>{ const w=i===0?1:.7; // erstgenannter Muskel zählt voll
+      LOAD_MAP.forEach(([re,m])=>{ if(re.test(p)) for(const a in m) out[a]=Math.max(out[a]||0,m[a]*w); }); });
+  }
+  return _exLoad[k]=out; }
+// Übungen und Satzzahl einer abgeschlossenen Einheit
+function sessExSets(w){
+  if(w.plan && w.plan.mode==='timer'){ const t=getTpl(w.tpl); if(!t) return []; const R=+t.rounds||1; return tplItems(t).map(x=>[x.ex,R]); }
+  const rows=Object.entries(w.sets||{}).map(([g,arr])=>[w.exmap&&w.exmap[g],(arr||[]).filter(x=>x.done).length,(arr||[]).length]).filter(r=>EX[r[0]]);
+  const anyDone=rows.some(r=>r[1]>0); return rows.map(r=>[r[0],anyDone?r[1]:r[2]]); }
+const REGEN_DAY=['Heute','Gestern','Vorgestern','Vor 3 Tagen'];
+function regenInfo(key){
+  key=key||todayKey(); const L={}, src=[];
+  const add=(ex,n,f)=>{ const m=exLoad(ex); for(const a in m) L[a]=(L[a]||0)+m[a]*n*f; };
+  for(let d=0;d<=3;d++){ const k=addDays(key,-d), f=[1,1,.6,.3][d];
+    workouts().filter(w=>w.date===k&&w.finished).forEach(w=>{ const list=sessExSets(w); if(!list.length) return; list.forEach(([ex,n])=>add(ex,n,f)); src.push({d,n:wname(w)}); });
+    const doc=Store.get('d-'+k);
+    if(doc&&doc.done){
+      if(doc.done.circuit && !workouts().some(w=>w.date===k&&w.slot==='circuit')){ ['thruster','climber','renegade','burpee','woodchop','hollow'].forEach(e=>add(e,4,f)); src.push({d,n:'Zirkel'}); }
+      if(doc.done.z2){ L.waden=(L.waden||0)+3*f; L.huefte=(L.huefte||0)+2*f; L.hinten=(L.hinten||0)+1.5*f; src.push({d,n:'Ausdauer'}); }
+    }
+  }
+  const ranked=Object.entries(L).filter(([,v])=>v>=1).sort((a,b)=>b[1]-a[1]);
+  const areas={}; ranked.slice(0,4).forEach(([a,v])=>{ const lv=v>=7?2:v>=2.5?1:0; if(lv) areas[a]=lv; });
+  const office=!Object.keys(areas).length;
+  if(office){ areas.huefte=1; areas.bws=1; areas.nacken=1; }
+  const today=Store.get('d-'+key)||{}, total=ranked.reduce((t,[,v])=>t+v,0);
+  const recent=src.some(s=>s.d<=1);
+  let feel='gut', why='';
+  if(today.sleep!=null && today.sleep!=='' && +today.sleep<6){ feel='muede'; why='Wenig Schlaf: sanft und viel am Boden.'; }
+  else if(recent && total>=25){ feel='verspannt'; why='Hohe Belastung: längere, ruhige Haltezeiten.'; }
+  else if(office){ why='Kein Training in den letzten 3 Tagen erfasst: Fokus auf die typischen Büro-Bereiche.'; }
+  const m=Store.get('mob')||{}, min=m.regenMin||15;
+  const byDay={}; src.forEach(s=>{ (byDay[s.d]=byDay[s.d]||[]).push(s.n); });
+  const srcTxt=Object.keys(byDay).sort().map(d=>REGEN_DAY[d]+': '+[...new Set(byDay[d])].join(', ')).join(' · ');
+  return {areas,feel,min,load:L,ranked,office,srcTxt,why};
+}
+function regenKey(day){ const b=(day||DAYS[new Date().getDay()]).blocks.find(b=>b.pick); return b?b.key:'regen'; }
+function regenCard(key){
+  const r=regenInfo(key), doc=dayDoc(key), rk=regenKey(), done=!!doc.done[rk];
+  const plan=mobPlan({areas:r.areas,feel:r.feel,min:r.min}), tot=Math.round(plan.steps.reduce((t,x)=>t+x.sec,0)/60);
+  const max=r.ranked.length?r.ranked[0][1]:1, lvTxt=['','etwas','deutlich'];
+  const bars=r.office?'':`<div class="regbars">${r.ranked.slice(0,5).map(([a,v])=>{ const A=MOB_AREAS.find(x=>x.k===a); return `<div class="rb"><span>${esc(A.n)}</span><div class="bar"><span style="width:${Math.max(8,Math.round(v/max*100))}%"></span></div><small>${r.areas[a]?lvTxt[r.areas[a]]:'leicht'}</small></div>`; }).join('')}</div>`;
+  const uniq=[...new Set(plan.steps.filter(s=>s.ex&&s.kind!=='rest').map(s=>EX[s.ex].n))];
+  return `<section class="card regen ${done?'done':''}"><div class="row"><div class="grow" style="min-width:200px"><h3>Regeneration heute</h3>
+    <p class="small muted">${r.office?esc(r.why):'Automatisch aus deinem Training. '+esc(r.srcTxt)}</p></div><span class="pill ${done?'good':'accent'}">${done?'Erledigt':tot+' min'}</span></div>
+    ${bars}
+    ${!r.office&&r.why?`<p class="small" style="margin-top:8px">${esc(r.why)}</p>`:''}
+    <p class="small" style="margin-top:8px"><b>Heute dran:</b> ${esc(uniq.slice(0,6).join(', '))}${uniq.length>6?' …':''}</p>
+    <div class="row" style="margin-top:10px"><button class="btn ${done?'':'primary'}" data-act="regengo" data-key="${rk}">${done?'Nochmal starten':'Regeneration starten'}</button><button class="btn" data-act="regenedit" data-key="${rk}">Anpassen</button>
+    <div class="chips" role="group" aria-label="Dauer">${[10,15,20].map(n=>`<button class="chip" data-act="regenmin" data-min="${n}" aria-pressed="${r.min===n}">${n} min</button>`).join('')}</div></div></section>`;
+}
 
 /* ============================== YOGA ZUM ANPASSEN ============================== */
 // act: 0 ruhig, 1 mittel, 2 kräftigend; pos wie MOB_POS; r = Körperbereiche (Keys aus MOB_AREAS)
@@ -794,7 +1000,7 @@ function libList(ctx){ const st=libState(ctx), keys=libKeys(st), bar=prof().sett
   const inTed=ctx==='ted'?new Set(UI.ted.d.items.map(i=>i.ex)):null;
   return `<div class="small muted" style="padding:8px 12px">${keys.length} Übungen</div>`+keys.map(k=>{ const e=EX[k], open=st.open===k;
     return `<div class="lr">${thumb(k)}<button class="nm" data-act="libopen" data-ctx="${ctx}" data-k="${k}" aria-expanded="${open}"><b>${esc(e.n)}</b><span class="small muted">${esc(CATS[e.cat])} · ${esc(e.eq)}</span></button>${ctx==='ted'?`<button class="btn small ${inTed.has(k)?'':'primary'}" data-act="tedadd" data-k="${k}" aria-label="${esc(e.n)} hinzufügen">${inTed.has(k)?'+ nochmal':'+ Hinzu'}</button>`:''}</div>
-    ${open?`<div class="lrx">${e.img?`<img src="${imgSrc(e.img)}" alt="Animation ${esc(e.n)}" loading="lazy">`:''}<p class="small">${esc(e.cue)}</p><p class="small muted">Trainiert: ${esc(e.mg)}${e.bar&&!bar?' · braucht die Klimmzugstange':''}</p><div class="row small">${GUIDE_SLUG[k]?`<a href="${GUIDE(GUIDE_SLUG[k])}" target="_blank" rel="noopener">Anleitung (WorkoutLabs)</a>`:''}<a href="${ytUrl(e)}" target="_blank" rel="noopener">Video suchen (YouTube)</a></div></div>`:''}`; }).join(''); }
+    ${open?`<div class="lrx">${e.img?`<img src="${imgSrc(e.img)}" alt="Animation ${esc(e.n)}" loading="lazy">`:''}<p class="small">${esc(e.cue)}</p><p class="small muted">Trainiert: ${esc(e.mg)}${e.bar&&!bar?' · braucht die Klimmzugstange':''}</p>${tipsHtml(k,false)}<div class="row small">${GUIDE_SLUG[k]?`<a href="${GUIDE(GUIDE_SLUG[k])}" target="_blank" rel="noopener">Anleitung (WorkoutLabs)</a>`:''}<a href="${ytUrl(e)}" target="_blank" rel="noopener">Video suchen (YouTube)</a></div></div>`:''}`; }).join(''); }
 function libRefresh(ctx){ const el=$(ctx==='ted'?'#tedlist':'#exlist'); if(el) el.innerHTML=libList(ctx); }
 
 /* ============================== WORKOUT-VORLAGEN ============================== */
@@ -1206,6 +1412,7 @@ function vToday(){
     <div class="row">${deload?'<span class="pill amber">Leichte Woche: halbe Satzzahl</span>':''}<span class="pill">Krafteinheiten ${ws.strength}/3</span><span class="pill">Zirkel ${ws.circuit?'✓':'offen'}</span><span class="pill">Meditation ${ws.med}/7</span></div>
   </section>
   <section class="timeline" aria-label="Tagesablauf">${tl}</section>
+  ${regenCard(key)}
   ${(()=>{ const mine=workouts().filter(w=>w.date===key&&w.type==='tpl'&&!w.slot); const op=mine.filter(w=>!w.finished), fin=mine.filter(w=>w.finished);
     return `<section class="card"><div class="row"><div class="grow" style="min-width:200px"><h3>Workout aus deinen Vorlagen</h3><p class="small muted">Kraft, Core, Ausdauer, Calisthenics: Grundgerüst wählen und los.</p>${fin.length?`<p class="small" style="color:var(--good);font-weight:600;margin-top:4px">Heute erledigt: ${esc(fin.map(wname).join(', '))}</p>`:''}</div><button class="btn" data-act="tplpick">Vorlage wählen</button></div>${op.length?`<div class="row" style="margin-top:10px">${op.map(w=>`<button class="btn primary" data-act="resume" data-id="${w.id}">Fortsetzen: ${esc(wname(w))}</button>`).join('')}</div>`:''}</section>`; })()}
   <section class="section">
@@ -1485,6 +1692,7 @@ function renderSession(top){
       ${raw.alt?`<p class="small"><button class="btn small ghost" data-act="toggleBar">${st.bar?'Noch keine Stange? Ersatzübung nutzen':'Klimmzugstange ist da? Umschalten'}</button></p>`:''}
       </div></div>
       ${raw.wt?`<p class="small wt"><b>Gewicht:</b> ${esc(raw.wt)}</p>`:''}
+      ${tipFor(ex.ex)?`<div style="margin:0 12px 10px">${tipsHtml(ex.ex,false)}</div>`:''}
       <div class="hint ${sg.up?'up':''} ${sg.down?'down':''}" style="margin:0 12px 10px">${esc(sg.text)}${sg.trend?`<br><span class="small muted">Verlauf: ${esc(sg.trend)}</span>`:''}${kgCol&&barOf(e)?`<br><span class="small muted">Eintrag = nur Scheiben${e.imp==='kh2'?' pro Hantel':''}, Stange ${fmtNum(barOf(e),2)} kg wird addiert.</span>`:''}</div>
       <div class="sets">${rows}</div></article>`;
   }).join('');
@@ -1533,9 +1741,12 @@ function tickGuide(){
   if(left<=3.05 && left>0 && Math.ceil(left)!==g.lastBeep){ g.lastBeep=Math.ceil(left); beep(660,.08); }
   if(left<=0){ beep(988,.2,1); guideGo(g.i+1); return; }
   const c=$('#gclock'); if(c) c.textContent=mmss(left);
+  const gc=$('#gcue'); if(gc){ const cu=cueNow(g,st); if(gc.textContent!==cu){ gc.textContent=cu; gc.parentNode.classList.remove('flash'); void gc.offsetWidth; gc.parentNode.classList.add('flash'); } }
   const ring=$('#gring'); if(ring){ ring.style.strokeDashoffset=String(691*(left/st.sec)); }
   if(st.kind==='box'){ const ph=Math.floor(((st.sec-left)%16)/4); const lab=['Einatmen','Halten','Ausatmen','Halten'][ph]; const b=$('#boxlab'); if(b&&b.textContent!==lab) b.textContent=lab; const sq=$('#boxdot'); if(sq){ const t=((st.sec-left)%16)/16; const p=boxPos(t); sq.setAttribute('cx',p[0]); sq.setAttribute('cy',p[1]); } }
 }
+function cueIdx(g,st){ const t=tipFor(st.ex); if(!t) return -1; const el=st.sec?Math.max(0,st.sec-g.remain):0; return Math.floor(el/9)%t.a.length; }
+function cueNow(g,st){ const i=cueIdx(g,st); return i<0?'':tipFor(st.ex).a[i]; }
 function boxPos(t){ const s=180,o=20; const q=t*4, k=Math.floor(q), f=q-k; return [[o+f*s,o+s],[o+s,o+s-f*s],[o+s-f*s,o],[o,o+f*s]][k%4].map(Math.round); }
 function renderGuide(){
   const g=UI.guide; if(!g){ $('#overlay').innerHTML=''; if(UI.session) renderSession(true); return; }
@@ -1554,8 +1765,10 @@ function renderGuide(){
       ${st.note?`<p class="muted" style="max-width:520px">${esc(st.note)}</p>`:''}
       ${ex&&GLOW_EX.has(st.ex)&&ex.mg?`<span class="pill zone-pill"><i></i>Zielbereich: ${esc(ex.mg)}</span>`:''}
       ${ex&&!st.note?.includes(ex.cue)?`<p class="small" style="max-width:520px">${esc(ex.cue)}</p>`:''}
+      ${ex&&tipFor(st.ex)?`<div class="gcue" role="status" aria-live="polite"><span class="lab">Fokus</span><span id="gcue">${esc(cueNow(g,st))}</span></div>`:''}
       ${st.sec?`<div class="clock" id="gclock">${mmss(g.remain)}</div>`:''}
       ${next?`<p class="small muted">Danach: ${esc(next.n)}${next.sec?' · '+mmss(next.sec):''}</p>`:'<p class="small muted">Letzter Schritt</p>'}
+      ${ex&&tipFor(st.ex)?tipsHtml(st.ex,UI.tipsOpen):''}
     </div>
     <div class="controls">
       <button class="btn" data-act="gprev" ${g.i===0?'disabled':''}>Zurück</button>
@@ -1652,6 +1865,10 @@ document.addEventListener('click',e=>{
     case 'mobpick': openMobPick(t.dataset.key,+t.dataset.min||0); break;
     case 'mobzone': { const a=t.dataset.area||t.closest('[data-area]').dataset.area; UI.mob.areas[a]=((UI.mob.areas[a]||0)+1)%3; if(!UI.mob.areas[a]) delete UI.mob.areas[a]; renderPick(); break; }
     case 'mobfeel': UI.mob.feel=t.dataset.feel; renderMobPick(); break;
+    case 'mobauto': { const r=regenInfo(); UI.mob.areas={...r.areas}; UI.mob.feel=r.feel; renderMobPick(); break; }
+    case 'regengo': { const r=regenInfo(), plan=mobPlan(r); startSteps('Regeneration · '+(plan.short.length>2?plan.short.length+' Bereiche':plan.short.join(' + ')),plan.steps,t.dataset.key); break; }
+    case 'regenedit': { const r=regenInfo(); UI.mob={areas:{...r.areas},feel:r.feel,min:r.min,key:t.dataset.key}; UI.modal='mob'; renderMobPick(); break; }
+    case 'regenmin': { const m=Store.get('mob')||{}; Store.put('mob',{...m,regenMin:+t.dataset.min}); render(); break; }
     case 'mobmin': UI.mob.min=+t.dataset.min; renderMobPick(); break;
     case 'yogapick': openYogaPick(t.dataset.key); break;
     case 'yogastyle': UI.mob.style=t.dataset.v; renderYogaPick(); break;
@@ -1693,6 +1910,7 @@ document.addEventListener('click',e=>{
     case 'wipe': Object.keys(Store.cache).forEach(k=>Store.del(k)); toast('Alle Daten gelöscht'); openSettings(); break;
   }
 });
+document.addEventListener('toggle',e=>{ const d=e.target; if(d.classList&&d.classList.contains('tips')&&d.closest('.stage')) UI.tipsOpen=d.open; },true);
 document.addEventListener('change',e=>{
   const t=e.target, a=t.dataset.act, k=todayKey();
   if(a==='done'){ const d=dayDoc(k); d.done[t.dataset.key]=t.checked; saveDay(k,d); render(); }
