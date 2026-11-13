@@ -250,6 +250,51 @@ td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:8px;font-weight:600;max-width:calc(100% - 32px)}
 .chart text{fill:var(--muted);font-size:11px;font-family:var(--body)}
 details summary{cursor:pointer;font-weight:600}
+
+/* Atemübungen */
+.brcard .brico{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent)}
+.brcard .brico svg{width:24px;height:24px}
+.brgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.brc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;min-width:0}
+.brc:hover{border-color:var(--accent)}
+.brpat{display:flex;gap:2px;height:10px;border-radius:99px;overflow:hidden;margin-top:2px}
+.brpat i{display:block;height:100%;min-width:3px}
+.brpat .in,.brpat .top{background:var(--accent)} .brpat .top{opacity:.6}
+.brpat .hold,.brpat .retain{background:var(--amber)} .brpat .out{background:var(--good)} .brpat .out.hum{background:repeating-linear-gradient(90deg,var(--good) 0 5px,color-mix(in srgb,var(--good) 55%,transparent) 5px 8px)}
+.brpat .rest{background:var(--line)}
+.brleg{line-height:1.35}
+.brhow{margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:.92rem}
+.brsrc{margin:4px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.warnbox{border-left:4px solid var(--warn);background:var(--surface-2)}
+.brok{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--surface);border:2px solid var(--warn);border-radius:var(--r);padding:12px 14px;cursor:pointer;font-size:.9rem}
+.brok[aria-pressed="true"]{border-color:var(--good)}
+.brok[aria-pressed="true"] .check{background:var(--good);border-color:var(--good)}
+.brok[aria-pressed="true"] .check::after{content:"";width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.brprogbar{height:4px;background:var(--surface-2)}
+.brprogbar span{display:block;height:100%;width:0;background:var(--accent)}
+.brsvg{width:min(320px,78vw);aspect-ratio:1;max-width:100%;overflow:visible}
+.brcirc{fill:color-mix(in srgb,var(--accent) 20%,transparent);stroke:var(--accent);stroke-width:3;transition:fill .6s,stroke .6s}
+.brcirc.k-hold,.brcirc.k-retain{fill:color-mix(in srgb,var(--amber) 20%,transparent);stroke:var(--amber)}
+.brcirc.k-out{fill:color-mix(in srgb,var(--good) 18%,transparent);stroke:var(--good)}
+.brcirc.k-rest,.brcirc.k-prep,.brcirc.k-free{fill:color-mix(in srgb,var(--muted) 14%,transparent);stroke:var(--muted)}
+.brlab{fill:var(--fg);font:700 22px var(--display);letter-spacing:.06em;text-transform:uppercase}
+.brnum{fill:var(--fg);font:700 48px var(--display);font-variant-numeric:tabular-nums}
+.brsubt{fill:var(--muted);font:600 14px var(--body)}
+.brring{stroke:var(--accent)} .brring.k-hold,.brring.k-retain{stroke:var(--amber)} .brring.k-out{stroke:var(--good)} .brring.k-rest,.brring.k-prep,.brring.k-free{stroke:var(--muted)}
+.brwaves circle{fill:none;stroke:var(--good);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.brwaves.on circle{animation:brwave 1.8s ease-out infinite}
+.brwaves.on circle:nth-child(2){animation-delay:.6s} .brwaves.on circle:nth-child(3){animation-delay:1.2s}
+@keyframes brwave{from{transform:scale(.9);opacity:.7}to{transform:scale(1.9);opacity:0}}
+.brh{min-height:1.5em;font-weight:600;max-width:440px}
+.brbig{font-size:1.2rem;padding:16px 36px;justify-content:center}
+.brnose{width:170px;height:90px}
+.brnose ellipse{fill:var(--surface-2);stroke:var(--line);stroke-width:2;transition:fill .3s}
+.brnose text{font:700 14px var(--display);fill:var(--muted)}
+.brnose[data-open="L"] .nl,.brnose[data-open="R"] .nr{fill:var(--accent);stroke:var(--accent)}
+.brnose[data-open="L"] .nlt,.brnose[data-open="R"] .nrt{fill:var(--accent)}
+.brret{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
+.brret div{display:flex;flex-direction:column}
+.brret b{font-size:1.6rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1361,6 +1406,7 @@ const ICONS = {
   ex:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9v6M5 6v12M19 6v12M22 9v6M5 12h14"/></svg>',
   food:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v8a3 3 0 0 0 3 3v9M7 2v6M10 2v6M13 2v6M18 2c-2 2-2 6 0 9v11"/></svg>',
   progress:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>',
+  breath:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg>',
   tpl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M9 10h6M9 14h6M9 18h3"/></svg>'};
 const TABS=[['today','Heute'],['week','Woche'],['tpl','Workouts'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
 
@@ -1396,6 +1442,7 @@ function vToday(){
     else if(b.pick) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="mobpick" data-key="${b.key}" data-min="${b.pickMin||''}">Nach Gefühl</button>${/^yoga/.test(b.seq)?`<button class="btn" data-act="yogapick" data-key="${b.key}">${esc(b.seqLabel||'Yoga')}</button>`:`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">${esc(b.seqLabel||'Starten')}</button>`}</div>`;
     else if(b.seq&&/^yoga/.test(b.seq)) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="yogapick" data-key="${b.key}">Anpassen</button></div>`;
     else if(b.seq&&b.main) act=`<div class="actcol"><button class="btn primary" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="tplpick" data-slot="${b.key}">Andere Vorlage</button></div>`;
+    else if(b.seq==='med') act=`<div class="actcol"><button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="brpick" data-key="${b.key}">Atemübung</button></div>`;
     else if(b.seq) act=`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button>`;
     else if(b.go) act=`<button class="btn" data-tab="${b.go}">Öffnen</button>`;
     const chk=b.train?'':`<input type="checkbox" class="check" data-act="done" data-key="${b.key}" ${done?'checked':''} aria-label="${esc(b.n)} erledigt">`;
@@ -1413,6 +1460,7 @@ function vToday(){
   </section>
   <section class="timeline" aria-label="Tagesablauf">${tl}</section>
   ${regenCard(key)}
+  ${breathCard()}
   ${(()=>{ const mine=workouts().filter(w=>w.date===key&&w.type==='tpl'&&!w.slot); const op=mine.filter(w=>!w.finished), fin=mine.filter(w=>w.finished);
     return `<section class="card"><div class="row"><div class="grow" style="min-width:200px"><h3>Workout aus deinen Vorlagen</h3><p class="small muted">Kraft, Core, Ausdauer, Calisthenics: Grundgerüst wählen und los.</p>${fin.length?`<p class="small" style="color:var(--good);font-weight:600;margin-top:4px">Heute erledigt: ${esc(fin.map(wname).join(', '))}</p>`:''}</div><button class="btn" data-act="tplpick">Vorlage wählen</button></div>${op.length?`<div class="row" style="margin-top:10px">${op.map(w=>`<button class="btn primary" data-act="resume" data-id="${w.id}">Fortsetzen: ${esc(wname(w))}</button>`).join('')}</div>`:''}</section>`; })()}
   <section class="section">
@@ -1789,6 +1837,310 @@ function finishGuide(completed){
   renderGuide(); if(!UI.session) render();
 }
 
+/* ============================== ATEMÜBUNGEN ============================== */
+const BR_GOAL = {ruhe:'Beruhigen',fokus:'Fokus und Balance',energie:'Aktivieren'};
+const BR_EV = {stark:{n:'Viele Studien',c:'good'},mittel:{n:'Einzelne Studien',c:'accent'},trad:{n:'Tradition, wenige Studien',c:'amber'}};
+const BR_KIND = {prep:'Bereit machen',in:'Einatmen',top:'Nachatmen',hold:'Halten',out:'Ausatmen',rest:'Leer halten',retain:'Luft anhalten',free:'Frei atmen'};
+const BP=(k,s,o)=>({k,s,...(o||{})});
+const brEven=(i,o,hi,ho)=>[BP('in',i,{h:hi}),BP('out',o,{h:ho})];
+const brBox=s=>[BP('in',s,{h:'Durch die Nase'}),BP('hold',s,{h:'Locker halten, nicht pressen'}),BP('out',s,{h:'Langsam ausatmen'}),BP('rest',s,{h:'Leer bleiben, entspannt'})];
+const brNadi=(i,h,o)=>{ const H=h?[BP('hold',h,{open:'',h:'Beide Nasenlöcher zu'})]:[];
+  return [BP('in',i,{open:'L',lab:'Links ein',h:'Daumen schließt rechts'}),...H,BP('out',o,{open:'R',lab:'Rechts aus',h:'Ringfinger schließt links'}),
+          BP('in',i,{open:'R',lab:'Rechts ein',h:'Links bleibt zu'}),...H,BP('out',o,{open:'L',lab:'Links aus',h:'Daumen schließt rechts'})]; };
+const brHum=(i,o)=>[BP('in',i,{h:'Durch die Nase'}),BP('out',o,{hum:1,lab:'Summen',h:'Mund zu, tiefes „Mmmm“'}),BP('rest',1,{lab:'Nachspüren',h:'Vibration wahrnehmen'})];
+const brUj=(i,o)=>[BP('in',i,{h:'Nase, Rachen leicht eng, leises Rauschen'}),BP('out',o,{h:'Nase, das Rauschen weiterführen'})];
+const brSigh=(i,t,o)=>[BP('in',i,{to:.8,h:'Nase, tief in den Bauch'}),BP('top',t,{to:1,h:'Nase, kurz nachfüllen'}),BP('out',o,{h:'Mund, lang und locker'})];
+const br478=(i,h,o)=>[BP('in',i,{h:'Nase, Mund geschlossen'}),BP('hold',h,{h:'Zunge hinter den oberen Schneidezähnen'}),BP('out',o,{h:'Mund, hörbar „Whoosh“'})];
+
+const BR = [
+{id:'sigh',n:'Physiologischer Seufzer',sub:'Zyklisches Seufzen',goal:'ruhe',ev:'mittel',
+ tag:'Doppelt einatmen, lang ausatmen. Der schnellste Weg runter bei Stress.',
+ when:'Akuter Stress, vor einem Termin, nach dem Training. Schon 1 bis 3 Seufzer wirken, 5 min täglich für den Langzeiteffekt.',
+ how:['Durch die Nase tief einatmen, bis die Lunge fast voll ist.','Ohne auszuatmen noch einmal kurz durch die Nase nachatmen, bis sie ganz voll ist.','Durch den Mund lang und locker ausatmen, bis die Lunge leer ist.'],
+ eff:'Das kurze Nachatmen öffnet zusammengefallene Lungenbläschen wieder, der lange Ausatem senkt über den Vagusnerv den Puls. In einer randomisierten Studie aus Stanford hob 5 min zyklisches Seufzen täglich über 4 Wochen die Stimmung am stärksten und senkte die Atemfrequenz in Ruhe, deutlicher als Achtsamkeitsmeditation.',
+ src:['Balban et al. 2023, Cell Reports Medicine 4(1):100895 (randomisiert, rund 110 Teilnehmende)','Li et al. 2016, Nature 530:293 (Seufzer-Nervenzellen im Hirnstamm)'],
+ vars:[{n:'Standard',pat:brSigh(2,1,6)},{n:'Langsam',pat:brSigh(3,1.5,8)}],lens:[1,3,5,10],len:5,unit:'min'},
+{id:'coherent',n:'Kohärenzatmung',sub:'Resonanzatmung, etwa 5,5 Atemzüge pro Minute',goal:'fokus',ev:'stark',
+ tag:'Gleichmäßig 5,5 s ein und 5,5 s aus. Bringt Herz und Atem in einen Takt.',
+ when:'Täglich 10 bis 20 min, zum Beispiel in der Mittagspause, nach dem Training oder vor wichtigen Aufgaben.',
+ how:['Aufrecht sitzen oder liegen, eine Hand auf den Bauch.','Durch die Nase einatmen, der Bauch hebt sich zuerst.','Ohne Pause durch die Nase ausatmen, gleich lang wie der Einatem.','Weich und leise atmen, nicht mehr Luft als nötig.'],
+ eff:'Bei etwa 5,5 bis 6 Atemzügen pro Minute schwingen Atmung, Herzschlag und Blutdruckreflex (Baroreflex) im Gleichtakt. Die Herzratenvariabilität steigt stark, der Parasympathikus wird aktiver. Regelmäßig geübt sinken Stress- und Angstwerte, in Studien auch leicht der Blutdruck.',
+ src:['Lehrer & Gevirtz 2014, Frontiers in Psychology 5:756 (Übersicht Resonanzatmung)','Laborde et al. 2022, Neuroscience & Biobehavioral Reviews 138:104711 (Meta-Analyse langsames Atmen)','Zaccaro et al. 2018, Frontiers in Human Neuroscience 12:353 (systematische Übersicht)'],
+ vars:[{n:'5,5 pro Minute',pat:brEven(5.5,5.5,'Nase, weich in den Bauch','Nase, ohne Pause')},{n:'6 pro Minute',pat:brEven(5,5,'Nase, weich in den Bauch','Nase, ohne Pause')},{n:'5 pro Minute',pat:brEven(6,6,'Nase, weich in den Bauch','Nase, ohne Pause')}],lens:[5,10,15,20],len:10,unit:'min'},
+{id:'box',n:'Box-Atmung',sub:'Quadrat-Atmung 4-4-4-4',goal:'fokus',ev:'mittel',
+ tag:'Vier gleich lange Phasen. Ruhig, aber wach.',
+ when:'Vor Präsentationen, bei Nervosität im Büro, vor schweren Sätzen zur Konzentration.',
+ how:['Durch die Nase einatmen.','Mit voller Lunge locker halten, ohne zu pressen.','Langsam ausatmen.','Mit leerer Lunge kurz halten, dann von vorn.'],
+ eff:'Der feste Takt mit Pausen senkt die Atemfrequenz und bindet die Aufmerksamkeit. Wird bei Militär, Polizei und im Leistungssport genutzt, um unter Druck ruhig und klar zu bleiben. In der Stanford-Studie hob Box-Atmung die Stimmung ebenfalls, etwas weniger als das zyklische Seufzen.',
+ src:['Balban et al. 2023, Cell Reports Medicine 4(1):100895 (Box-Atmung als eigene Studiengruppe)','Verbreitet durch das Training der US Navy SEALs (Mark Divine)'],
+ vars:[{n:'4 s',pat:brBox(4)},{n:'5 s',pat:brBox(5)},{n:'6 s',pat:brBox(6)}],lens:[3,5,10],len:5,unit:'min'},
+{id:'478',n:'4-7-8-Atmung',sub:'Entspannungsatem nach Andrew Weil',goal:'ruhe',ev:'mittel',
+ tag:'4 s ein, 7 s halten, 8 s aus. Zum Einschlafen.',
+ when:'Im Bett vor dem Einschlafen oder bei Grübeln. Zweimal täglich, anfangs 4 Zyklen, höchstens 8.',
+ how:['Zungenspitze hinter die oberen Schneidezähne legen und dort lassen.','Durch den Mund vollständig ausatmen.','Mund schließen, 4 s durch die Nase einatmen.','7 s die Luft anhalten.','8 s hörbar durch den Mund ausatmen.'],
+ eff:'Die lange Pause und der doppelt so lange Ausatem verlangsamen Puls und Atmung deutlich und machen müde. Vom Arzt Andrew Weil aus dem Pranayama abgeleitet. Erste Studien zeigen mehr Herzratenvariabilität, die Studienlage ist aber klein.',
+ src:['Weil, A.: 4-7-8 Breath (aus dem Pranayama abgeleitet)','Vierra et al. 2022, Physiological Reports (kleine Studie zur Herzratenvariabilität)'],
+ warn:'Leichter Schwindel am Anfang ist normal. Wird es zu viel, die schnellere Variante nehmen: gleiches Verhältnis, kürzere Zeiten.',
+ vars:[{n:'4-7-8',pat:br478(4,7,8)},{n:'Einstieg 2-3,5-4',pat:br478(2,3.5,4)}],lens:[4,8],len:4,unit:'Zyklen'},
+{id:'exhale',n:'Verlängerte Ausatmung',sub:'4-6 oder 4-8, ohne Luftanhalten',goal:'ruhe',ev:'stark',
+ tag:'Länger aus als ein. Senkt sanft den Puls.',
+ when:'Abends, nach dem Training, bei Anspannung. Die sanfteste Übung, ganz ohne Luftanhalten.',
+ how:['Durch die Nase ruhig einatmen.','Durch die Nase oder leicht gespitzte Lippen langsam ausatmen, länger als der Einatem.','Keine Pausen, den Atem fließen lassen.'],
+ eff:'Beim Einatmen steigt der Puls leicht, beim Ausatmen sinkt er (respiratorische Sinusarrhythmie). Der längere Ausatem legt den Schwerpunkt auf die bremsende Phase. Dass langsames Atmen unter 10 Zügen pro Minute die Vagus-Aktivität erhöht, ist gut belegt. Ob der längere Ausatem darüber hinaus mehr bringt, ist in Studien uneinheitlich.',
+ src:['Laborde et al. 2022, Neuroscience & Biobehavioral Reviews 138:104711 (Meta-Analyse langsames Atmen)','Zaccaro et al. 2018, Frontiers in Human Neuroscience 12:353'],
+ vars:[{n:'4-6',pat:brEven(4,6,'Nase, ruhig','Nase oder Lippen, langsam')},{n:'4-8',pat:brEven(4,8,'Nase, ruhig','Nase oder Lippen, langsam')},{n:'Sanft 3-6',pat:brEven(3,6,'Nase, ruhig','Nase oder Lippen, langsam')}],lens:[3,5,10,15],len:5,unit:'min'},
+{id:'nadi',n:'Wechselatmung',sub:'Nadi Shodhana',goal:'fokus',ev:'trad',
+ tag:'Abwechselnd durch ein Nasenloch. Ausgleichend und klar.',
+ when:'Vor der Meditation, vor konzentrierter Arbeit oder abends zum Ausgleich.',
+ how:['Aufrecht sitzen. Rechte Hand: Zeige- und Mittelfinger einklappen (Vishnu Mudra).','Der Daumen verschließt das rechte Nasenloch, der Ringfinger das linke.','Links ein, rechts aus, rechts ein, links aus. Das ist ein Zyklus.','Die App zeigt dir jeweils, welches Nasenloch offen ist.'],
+ eff:'Klassische Reinigungsatmung des Hatha-Yoga. Der langsame, gleichmäßige Rhythmus und der Fokus auf die Hände beruhigen. Kleine Studien zeigen etwas niedrigeren Blutdruck und Puls sowie bessere Aufmerksamkeit direkt nach der Übung.',
+ src:['Hatha Yoga Pradipika, Kapitel 2, Verse 7 bis 10','Telles et al. 2014, Medical Science Monitor Basic Research (Blutdruck und Herzratenvariabilität)'],
+ warn:'Mit verstopfter Nase lieber Kohärenzatmung wählen.',
+ vars:[{n:'Einstieg 4-4',pat:brNadi(4,0,4)},{n:'Mit Halten 4-4-4',pat:brNadi(4,4,4)},{n:'Klassisch 4-8-8',pat:brNadi(4,8,8)}],lens:[3,5,10],len:5,unit:'min'},
+{id:'ujjayi',n:'Ujjayi',sub:'Ozeanatmung, siegreicher Atem',goal:'fokus',ev:'trad',
+ tag:'Leises Rauschen im Rachen. Macht jeden Atemzug lang.',
+ when:'Während Yoga und Mobility, zum Konzentrieren, oder im Sitzen 5 bis 10 min.',
+ how:['Mund geschlossen, durch die Nase atmen.','Den Rachen leicht verengen, als würdest du einen Spiegel anhauchen, nur mit geschlossenem Mund.','So entsteht beim Ein- und Ausatmen ein leises Meeresrauschen.','Gleichmäßig und ohne Anstrengung, das Rauschen gibt das Tempo vor.'],
+ eff:'Die verengte Stimmritze bremst den Luftstrom wie ein leichter Widerstand. So wird jeder Atemzug von selbst lang und gleichmäßig, das Geräusch hält die Aufmerksamkeit. Physiologisch wirkt sie wie langsames Atmen: mehr Vagus-Aktivität, ruhigerer Puls.',
+ src:['Hatha Yoga Pradipika, Kapitel 2, Verse 51 bis 53','Brown & Gerbarg 2005, Journal of Alternative and Complementary Medicine (Übersicht Yoga-Atmung und Vagusnerv)'],
+ vars:[{n:'5-5',pat:brUj(5,5)},{n:'5-7',pat:brUj(5,7)},{n:'6-8',pat:brUj(6,8)}],lens:[3,5,10],len:5,unit:'min'},
+{id:'bhramari',n:'Bienenatmung',sub:'Bhramari',goal:'ruhe',ev:'trad',
+ tag:'Beim Ausatmen summen. Beruhigt Kopf und Nerven.',
+ when:'Bei Unruhe, Gedankenkarussell und abends vor dem Schlafen.',
+ how:['Bequem sitzen, Augen schließen.','Wer mag: Die Daumen verschließen sanft die Ohren, die übrigen Finger liegen locker über den Augen (Shanmukhi Mudra).','Durch die Nase einatmen.','Mit geschlossenem Mund ein tiefes, gleichmäßiges „Mmmm“ summen, solange der Ausatem reicht.','Die Vibration in Kopf und Gesicht spüren.'],
+ eff:'Summen verlängert den Ausatem von selbst und lässt Nasennebenhöhlen und Kopf vibrieren. Dabei steigt das Stickstoffmonoxid in der Nase etwa auf das 15-Fache, ein Botenstoff für Durchblutung und Abwehr in den Atemwegen. Kleine Studien zeigen ruhigeren Puls und weniger Anspannung.',
+ src:['Hatha Yoga Pradipika, Kapitel 2, Vers 68','Weitzberg & Lundberg 2002, American Journal of Respiratory and Critical Care Medicine 166(2):144 (Summen und Stickstoffmonoxid)'],
+ vars:[{n:'4 ein, 8 summen',pat:brHum(4,8)},{n:'4 ein, 12 summen',pat:brHum(4,12)}],lens:[3,5,10],len:5,unit:'min'},
+{id:'whm',n:'Power-Atmung',sub:'Zyklische Hyperventilation im Wim-Hof-Stil',goal:'energie',ev:'mittel',whm:true,
+ tag:'Schnell und tief atmen, dann Luft anhalten. Macht wach.',
+ when:'Morgens auf nüchternen Magen, vor dem Training oder im Mittagstief. Nicht direkt vor dem Schlafen.',
+ how:['Sitzen oder liegen, niemals im Stehen, im Wasser oder beim Fahren.','30 bis 40 tiefe Atemzüge im Takt der App: voll in Bauch und Brust einatmen, locker herauslassen.','Nach dem letzten Atemzug ausatmen und mit leerer Lunge halten, so lange es angenehm ist. Dann auf „Einatmen“ tippen.','Tief einatmen und 15 s halten. Das ist eine Runde.','Kribbeln und leichter Schwindel sind normal.'],
+ eff:'Das schnelle Atmen senkt den CO₂-Gehalt im Blut, deshalb kann man danach ungewöhnlich lange die Luft anhalten. Kurzfristig steigen Adrenalin und Wachheit. Mit Training (plus Kälte und Meditation) dämpften Teilnehmende einer Studie ihre Entzündungsreaktion. In der Stanford-Studie hob diese Atmung Stimmung und Energie, etwas weniger als das zyklische Seufzen.',
+ src:['Kox et al. 2014, PNAS 111(20):7379 (Adrenalin, Entzündungsreaktion)','Balban et al. 2023, Cell Reports Medicine 4(1):100895 (zyklische Hyperventilation als Studiengruppe)'],
+ warn:'Nur im Sitzen oder Liegen. Niemals im oder am Wasser, beim Autofahren oder im Stehen, Ohnmacht ist möglich. Nicht bei Schwangerschaft, Epilepsie, Herz-Kreislauf-Erkrankungen, hohem Blutdruck oder Panikstörung. Bei Unwohlsein sofort normal weiteratmen.',
+ vars:[{n:'30 Atemzüge',b:30},{n:'40 Atemzüge',b:40}],lens:[2,3,4],len:3,unit:'Runden'},
+];
+const brMode=id=>BR.find(m=>m.id===id);
+const brCyc=pat=>pat.reduce((t,p)=>t+p.s,0);
+const fmtS=s=>String(+s.toFixed(1)).replace('.',',');
+function brCfg(){ const m=Store.get('mob')||{}, b=m.breath||{}; return {set:{tone:true,vib:true,voice:false,...(b.set||{})},last:{...(b.last||{})}}; }
+function brSaveCfg(patch){ const m=Store.get('mob')||{}, b=brCfg(); Store.put('mob',{...m,breath:{set:{...b.set,...(patch.set||{})},last:{...b.last,...(patch.last||{})}}}); }
+function brChoice(m){ const l=brCfg().last[m.id]||{}; const v=Math.min(l.v||0,m.vars.length-1); return {v,len:m.lens.includes(l.len)?l.len:m.len}; }
+function brEstimate(m,v,len){ if(m.whm) return len*(m.vars[v].b*3+75); return m.unit==='min'?len*60:len*brCyc(m.vars[v].pat); }
+function brLenTxt(m,len){ return m.unit==='min'?len+' min':len+' '+(len===1?m.unit.replace(/n$/,''):m.unit); }
+function brPatBar(m,v){
+  if(m.whm){ const b=m.vars[v].b; return `<div class="brpat" aria-hidden="true"><i class="in" style="flex:${b*3}"></i><i class="rest" style="flex:60"></i><i class="hold" style="flex:15"></i></div><div class="brleg small muted">${b} tiefe Atemzüge · Luft anhalten · 15 s halten</div>`; }
+  const pat=m.vars[v].pat;
+  return `<div class="brpat" aria-hidden="true">${pat.map(p=>`<i class="${p.k}${p.hum?' hum':''}" style="flex:${p.s}"></i>`).join('')}</div><div class="brleg small muted">${esc(pat.map(p=>(p.lab||BR_KIND[p.k])+' '+fmtS(p.s)+' s').join(' · '))}</div>`;
+}
+function brSuggest(){
+  const h=new Date().getHours(), k=todayKey();
+  const fresh=workouts().some(w=>w.date===k&&w.finished&&w.start&&Date.now()-w.start<3*36e5);
+  if(fresh) return {id:'sigh',why:'Nach dem Training: schnell runterfahren und regenerieren.'};
+  if(h>=5&&h<10) return {id:'whm',why:'Morgens zum Wachwerden, am besten vor dem Frühstück.'};
+  if(h>=10&&h<17) return {id:'box',why:'Im Büro: kurz sammeln, dann konzentriert weiter.'};
+  if(h>=17&&h<21) return {id:'coherent',why:'Feierabend: Stress abbauen, Puls und Atem in Takt bringen.'};
+  return {id:'478',why:'Vor dem Schlafen: Puls senken und müde werden.'};
+}
+function brToday(){ const d=dayDoc(todayKey()); return d.breath||[]; }
+function brWeek(){ const mon=mondayOf(new Date()); let n=0, sec=0; for(let i=0;i<7;i++){ const d=Store.get('d-'+addDays(mon,i)); (d&&d.breath||[]).forEach(x=>{ n++; sec+=x.sec||0; }); } return {n,sec}; }
+function breathCard(){
+  const s=brSuggest(), m=brMode(s.id), td=brToday(), wk=brWeek();
+  const tdTxt=td.length?'Heute: '+td.map(x=>(brMode(x.m)||{n:x.m}).n+' '+Math.max(1,Math.round(x.sec/60))+' min').join(', '):'';
+  return `<section class="card brcard"><div class="row" style="align-items:flex-start"><div class="brico" aria-hidden="true">${ICONS.breath}</div><div class="grow" style="min-width:200px"><h3>Atemübungen</h3>
+    <p class="small muted">${BR.length} Techniken, jede mit Wirkung und Quelle. Jetzt passend: <b style="color:var(--fg)">${esc(m.n)}</b>. ${esc(s.why)}</p>
+    ${tdTxt?`<p class="small" style="color:var(--good);font-weight:600;margin-top:4px">${esc(tdTxt)}</p>`:''}${wk.n?`<p class="small muted" style="margin-top:2px">Diese Woche ${wk.n}× · ${Math.round(wk.sec/60)} min</p>`:''}</div></div>
+    <div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn primary" data-act="brquick" data-id="${m.id}">${esc(m.n)}</button><button class="btn" data-act="brpick">Alle Atemübungen</button></div></section>`;
+}
+
+/* Auswahl */
+function openBreathPick(key,sel){ UI.bp={goal:'alle',sel:sel||null,key:key||null,ok:false,info:false}; if(sel) brSelInit(sel); UI.modal='brpick'; renderBreathPick(true); }
+function brSelInit(id){ const m=brMode(id), c=brChoice(m); Object.assign(UI.bp,{sel:id,v:c.v,len:c.len,ok:false,info:false}); }
+function renderBreathPick(top){
+  const P=UI.bp, ov=$('#overlay .overlay'), y=ov?ov.scrollTop:0;
+  if(P.sel){ renderBreathDetail(top); return; }
+  const list=BR.filter(m=>P.goal==='alle'||m.goal===P.goal), sug=brSuggest();
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>Atemübungen</h2><div class="small muted">Geführt mit Animation, Ton und Timer</div></div></div>
+  <div class="ov-body">
+    <div class="chips" role="group" aria-label="Ziel"><button class="chip" data-act="brgoal" data-g="alle" aria-pressed="${P.goal==='alle'}">Alle</button>${Object.entries(BR_GOAL).map(([k,n])=>`<button class="chip" data-act="brgoal" data-g="${k}" aria-pressed="${P.goal===k}">${esc(n)}</button>`).join('')}</div>
+    <div class="brgrid">${list.map(m=>{ const c=brChoice(m); return `<button class="brc" data-act="brsel" data-id="${m.id}">
+      <div class="row" style="gap:6px"><span class="pill">${esc(BR_GOAL[m.goal])}</span><span class="pill ${BR_EV[m.ev].c}">${esc(BR_EV[m.ev].n)}</span>${m.id===sug.id?'<span class="pill accent">Jetzt passend</span>':''}</div>
+      <h3>${esc(m.n)}</h3><div class="small muted" style="margin-top:-4px">${esc(m.sub)}</div>
+      <p class="small">${esc(m.tag)}</p>${brPatBar(m,c.v)}</button>`; }).join('')}</div>
+    <div class="card warnbox small"><b>Sicher üben.</b> Nie beim Autofahren, im Stehen bei Power-Atmung oder im Wasser. Bei Schwindel normal weiteratmen. Bei Herz-Kreislauf-Erkrankungen, Epilepsie, Schwangerschaft oder Panikstörung Übungen mit Luftanhalten oder schnellem Atmen nur nach ärztlicher Rücksprache.</div>
+    <p class="small muted">Die Einstufung „Viele Studien“ heißt: Meta-Analysen oder mehrere kontrollierte Studien. „Einzelne Studien“: mindestens eine kontrollierte Studie. „Tradition“: seit Jahrhunderten im Yoga überliefert, bisher nur kleine Studien.</p>
+  </div></div>`;
+  const nov=$('#overlay .overlay'); if(nov && !top) nov.scrollTop=y;
+}
+function renderBreathDetail(top){
+  const P=UI.bp, m=brMode(P.sel), ov=$('#overlay .overlay'), y=ov?ov.scrollTop:0, set=brCfg().set;
+  const est=brEstimate(m,P.v,P.len), blocked=m.whm&&!P.ok;
+  const tog=(k,l)=>`<button class="chip" data-act="brset" data-k="${k}" aria-pressed="${!!set[k]}">${l}</button>`;
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="brback" aria-label="Zurück zur Auswahl">‹</button><div class="grow"><h2>${esc(m.n)}</h2><div class="small muted">${esc(m.sub)}</div></div></div>
+  <div class="ov-body">
+    <div class="row" style="gap:6px"><span class="pill">${esc(BR_GOAL[m.goal])}</span><span class="pill ${BR_EV[m.ev].c}">${esc(BR_EV[m.ev].n)}</span></div>
+    <p>${esc(m.tag)}</p>
+    <section class="card"><h3>So geht's</h3><ol class="brhow">${m.how.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></section>
+    <section class="card"><h3>Rhythmus</h3>
+      <div class="chips" style="margin:8px 0 12px">${m.vars.map((v,i)=>`<button class="chip" data-act="brvar" data-i="${i}" aria-pressed="${P.v===i}">${esc(v.n)}</button>`).join('')}</div>
+      ${brPatBar(m,P.v)}
+      <h3 style="margin-top:14px">${m.unit==='min'?'Dauer':'Umfang'}</h3>
+      <div class="chips" style="margin-top:8px">${m.lens.map(n=>`<button class="chip" data-act="brlen" data-n="${n}" aria-pressed="${P.len===n}">${esc(brLenTxt(m,n))}</button>`).join('')}</div>
+      <p class="small muted" style="margin-top:8px">${m.unit==='min'?'':'Etwa '+Math.max(1,Math.round(est/60))+' min. '}${esc(m.when)}</p></section>
+    <section class="card"><h3>Wirkung</h3><p class="small" style="margin-top:6px">${esc(m.eff)}</p>
+      <h4 class="label" style="margin-top:12px">Quellen</h4><ul class="brsrc small">${m.src.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>
+    ${m.warn?`<div class="card warnbox small"><b>Achtung.</b> ${esc(m.warn)}</div>`:''}
+    ${m.whm?`<button class="brok" data-act="brok" aria-pressed="${!!P.ok}"><span class="check" aria-hidden="true"></span><span>Ich sitze oder liege, bin nicht im oder am Wasser und fahre nicht. Keine der genannten Erkrankungen trifft auf mich zu.</span></button>`:''}
+    <section class="card"><h3>Begleitung</h3><div class="chips" style="margin-top:8px">${tog('tone','Ton')}${tog('vib','Vibration')}${tog('voice','Ansage')}</div>
+      <p class="small muted" style="margin-top:6px">Ton: steigend beim Einatmen, fallend beim Ausatmen. So kannst du mit geschlossenen Augen üben.</p></section>
+    <button class="btn primary" data-act="brgo" style="width:100%;justify-content:center;padding:14px" ${blocked?'disabled':''}>${blocked?'Bitte oben bestätigen':'Starten · '+esc(brLenTxt(m,P.len))}</button>
+  </div></div>`;
+  const nov=$('#overlay .overlay'); if(nov) nov.scrollTop=top?0:y;
+}
+
+/* Ablauf */
+function brSegs(m,v,len){
+  const out=[]; let lv=.42;
+  const push=(p,extra)=>{ const from=lv; let to=lv;
+    if(p.k==='in') to=p.to||1; else if(p.k==='top') to=p.to||1; else if(p.k==='out') to=p.to||.42; else if(p.k==='prep') to=.42;
+    out.push({...p,...(extra||{}),from,to}); lv=to; };
+  push(BP('prep',m.whm?5:4,{h:m.whm?'Setz dich hin oder leg dich hin':'Bequem hinsetzen, Schultern locker'}));
+  if(m.whm){ const B=m.vars[v].b;
+    for(let r=0;r<len;r++){
+      for(let b=0;b<B;b++){ push(BP('in',1.6,{to:.95,lab:'Tief ein',cnt:b+1,of:B,r,fast:1})); push(BP('out',1.4,{to:.55,lab:'Loslassen',cnt:b+1,of:B,r,fast:1})); }
+      push(BP('out',2.5,{to:.34,lab:'Ausatmen',h:'Alles raus, dann halten',r}));
+      push(BP('retain',null,{max:240,h:'Mit leerer Lunge entspannt halten. Wenn der Atemreiz kommt: tippen.',r}));
+      push(BP('in',2.5,{to:1,lab:'Tief einatmen',r}));
+      push(BP('hold',15,{lab:'Halten',h:'Volle Lunge, 15 s',r}));
+      push(BP('out',3,{to:.5,lab:'Ausatmen',h:r<len-1?'Gleich beginnt die nächste Runde':'Loslassen',r}));
+    }
+    push(BP('free',45,{h:'Normal atmen und nachspüren'}));
+    return out; }
+  const pat=m.vars[v].pat, n=m.unit==='min'?Math.max(1,Math.round(len*60/brCyc(pat))):len;
+  for(let c=0;c<n;c++) pat.forEach(p=>push(p,{c,of:n}));
+  return out;
+}
+function brStart(id,v,len,key){
+  const m=brMode(id); brSaveCfg({last:{[id]:{v,len}}});
+  try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume(); }catch(_){}
+  const segs=brSegs(m,v,len);
+  UI.bp=null; UI.modal='breath';
+  UI.br={id,v,len,key,segs,i:0,t0:performance.now(),paused:false,pauseAt:0,done:0,started:Date.now(),ret:[],end:false};
+  keepAwake(true); renderBreath(); brCue(segs[0]); brLoop();
+}
+function brLoop(){ const b=UI.br; if(!b||b.end) return; brTick(); b.raf=requestAnimationFrame(brLoop); }
+function brSeg(){ const b=UI.br; return b.segs[b.i]; }
+function brElapsed(){ const b=UI.br; return ((b.paused?b.pauseAt:performance.now())-b.t0)/1000; }
+function brAdvance(){
+  const b=UI.br, s=brSeg(), el=brElapsed();
+  if(s.k==='retain') b.ret.push(Math.round(el));
+  b.done+=s.s==null?el:s.s; b.t0+=(s.s==null?el:s.s)*1000;
+  b.i++;
+  if(b.i>=b.segs.length){ brFinish(true); return false; }
+  const n=brSeg(); if(n.k==='retain'||(s.k==='retain')||n.k==='free'||n.k==='prep'||s.k==='prep') renderBreath();
+  brCue(n); return true;
+}
+function brTick(){
+  const b=UI.br; if(!b||b.end) return;
+  if(!b.paused){ let guard=0; while(guard++<200){ const s=brSeg(), el=brElapsed(), dur=s.s==null?s.max:s.s; if(el<dur) break; if(!brAdvance()) return; } }
+  const s=brSeg(), el=Math.max(0,brElapsed()), dur=s.s==null?null:s.s, f=dur?Math.min(1,el/dur):0;
+  const ease=x=>(1-Math.cos(Math.PI*x))/2;
+  let lv=s.from+(s.to-s.from)*ease(f); if(s.k==='free') lv=.6+.18*Math.sin(el/5*Math.PI*2/1.6);
+  const R=38+78*lv;
+  const c=$('#brc'); if(c){ c.setAttribute('r',R.toFixed(1)); c.setAttribute('class','brcirc k-'+s.k+(s.hum?' hum':'')); }
+  const ring=$('#brring'); if(ring){ ring.style.strokeDashoffset=String(754*(dur?1-f:0)); ring.setAttribute('class','brring k-'+s.k); }
+  const lab=$('#brlab'), num=$('#brnum'), sub=$('#brsub');
+  const L=s.lab||BR_KIND[s.k];
+  if(lab&&lab.textContent!==L) lab.textContent=L;
+  let N, S='';
+  if(s.k==='retain'){ N=mmss(el); S='Runde '+(s.r+1); }
+  else if(s.cnt){ N=String(s.cnt); S='von '+s.of; }
+  else { N=String(Math.max(1,Math.ceil(dur-el))); S=''; }
+  if(num&&num.textContent!==N) num.textContent=N; if(sub&&sub.textContent!==S) sub.textContent=S;
+  const h=$('#brh'); if(h){ const H=s.h||''; if(h.textContent!==H) h.textContent=H; }
+  const wv=$('#brwaves'); if(wv) wv.classList.toggle('on',!!s.hum&&!b.paused);
+  const nose=$('#brnose'); if(nose){ const o=s.k==='hold'||s.k==='prep'?'':(s.open??''); nose.dataset.open=o; }
+  const tot=$('#brtot'); if(tot){ const m=brMode(b.id), total=b.done+el;
+    let T; if(m.whm){ T='Runde '+((s.r??0)+1)+' von '+b.len+' · '+mmss(total); }
+    else { const all=b.segs.reduce((t,x)=>t+x.s,0); T='Noch '+mmss(all-total)+(s.of?' · Zyklus '+(s.c+1)+' von '+s.of:''); }
+    if(tot.textContent!==T) tot.textContent=T; }
+  const bar=$('#brprog'); if(bar){ const all=brMode(b.id).whm?null:b.segs.reduce((t,x)=>t+x.s,0); if(all) bar.style.width=Math.min(100,(b.done+el)/all*100)+'%'; }
+}
+function brTone(f1,f2,dur,vol){
+  try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(), t0=audioCtx.currentTime;
+    o.type='sine'; o.frequency.setValueAtTime(f1,t0); o.frequency.linearRampToValueAtTime(f2,t0+dur); o.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(.0001,t0); g.gain.exponentialRampToValueAtTime(vol||.12,t0+.08); g.gain.exponentialRampToValueAtTime(.0001,t0+dur); o.start(t0); o.stop(t0+dur+.05); }catch(e){}
+}
+function brCue(s){
+  const set=brCfg().set; if(!s) return;
+  if(set.tone){ const d=Math.min(1.2,Math.max(.25,(s.s||1)*.6));
+    if(s.fast){ if(s.k==='in') brTone(392,523,.3,.06); }
+    else if(s.k==='in'||s.k==='top') brTone(s.k==='top'?523:392,s.k==='top'?660:587,s.k==='top'?.4:d);
+    else if(s.k==='out') brTone(587,392,d,.1);
+    else if(s.k==='hold'||s.k==='rest'||s.k==='retain') brTone(494,494,.25,.08);
+    else if(s.k==='free') brTone(523,784,.8,.1); }
+  if(set.vib&&!s.fast){ try{ navigator.vibrate&&navigator.vibrate(s.k==='in'?60:s.k==='out'?[30,60,30]:25); }catch(e){} }
+  if(set.voice&&!s.fast&&s.k!=='prep'&&window.speechSynthesis){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(s.lab||BR_KIND[s.k]); u.lang='de-DE'; u.rate=.95; u.volume=.8; speechSynthesis.speak(u); }catch(e){} }
+}
+function brNose(){ return `<svg id="brnose" class="brnose" viewBox="0 0 120 64" aria-hidden="true" data-open=""><path d="M60 4c-6 18-14 30-24 38-8 6-10 16 2 18h44c12-2 10-12 2-18C74 34 66 22 60 4z" fill="none" stroke="var(--line)" stroke-width="3"/><ellipse class="nl" cx="48" cy="52" rx="8" ry="5"/><ellipse class="nr" cx="72" cy="52" rx="8" ry="5"/><text x="20" y="58" class="nlt">L</text><text x="96" y="58" class="nrt">R</text></svg>`; }
+function renderBreath(){
+  const b=UI.br; if(!b){ $('#overlay').innerHTML=''; return; }
+  const m=brMode(b.id);
+  if(b.end){ renderBreathEnd(); return; }
+  const s=brSeg(), set=brCfg().set;
+  $('#overlay').innerHTML=`<div class="overlay brplayer"><div class="player">
+    <div class="ov-head"><button class="iconbtn" data-act="brstop" aria-label="Beenden">✕</button><div class="grow"><h2>${esc(m.n)}</h2><div class="small muted" id="brtot"></div></div>
+      <button class="iconbtn" data-act="brset" data-k="tone" aria-pressed="${!!set.tone}" aria-label="Ton ${set.tone?'ausschalten':'einschalten'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/>${set.tone?'<path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>':'<path d="M17 9l5 6M22 9l-5 6"/>'}</svg></button></div>
+    ${m.whm?'':'<div class="brprogbar"><span id="brprog"></span></div>'}
+    <div class="stage">
+      <svg class="brsvg" viewBox="0 0 280 280" role="img" aria-label="Atemkreis">
+        <circle cx="140" cy="140" r="120" fill="none" stroke="var(--surface-2)" stroke-width="6"/>
+        <circle id="brring" class="brring" cx="140" cy="140" r="120" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="754" stroke-dashoffset="754" transform="rotate(-90 140 140)"/>
+        <g id="brwaves" class="brwaves"><circle cx="140" cy="140" r="70"/><circle cx="140" cy="140" r="70"/><circle cx="140" cy="140" r="70"/></g>
+        <circle id="brc" class="brcirc" cx="140" cy="140" r="60"/>
+        <text id="brlab" x="140" y="118" text-anchor="middle" class="brlab"></text>
+        <text id="brnum" x="140" y="166" text-anchor="middle" class="brnum"></text>
+        <text id="brsub" x="140" y="190" text-anchor="middle" class="brsubt"></text>
+      </svg>
+      ${m.id==='nadi'?brNose():''}
+      <p class="brh" id="brh" aria-live="polite"></p>
+      ${s.k==='retain'?`<button class="btn primary brbig" data-act="brnext">Einatmen</button><p class="small muted">${b.ret.length?'Letzte Runde: '+mmss(b.ret[b.ret.length-1]):'Kein Wettkampf. Nur so lange, wie es angenehm ist.'}</p>`:''}
+      ${s.k==='free'?'<p class="small muted">Gleich fertig. Bleib noch einen Moment sitzen.</p>':''}
+    </div>
+    <div class="controls">
+      <button class="btn" data-act="brplay">${b.paused?'Weiter':'Pause'}</button>
+      <button class="btn" data-act="brstop">Beenden</button>
+    </div></div></div>`;
+  brTick();
+}
+function brFinish(completed){
+  const b=UI.br; if(!b) return; const el=b.paused?b.pauseAt:performance.now();
+  const sec=Math.round(b.done+(completed?0:Math.max(0,(el-b.t0)/1000)));
+  if(b.raf) cancelAnimationFrame(b.raf);
+  try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(e){}
+  b.end=true; b.sec=sec; b.completed=completed;
+  if(sec>=30){ const k=todayKey(), d=dayDoc(k); d.breath=[...(d.breath||[]),{m:b.id,v:b.v,sec,at:Date.now(),...(b.ret.length?{ret:b.ret}:{})}];
+    if(completed&&b.key) d.done[b.key]=true; saveDay(k,d); b.saved=true; }
+  if(completed){ brTone(523,784,.9,.12); setTimeout(()=>brTone(659,988,.9,.1),250); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} }
+  keepAwake(false); renderBreath();
+}
+function renderBreathEnd(){
+  const b=UI.br, m=brMode(b.id), wk=brWeek();
+  const cyc=b.segs.slice(0,b.i).filter((s,j)=>s.c!=null&&(!b.segs[j+1]||b.segs[j+1].c!==s.c)).length;
+  $('#overlay').innerHTML=`<div class="overlay"><div class="player">
+    <div class="ov-head"><button class="iconbtn" data-act="brclose" aria-label="Schließen">✕</button><div class="grow"><h2>${esc(m.n)}</h2></div></div>
+    <div class="stage">
+      <div class="phase rest">${b.completed?'Geschafft':'Beendet'}</div>
+      <div class="clock" style="font-size:clamp(3.5rem,16vw,6rem)">${mmss(b.sec)}</div>
+      <p class="muted">${m.whm?esc(b.ret.length+' '+(b.ret.length===1?'Runde':'Runden')):esc(cyc+' '+(cyc===1?'Atemzyklus':'Atemzyklen'))}${b.saved?' · gespeichert':' · unter 30 s, nicht gespeichert'}</p>
+      ${b.ret.length?`<div class="card" style="min-width:240px"><div class="label">Luft angehalten</div><div class="brret">${b.ret.map((r,i)=>`<div><span class="small muted">Runde ${i+1}</span><b class="num">${mmss(r)}</b></div>`).join('')}</div><p class="small muted" style="margin-top:6px">Die Zeiten werden mit Übung meist länger. Es geht nicht um Rekorde.</p></div>`:''}
+      ${b.key&&b.completed?`<p class="small" style="color:var(--good);font-weight:600">${esc((DAYS[new Date().getDay()].blocks.find(x=>x.key===b.key)||{n:'Eintrag'}).n)} abgehakt</p>`:''}
+      <p class="small muted">Diese Woche: ${wk.n} ${wk.n===1?'Atemübung':'Atemübungen'} · ${Math.round(wk.sec/60)} min</p>
+    </div>
+    <div class="controls"><button class="btn" data-act="brpick">Andere Übung</button><button class="btn primary" data-act="brclose">Fertig</button></div>
+  </div></div>`;
+}
+
 /* ============================== EINSTELLUNGEN ============================== */
 function openSettings(){
   UI.modal='settings'; const s=prof().settings;
@@ -1877,6 +2229,20 @@ document.addEventListener('click',e=>{
     case 'yogago': { const m=UI.mob, plan=yogaPlan(m); yogaSave(); UI.modal=null; UI.mob=null; startSteps(plan.title,plan.steps,m.key); break; }
     case 'mobgo': { const m=UI.mob, plan=mobPlan(m); mobSave(); UI.modal=null; UI.mob=null;
       startSteps('Mobility · '+(plan.short.length>2?plan.short.length+' Bereiche':plan.short.join(' + ')),plan.steps,m.key); break; }
+    case 'brpick': if(UI.br){ UI.br=null; UI.modal=null; } openBreathPick(t.dataset.key); break;
+    case 'brquick': { const m=brMode(t.dataset.id); if(m.whm) openBreathPick(null,m.id); else { const c=brChoice(m); brStart(m.id,c.v,c.len,null); } break; }
+    case 'brgoal': UI.bp.goal=t.dataset.g; renderBreathPick(); break;
+    case 'brsel': brSelInit(t.dataset.id); renderBreathPick(true); break;
+    case 'brback': UI.bp.sel=null; renderBreathPick(true); break;
+    case 'brvar': UI.bp.v=+t.dataset.i; renderBreathPick(); break;
+    case 'brlen': UI.bp.len=+t.dataset.n; renderBreathPick(); break;
+    case 'brok': UI.bp.ok=!UI.bp.ok; renderBreathPick(); break;
+    case 'brset': { const k2=t.dataset.k, cur=brCfg().set; brSaveCfg({set:{[k2]:!cur[k2]}}); if(k2==='voice'&&!cur[k2]&&window.speechSynthesis){ try{ const u=new SpeechSynthesisUtterance('Ansage an'); u.lang='de-DE'; speechSynthesis.speak(u); }catch(_){} } if(UI.br) renderBreath(); else renderBreathPick(); break; }
+    case 'brgo': { const P=UI.bp; brStart(P.sel,P.v,P.len,P.key); break; }
+    case 'brplay': { const b=UI.br; if(b.paused){ b.t0+=performance.now()-b.pauseAt; b.paused=false; keepAwake(true); } else { b.pauseAt=performance.now(); b.paused=true; try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(_){} } renderBreath(); break; }
+    case 'brnext': if(UI.br&&!UI.br.end) brAdvance(); break;
+    case 'brstop': if(UI.br&&!UI.br.end) brFinish(false); break;
+    case 'brclose': UI.br=null; UI.modal=null; $('#overlay').innerHTML=''; render(); break;
     case 'wk': UI.weekOffset+=+t.dataset.d; render(); break;
     case 'dayinfo': { const d=parseKey(t.dataset.key); if(t.dataset.key===k){ UI.tab='today'; render(); } else toast(DAYS[d.getDay()].name+': '+DAYS[d.getDay()].blocks.map(b=>b.t+' '+b.n).join(', ')); break; }
     case 'exf': UI.exFilter=t.dataset.f; render(); break;
@@ -1954,7 +2320,7 @@ async function doExport(){
   try{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([json],{type:'application/json'})); a.download=name; document.body.appendChild(a); a.click(); a.remove(); toast('Sicherung heruntergeladen'); }
   catch(e){ toast('Speichern ist hier nicht möglich'); }
 }
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && (UI.session||UI.guide)){ wakeLock=null; keepAwake(true); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && (UI.session||UI.guide||(UI.br&&!UI.br.end))){ wakeLock=null; keepAwake(true); } });
 
 /* ============================== START ============================== */
 Store.load();
