@@ -49,9 +49,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
 main{min-width:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 110px;max-width:880px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
-  display:grid;grid-template-columns:repeat(6,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
+  display:grid;grid-template-columns:repeat(7,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
   padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-nav.tabs button{border:0;background:none;padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;min-width:0;color:var(--muted);cursor:pointer;font-weight:600}
+nav.tabs button{border:0;background:none;padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;min-width:0;color:var(--muted);cursor:pointer;font-weight:600}
+@media (max-width:380px){nav.tabs button{font-size:.6rem}}
+nav.tabs button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px}
 nav.tabs button[aria-current="page"]{color:var(--accent)}
 nav.tabs svg{width:22px;height:22px}
 @media (min-width:900px){
@@ -74,6 +76,64 @@ nav.tabs svg{width:22px;height:22px}
 .btn:disabled{opacity:.5;cursor:default}
 .pill{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted)}
 .pill.good{color:var(--good)} .pill.amber{color:var(--amber)} .pill.accent{color:var(--accent)}
+
+/* Start: Übersicht */
+.hhero{display:flex;gap:14px;align-items:center}
+.hhero .date{font-family:var(--display);font-size:1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.hhero h1{font-size:2.3rem;margin:2px 0}
+.hday-ring{border:0;background:none;padding:0;cursor:pointer;flex:none;width:84px;align-self:flex-start;margin-top:8px}
+.hring .fg.zero{opacity:0}
+.hring{position:relative;display:grid;justify-items:center;align-content:start;gap:2px;text-align:center;min-width:0}
+.hring svg{width:64px;height:64px;transform:rotate(-90deg)}
+.hring .bg{fill:none;stroke:var(--surface-2);stroke-width:7}
+.hring .fg{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round;transition:stroke-dasharray .5s}
+.hring.amb .fg{stroke:var(--amber)} .hring.calm .fg{stroke:var(--good)} .hring.full .fg{stroke:var(--good)}
+.hring .rv{position:absolute;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:center;gap:1px;font-size:1.25rem;font-weight:700;line-height:1}
+.hring .rv small{font-size:.75rem;color:var(--muted);font-weight:600}
+.hring .rl{font-weight:600;font-size:.85rem}
+.hring .rs{font-size:.72rem;color:var(--muted)}
+.hring.cnt .big{height:64px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;font-weight:700;line-height:1;color:var(--accent)}
+.hring.cnt .big small{font-size:1rem;color:var(--muted)}
+.hday-ring .hring svg{width:76px;height:76px} .hday-ring .hring .rv{height:76px}
+.hnext{display:flex;flex-direction:column;gap:4px;border-left:4px solid var(--line)}
+.hnext.main{border-left-color:var(--accent)} .hnext.done{border-left-color:var(--good)}
+.hnext h2{font-size:1.6rem}
+.hnext .hact{margin-top:8px}
+.hnext .hact .actcol{padding-left:0;flex-wrap:wrap}
+.hnext .hact .actcol .btn{white-space:normal;justify-content:center}
+.hweek{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:10px 8px}
+.hday{border:0;background:none;padding:6px 0;border-radius:8px;display:grid;justify-items:center;gap:4px;cursor:pointer;min-width:0;color:var(--fg)}
+.hday.today{background:var(--surface-2)}
+.hday .dn{font-family:var(--display);font-weight:700;font-size:.95rem;color:var(--muted)}
+.hday.today .dn{color:var(--accent)}
+.hday .dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;border:2px solid var(--line);font-variant-numeric:tabular-nums}
+.hday .dot.kraft{border-color:var(--accent)} .hday .dot.zirkel{border-color:var(--amber)}
+.hday.part .dot{background:color-mix(in srgb,var(--good) 22%,transparent)}
+.hday.full .dot{background:var(--good);border-color:var(--good);color:#fff}
+.hday.miss .dot{opacity:.55}
+.hday .dt{font-size:.66rem;color:var(--muted);line-height:1.1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.hrings{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:14px 8px}
+.hgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.hgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.htile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;cursor:pointer;text-align:left;min-width:0;color:var(--fg)}
+.htile .hi{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--accent);margin-bottom:6px}
+.htile .hi svg{width:22px;height:22px}
+.htile b{font-family:var(--display);font-size:1.1rem}
+.htile small{color:var(--muted);font-size:.78rem;line-height:1.25}
+.htile.acc{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.htile.acc .hi{background:rgba(255,255,255,.18);color:inherit}
+.htile.acc small{color:inherit;opacity:.85}
+.htile:active,.hstat:active,.hday:active{transform:scale(.98)}
+.hstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.hstat{display:flex;flex-direction:column;gap:6px;text-align:left;cursor:pointer;color:var(--fg);font:inherit;min-width:0}
+.hstat .v{font-family:var(--display);font-size:1.6rem;font-weight:700;line-height:1}
+.hstat .v small{font-size:.95rem;color:var(--muted);font-weight:600}
+.spark{width:96px;height:32px;flex:none}
+.spark polyline{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.spark circle{fill:var(--accent)}
+.hlinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.hlinks .btn{justify-content:flex-start}
+.hlinks .btn svg{width:20px;height:20px;color:var(--accent);flex:none}
 
 /* Heute: Zeitleiste */
 .hero{display:flex;flex-direction:column;gap:6px}
@@ -1399,7 +1459,7 @@ async function keepAwake(on){
 }
 
 /* ============================== ZUSTAND ============================== */
-const UI = {tab:'today', exFilter:'A', session:null, guide:null, rest:null, modal:null, weekOffset:0};
+const UI = {tab:'home', exFilter:'A', session:null, guide:null, rest:null, modal:null, weekOffset:0};
 const ICONS = {
   today:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/><circle cx="12" cy="15" r="2"/></svg>',
   week:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
@@ -1408,7 +1468,7 @@ const ICONS = {
   progress:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>',
   breath:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg>',
   tpl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M9 10h6M9 14h6M9 18h3"/></svg>'};
-const TABS=[['today','Heute'],['week','Woche'],['tpl','Workouts'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
+const TABS=[['home','Start'],['today','Heute'],['week','Woche'],['tpl','Workouts'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
 
 function onData(){ syncBadge();
   if(!UI.session && !UI.guide && !UI.modal) render();
@@ -1419,8 +1479,8 @@ function syncBadge(){
 
 /* ============================== ANSICHTEN ============================== */
 function render(){
-  $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${ICONS[k]}<span>${l}</span></button>`).join('');
-  const v={today:vToday,week:vWeek,tpl:vTpl,ex:vEx,food:vFood,progress:vProgress}[UI.tab];
+  $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${ICONS[k]||HICO[k]}<span>${l}</span></button>`).join('');
+  const v={home:vHome,today:vToday,week:vWeek,tpl:vTpl,ex:vEx,food:vFood,progress:vProgress}[UI.tab];
   $('#main').innerHTML=v();
   if(UI.tab==='progress') drawCharts();
 }
@@ -1429,6 +1489,140 @@ function blockDone(key,b,doc){
   if(b.key==='train'){ return workouts().some(w=>w.date===key && (w.slot||w.type)===b.train && w.finished); }
   return !!doc.done[b.key];
 }
+/* ============================== START: ÜBERSICHT ============================== */
+function homeGreet(h){ return h<5?'Gute Nacht':h<11?'Guten Morgen':h<17?'Hallo':h<22?'Guten Abend':'Gute Nacht'; }
+function ring(v,max,lab,sub,cls){
+  const f=max?Math.min(1,v/max):0, C=2*Math.PI*26;
+  return `<div class="hring ${cls||''} ${f>=1?'full':''}"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" class="bg"/><circle cx="32" cy="32" r="26" class="fg ${f?'':'zero'}" stroke-dasharray="${(f*C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="rv num">${v}<small>/${max}</small></div><div class="rl">${esc(lab)}</div>${sub?`<div class="rs">${esc(sub)}</div>`:''}</div>`;
+}
+function spark(vals){
+  if(vals.length<2) return '';
+  const W=120,H=36,lo=Math.min(...vals),hi=Math.max(...vals),r=(hi-lo)||1;
+  const pts=vals.map((v,i)=>[(i/(vals.length-1))*(W-6)+3,H-3-((v-lo)/r)*(H-6)]);
+  const [lx,ly]=pts[pts.length-1];
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" aria-hidden="true"><polyline points="${pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ')}"/><circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="3"/></svg>`;
+}
+const HICO={
+  mob:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v7M5 9l7 2 7-2M12 13l-4 8M12 13l4 8"/></svg>',
+  regen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 5-13 15-14-1 10-6 15-14 15"/><path d="M5 19c3-4 6-7 10-9"/></svg>',
+  yoga:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v6M4 11c3 1 5 1 8 0 3 1 5 1 8 0M7 20l5-7 5 7M5 20h14"/></svg>',
+  med:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+  pill:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="9" width="18" height="7" rx="3.5" transform="rotate(-35 12 12.5)"/><path d="M9.5 8.5l4.5 6.5"/></svg>',
+  sleep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18M3 18v-8M21 18v-4a3 3 0 0 0-3-3h-8v7M6.5 13.5a1.5 1.5 0 1 0 0-.01"/></svg>'};
+function nextBlock(day,key,doc){
+  return day.blocks.find(b=>!blockDone(key,b,doc))||null;
+}
+function vHome(){
+  const now=new Date(), key=dkey(now), day=DAYS[now.getDay()], doc=dayDoc(key), P=prof(), p=P.settings;
+  const wk=weekNo(key), deload=isDeload(key), mon=mondayOf(now), ws=weekStatus(mon), br=brWeek();
+  const nDone=day.blocks.filter(b=>blockDone(key,b,doc)).length, nAll=day.blocks.length;
+  const nb=nextBlock(day,key,doc);
+  // Als Nächstes
+  let next;
+  if(nb){
+    let detail=nb.d; if(nb.seq==='med') detail=medMinutes()+' min · Box-Atmung und Body-Scan'; if(nb.seq==='z2') detail=z2Minutes()+' min Zone 2, Puls 120–140';
+    if(nb.train){ const w=WORKOUTS[nb.train]; if(w&&w.items) detail=(detail?detail+' · ':'')+w.items.length+' Übungen'; }
+    const act=blockAct(nb,key)||'';
+    next=`<section class="card hnext ${nb.main?'main':''}"><div class="label">Als Nächstes · ${esc(nb.t)}</div><h2>${esc(nb.n)}</h2>${detail?`<p class="small muted">${esc(detail)}</p>`:''}${act?`<div class="hact">${act}</div>`:''}</section>`;
+  } else {
+    const tm=parseKey(addDays(key,1)), td=DAYS[tm.getDay()];
+    next=`<section class="card hnext done"><div class="label">Heute</div><h2>Alles erledigt</h2><p class="small muted">Starker Tag. Morgen: <b style="color:var(--fg)">${esc(td.title)}</b>, ${esc(td.blocks.filter(b=>b.t!=='22:00').map(b=>b.t+' '+b.n).join(', ')||'Meditation')}.</p></section>`;
+  }
+  // Woche
+  const strip=[...Array(7)].map((_,i)=>{
+    const k=addDays(mon,i), d=parseKey(k), dd=DAYS[d.getDay()], dc=dayDoc(k);
+    const n=dd.blocks.length, dn=dd.blocks.filter(b=>blockDone(k,b,dc)).length, past=k<key;
+    const kind=dd.blocks.some(b=>b.train)?'kraft':dd.blocks.some(b=>b.key==='circuit')?'zirkel':'ruhe';
+    const st=dn>=n?'full':dn>0?'part':past?'miss':'';
+    return `<button class="hday ${k===key?'today':''} ${st}" data-act="dayinfo" data-key="${k}" aria-label="${esc(dd.name)}: ${esc(dd.title)}, ${dn} von ${n} erledigt"><span class="dn">${dd.short}</span><span class="dot ${kind}">${dn>=n?'✓':d.getDate()}</span><span class="dt">${esc(dd.title.split(/ · | und /)[0])}</span></button>`;
+  }).join('');
+  // Tageswerte
+  const supps=SUPPS.filter(s=>!s.opt||p[s.opt]), sDone=supps.filter(s=>doc.supps[s.k]).length;
+  const food=foodTotals(doc), pPct=Math.min(100,Math.round(food.p/p.protein*100)), kPct=Math.min(100,Math.round(food.kcal/p.kcal*100));
+  // Fortschritt
+  const bw=[...P.bw].sort((a,b)=>a.d<b.d?-1:1), avgs=weeklyAverages(bw).slice(-8);
+  const lastBw=bw[bw.length-1];
+  let bwTxt='Noch keine Messung';
+  if(lastBw){ bwTxt=fmtShort(lastBw.d); if(avgs.length>=2){ const dlt=avgs[avgs.length-1].avg-avgs[0].avg; bwTxt=(dlt>=0?'+':'')+fmtNum(dlt,1)+' kg in '+(avgs.length-1)+' Wo.'; } }
+  const fin=workouts().filter(w=>w.finished), lastW=fin[fin.length-1];
+  const m30=fin.filter(w=>w.date>=addDays(key,-29)).length;
+  // Schnellstart
+  const rk=regenKey(day), r=regenInfo(key), rDone=!!doc.done[rk], bs=brSuggest(), bm=brMode(bs.id);
+  const tb=day.blocks.find(b=>b.train);
+  const tiles=[
+    tb?{act:`data-act="train" data-w="${tb.train}"`,ico:ICONS.ex,n:'Training',s:tb.n,cls:'acc'}:{act:'data-act="tplpick"',ico:ICONS.ex,n:'Workout',s:'Vorlage wählen',cls:'acc'},
+    {act:`data-act="regengo" data-key="${rk}"`,ico:HICO.regen,n:'Regeneration',s:rDone?'Heute erledigt':r.min+' min, passend zum Training'},
+    {act:`data-act="mobpick" data-key="${rk}"`,ico:HICO.mob,n:'Mobility',s:'Nach Körperbereich'},
+    {act:`data-act="yogapick" data-key="${day.blocks.some(b=>b.key==='yoga')?'yoga':rk}"`,ico:HICO.yoga,n:'Yoga-Flow',s:'Stil und Dauer wählen'},
+    {act:`data-act="brquick" data-id="${bm.id}"`,ico:ICONS.breath,n:'Atmung',s:bm.n},
+    {act:'data-act="seq" data-seq="med" data-key="med"',ico:HICO.med,n:'Meditation',s:medMinutes()+' min'+(doc.done.med?' · erledigt':'')}];
+  return `
+  <section class="hhero">
+    <div class="grow">
+      <div class="date">${esc(fmtDate(now))}</div>
+      <h1>${homeGreet(now.getHours())}</h1>
+      <p class="muted">${esc(day.title)}${wk>0?' · Trainingswoche '+wk:''}</p>
+      ${deload?'<span class="pill amber" style="margin-top:6px">Leichte Woche: halbe Satzzahl</span>':''}
+    </div>
+    <button class="hday-ring" data-tab="today" aria-label="Tagesplan: ${nDone} von ${nAll} erledigt">${ring(nDone,nAll,'Heute','')}</button>
+  </section>
+  ${next}
+  <section class="section">
+    <div class="row"><h2 class="grow">Deine Woche</h2><button class="btn small ghost" data-tab="week">Wochenplan ›</button></div>
+    <div class="card hweek">${strip}</div>
+    <div class="card hrings">
+      ${ring(ws.strength,3,'Kraft','Mo · Mi · Fr','acc')}
+      ${ring(ws.circuit?1:0,1,'Zirkel','Samstag','amb')}
+      ${ring(ws.med,7,'Meditation','jeden Abend','calm')}
+      <div class="hring cnt"><div class="big num">${br.n}<small>×</small></div><div class="rl">Atmung</div><div class="rs">${Math.round(br.sec/60)} min</div></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Schnellstart</h2>
+    <div class="hgrid">${tiles.map(t=>`<button class="htile ${t.cls||''}" ${t.act}><span class="hi" aria-hidden="true">${t.ico}</span><b>${esc(t.n)}</b><small>${esc(t.s)}</small></button>`).join('')}</div>
+  </section>
+  <section class="section">
+    <div class="row"><h2 class="grow">Heute im Blick</h2></div>
+    <div class="hstats">
+      <button class="card hstat" data-tab="food"><div class="label">Eiweiß</div><div class="v num">${food.p}<small> / ${p.protein} g</small></div><div class="bar"><span style="width:${pPct}%"></span></div></button>
+      <button class="card hstat" data-tab="food"><div class="label">Kalorien</div><div class="v num">${fmtNum(food.kcal,0)}<small> / ${fmtNum(p.kcal,0)}</small></div><div class="bar"><span style="width:${kPct}%;background:var(--amber)"></span></div></button>
+      <button class="card hstat" data-tab="today"><div class="label">Supplements</div><div class="v num">${sDone}<small> / ${supps.length}</small></div><div class="bar"><span style="width:${supps.length?Math.round(sDone/supps.length*100):0}%;background:var(--good)"></span></div></button>
+      <button class="card hstat" data-tab="today"><div class="label">Schlaf</div><div class="v num">${doc.sleep!=null&&doc.sleep!==''?fmtNum(doc.sleep,2)+'<small> h</small>':'<small>eintragen</small>'}</div><div class="small muted">Ziel 7,5–8 h</div></button>
+    </div>
+  </section>
+  <section class="section">
+    <div class="row"><h2 class="grow">Fortschritt</h2><button class="btn small ghost" data-tab="progress">Alles ansehen ›</button></div>
+    <div class="hstats">
+      <button class="card hstat" data-tab="progress"><div class="label">Körpergewicht</div><div class="row" style="gap:8px;align-items:flex-end;flex-wrap:nowrap"><div class="v num grow">${lastBw?fmtNum(lastBw.kg,1)+'<small> kg</small>':'–'}</div>${spark(avgs.map(a=>a.avg))}</div><div class="small muted">${esc(bwTxt)}</div></button>
+      <button class="card hstat" data-tab="progress"><div class="label">Einheiten 30 Tage</div><div class="v num">${m30}</div><div class="small muted">${lastW?'Zuletzt: '+esc(wname(lastW))+', '+fmtShort(lastW.date):'Noch keine erfasst'}</div></button>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Bereiche</h2>
+    <div class="hlinks">
+      <button class="btn" data-tab="today">${ICONS.today}Tagesplan</button>
+      <button class="btn" data-tab="tpl">${ICONS.tpl}Workouts</button>
+      <button class="btn" data-tab="ex">${ICONS.ex}Übungen</button>
+      <button class="btn" data-tab="food">${ICONS.food}Ernährung</button>
+      <button class="btn" data-act="brpick">${ICONS.breath}Atemübungen</button>
+      <button class="btn" data-act="settings">${HICO.pill}Einstellungen</button>
+    </div>
+  </section>`;
+}
+
+function blockAct(b,key){
+  let act='';
+  if(b.train){ const op=workouts().find(w=>!w.finished&&w.date===key&&(w.slot||w.type)===b.train);
+    act=`<div class="actcol">${op&&op.type!==b.train?`<button class="btn primary" data-act="resume" data-id="${op.id}">Fortsetzen: ${esc(wname(op))}</button>`:`<button class="btn primary" data-act="train" data-w="${b.train}">${op?'Fortsetzen':'Training starten'}</button>`}<button class="btn" data-act="tplpick" data-slot="${b.train}">Andere Vorlage</button></div>`; }
+  else if(b.pick) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="mobpick" data-key="${b.key}" data-min="${b.pickMin||''}">Nach Gefühl</button>${/^yoga/.test(b.seq)?`<button class="btn" data-act="yogapick" data-key="${b.key}">${esc(b.seqLabel||'Yoga')}</button>`:`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">${esc(b.seqLabel||'Starten')}</button>`}</div>`;
+  else if(b.seq&&/^yoga/.test(b.seq)) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="yogapick" data-key="${b.key}">Anpassen</button></div>`;
+  else if(b.seq&&b.main) act=`<div class="actcol"><button class="btn primary" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="tplpick" data-slot="${b.key}">Andere Vorlage</button></div>`;
+  else if(b.seq==='med') act=`<div class="actcol"><button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="brpick" data-key="${b.key}">Atemübung</button></div>`;
+  else if(b.seq) act=`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button>`;
+  else if(b.go) act=`<button class="btn" data-tab="${b.go}">Öffnen</button>`;
+  return act;
+}
 function vToday(){
   const now=new Date(), key=dkey(now), day=DAYS[now.getDay()], doc=dayDoc(key), p=prof().settings;
   const wk=weekNo(key), deload=isDeload(key);
@@ -1436,15 +1630,7 @@ function vToday(){
   const tl=day.blocks.map(b=>{
     const done=blockDone(key,b,doc);
     let detail=b.d; if(b.seq==='med') detail=medMinutes()+' min · Box-Atmung und Body-Scan'; if(b.seq==='z2') detail=z2Minutes()+' min Zone 2, Puls 120–140';
-    let act='';
-    if(b.train){ const op=workouts().find(w=>!w.finished&&w.date===key&&(w.slot||w.type)===b.train);
-      act=`<div class="actcol">${op&&op.type!==b.train?`<button class="btn primary" data-act="resume" data-id="${op.id}">Fortsetzen: ${esc(wname(op))}</button>`:`<button class="btn primary" data-act="train" data-w="${b.train}">${op?'Fortsetzen':'Training starten'}</button>`}<button class="btn" data-act="tplpick" data-slot="${b.train}">Andere Vorlage</button></div>`; }
-    else if(b.pick) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="mobpick" data-key="${b.key}" data-min="${b.pickMin||''}">Nach Gefühl</button>${/^yoga/.test(b.seq)?`<button class="btn" data-act="yogapick" data-key="${b.key}">${esc(b.seqLabel||'Yoga')}</button>`:`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">${esc(b.seqLabel||'Starten')}</button>`}</div>`;
-    else if(b.seq&&/^yoga/.test(b.seq)) act=`<div class="actcol"><button class="btn ${b.main?'primary':''}" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="yogapick" data-key="${b.key}">Anpassen</button></div>`;
-    else if(b.seq&&b.main) act=`<div class="actcol"><button class="btn primary" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="tplpick" data-slot="${b.key}">Andere Vorlage</button></div>`;
-    else if(b.seq==='med') act=`<div class="actcol"><button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button><button class="btn" data-act="brpick" data-key="${b.key}">Atemübung</button></div>`;
-    else if(b.seq) act=`<button class="btn" data-act="seq" data-seq="${b.seq}" data-key="${b.key}">Starten</button>`;
-    else if(b.go) act=`<button class="btn" data-tab="${b.go}">Öffnen</button>`;
+    const act=blockAct(b,key);
     const chk=b.train?'':`<input type="checkbox" class="check" data-act="done" data-key="${b.key}" ${done?'checked':''} aria-label="${esc(b.n)} erledigt">`;
     return `<div class="tl ${done?'done':''} ${b.main?'main':''}"><div class="t">${esc(b.t)}</div><div class="c"><div class="box">${chk}<div class="grow"><h3>${esc(b.n)}</h3>${detail?`<p class="small muted">${esc(detail)}</p>`:''}${b.train&&done?'<p class="small" style="color:var(--good);font-weight:600">Erledigt</p>':''}</div>${act}</div></div></div>`;
   }).join('');
