@@ -49,10 +49,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer}
 main{min-width:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 110px;max-width:880px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
-  display:grid;grid-template-columns:repeat(7,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
+  display:grid;grid-template-columns:repeat(8,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
   padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 nav.tabs button{border:0;background:none;padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;min-width:0;color:var(--muted);cursor:pointer;font-weight:600}
-@media (max-width:380px){nav.tabs button{font-size:.6rem}}
+@media (max-width:430px){nav.tabs button{font-size:.6rem}} @media (max-width:380px){nav.tabs button{font-size:.55rem} nav.tabs svg{width:20px;height:20px}}
 nav.tabs button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px}
 nav.tabs button[aria-current="page"]{color:var(--accent)}
 nav.tabs svg{width:22px;height:22px}
@@ -355,6 +355,96 @@ details summary{cursor:pointer;font-weight:600}
 .brret{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px}
 .brret div{display:flex;flex-direction:column}
 .brret b{font-size:1.6rem}
+
+/* Tagesampel */
+.cklight{width:30px;height:78px;flex:none}
+.cklight.big{width:46px;height:120px}
+.cklight .housing{fill:var(--surface-2);stroke:var(--line);stroke-width:1.5}
+.cklight .lamp{fill:var(--line);opacity:.55}
+.cklight .lamp.on{opacity:1}
+.cklight .lamp.r.on{fill:var(--plate);filter:drop-shadow(0 0 4px var(--plate))}
+.cklight .lamp.y.on{fill:var(--amber);filter:drop-shadow(0 0 4px var(--amber))}
+.cklight .lamp.g.on{fill:var(--good);filter:drop-shadow(0 0 4px var(--good))}
+.ckcard{border-left:4px solid var(--line)}
+.ckcard.g,.skamp.g{border-left-color:var(--good)} .ckcard.y,.skamp.y{border-left-color:var(--amber)} .ckcard.r,.skamp.r{border-left-color:var(--plate)}
+.skamp{border-left:4px solid var(--line);padding-block:10px}
+.skamp .cklight{width:22px;height:57px}
+.ckbar{height:4px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.ckbar span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.ckq{gap:14px}
+.ckq h2{font-size:1.8rem}
+.ckopts{display:flex;flex-direction:column;gap:8px}
+.ckopt{display:flex;gap:12px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;cursor:pointer;font-weight:600;color:var(--fg);width:100%}
+.ckopt:active{transform:scale(.99)}
+.ckopt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.ckopt .check{pointer-events:none}
+.ckopt[aria-pressed="true"] .check{background:var(--good);border-color:var(--good)}
+.ckopt[aria-pressed="true"] .check::after{content:"";width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.ckopts.scale .ckopt b{font-size:1.5rem;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--surface-2);flex:none;font-size:1.1rem}
+.ckopts.scale .ckopt[aria-pressed="true"] b{background:var(--accent);color:var(--accent-ink)}
+.ckres{display:flex;flex-direction:column;gap:6px}
+.ckres h1{font-size:2.6rem}
+.ckres.g h1{color:var(--good)} .ckres.y h1{color:var(--amber)} .ckres.r h1{color:var(--plate)}
+.ckback{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.ckhist{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center;font-size:.75rem;color:var(--muted)}
+.ckhist i{display:block;width:22px;height:22px;border-radius:50%;margin:0 auto 4px;background:var(--surface-2);border:2px solid var(--line)}
+.ckhist i.g{background:var(--good);border-color:var(--good)} .ckhist i.y{background:var(--amber);border-color:var(--amber)} .ckhist i.r{background:var(--plate);border-color:var(--plate)}
+/* Skillbank */
+.skgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.skc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.skhead{display:flex;gap:10px;align-items:center;background:none;border:0;padding:0;text-align:left;cursor:pointer;color:var(--fg);width:100%}
+.skhead b{font-family:var(--display);font-size:1.25rem;display:block;line-height:1.1}
+.skhead small{color:var(--muted);font-size:.78rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.skico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--accent);flex:none}
+.skico svg{width:22px;height:22px}
+.sklv{font-size:1.5rem;font-weight:700;color:var(--accent);flex:none}
+.sklv small{font-size:.9rem;color:var(--muted)}
+.skweeks{display:inline-flex;gap:2px;align-items:flex-end;height:20px;flex:none}
+.skweeks i{width:5px;border-radius:1px;background:var(--surface-2)}
+.skweeks i.on{background:var(--accent)}
+.sksug{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.sksug{grid-template-columns:repeat(2,minmax(0,1fr))}.sksug .htile:last-child:nth-child(odd){grid-column:span 2}}
+.skcur .hring svg{width:76px;height:76px} .skcur .hring .rv{height:76px}
+.skpass{margin-top:10px;padding:10px 12px;border-radius:8px;background:color-mix(in srgb,var(--good) 14%,var(--surface));display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.9rem}
+.sklevels{display:flex;flex-direction:column;gap:6px}
+.sklevel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.sklevel.cur{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.sklh{display:flex;gap:12px;align-items:center;width:100%;background:none;border:0;padding:10px 12px;text-align:left;cursor:pointer;color:var(--fg)}
+.sklh b{display:block} .sklh small{display:block;color:var(--muted);font-size:.82rem;line-height:1.3}
+.skdot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;font-family:var(--display);font-weight:700;border:2px solid var(--line);color:var(--muted)}
+.sklevel.done .skdot{background:var(--good);border-color:var(--good);color:#fff}
+.sklevel.cur .skdot{border-color:var(--accent);color:var(--accent)}
+.sklb{padding:0 12px 12px 54px;display:flex;flex-direction:column;gap:8px}
+@media (max-width:520px){.sklb{padding-left:12px}}
+.skex{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;font-size:.9rem;min-width:0;flex:1}
+.skex .th{cursor:pointer;padding:0}
+.skex .skbig{flex-basis:100%;width:100%;max-width:360px;aspect-ratio:4/3;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--line)}
+.skex .tips{margin-top:6px}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer;font:inherit}
+.skwatch{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.skwatch .big{font-size:3rem;font-weight:700;line-height:1}
+textarea.search{resize:vertical;font:inherit}
+.hsk .li{background:none;border:0;border-top:1px solid var(--line);width:100%;cursor:pointer;color:var(--fg);font:inherit}
+.hsk .li:first-child{border-top:0}
+.hgrid .htile:last-child:nth-child(3n+1){grid-column:span 3}
+@media (max-width:420px){.hgrid .htile:last-child:nth-child(3n+1){grid-column:auto}.hgrid .htile:last-child:nth-child(odd){grid-column:span 2}}
+/* Fokus und Lesen */
+.fxbar{width:min(420px,80vw);height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.fxbar span{display:block;height:100%;background:var(--accent);transition:width 1s linear}
+.fxdist{font-size:1.1rem;padding:14px 22px;border-radius:99px;margin-top:10px}
+.fxdist b{background:var(--surface-2);border-radius:99px;padding:0 10px;margin-left:6px}
+.rdov.run{background:#0b0f0e;color:#7d8a86;display:flex;flex-direction:column;cursor:default}
+.rdrun{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px}
+.rdtitle{font-family:var(--display);font-size:1.3rem;color:#93a19c}
+.rdclock{font-family:var(--display);font-size:2.4rem;font-variant-numeric:tabular-nums;color:#93a19c;transition:opacity .6s}
+.rdclock.hid{opacity:0}
+.rddot{width:10px;height:10px;border-radius:50%;background:#3b4744}
+.rddot.on{background:#4f7d68;animation:rdpulse 4s ease-in-out infinite}
+@keyframes rdpulse{0%,100%{opacity:.35}50%{opacity:1}}
+.rdhint{color:#56625e}
+.rdov.run .btn{background:#141a19;border-color:#232c2a;color:#93a19c}
+.rdlist .li{flex-wrap:wrap}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -821,6 +911,8 @@ function regenInfo(key){
   }
   const ranked=Object.entries(L).filter(([,v])=>v>=1).sort((a,b)=>b[1]-a[1]);
   const areas={}; ranked.slice(0,4).forEach(([a,v])=>{ const lv=v>=7?2:v>=2.5?1:0; if(lv) areas[a]=lv; });
+  const ck=(Store.get('d-'+key)||{}).check;
+  if(ck&&ck.areas) ck.areas.filter(a=>MOB_AREAS.some(m=>m.k===a)).forEach(a=>{ areas[a]=2; });
   const office=!Object.keys(areas).length;
   if(office){ areas.huefte=1; areas.bws=1; areas.nacken=1; }
   const today=Store.get('d-'+key)||{}, total=ranked.reduce((t,[,v])=>t+v,0);
@@ -829,6 +921,8 @@ function regenInfo(key){
   if(today.sleep!=null && today.sleep!=='' && +today.sleep<6){ feel='muede'; why='Wenig Schlaf: sanft und viel am Boden.'; }
   else if(recent && total>=25){ feel='verspannt'; why='Hohe Belastung: längere, ruhige Haltezeiten.'; }
   else if(office){ why='Kein Training in den letzten 3 Tagen erfasst: Fokus auf die typischen Büro-Bereiche.'; }
+  if(ck&&ck.light==='r'&&feel==='gut'){ feel='muede'; why='Ampel Rot: sanft und viel am Boden.'; }
+  else if(ck&&ck.areas&&ck.areas.length&&!why) why='Bereiche aus deinem Check-in sind dabei.';
   const m=Store.get('mob')||{}, min=m.regenMin||15;
   const byDay={}; src.forEach(s=>{ (byDay[s.d]=byDay[s.d]||[]).push(s.n); });
   const srcTxt=Object.keys(byDay).sort().map(d=>REGEN_DAY[d]+': '+[...new Set(byDay[d])].join(', ')).join(' · ');
@@ -1168,9 +1262,9 @@ function startTemplate(id,slot){
     UI.guide.onDone=()=>{ Store.put(newId('w-'),{type:'tpl',tpl:id,...(slot?{slot}:{}),plan:{name:t.name,cls:t.cls,mode:'timer',items:[]},date:key,start:t0,sets:{},exmap:{},warm:{},finished:true,min:Math.round((Date.now()-t0)/60000)}); };
     return; }
   let sess=workouts().find(w=>!w.finished&&w.date===key&&w.type==='tpl'&&w.tpl===id);
-  if(!sess){ const s=prof().settings, deload=isDeload(key), sid=newId('w-'), sets={}, exmap={};
-    items.forEach(it=>{ const n=deload?Math.ceil(it.sets/2):it.sets, sg=suggestion(it,sid); exmap[it.g]=it.ex; sets[it.g]=[...Array(n)].map(()=>({kg:sg.kg===''?'':sg.kg,reps:'',done:false})); });
-    sess={id:sid,type:'tpl',tpl:id,...(slot?{slot}:{}),plan:{name:t.name,cls:t.cls,mode:'sets',warm:t.warm!==false,items},date:key,start:Date.now(),sets,exmap,warm:{},finished:false};
+  if(!sess){ const s=prof().settings, deload=isDeload(key), sid=newId('w-'), sets={}, exmap={}, lite=liteToday();
+    items.forEach(it=>{ const n=liteSets(it.sets,deload,lite), sg=suggestion(it,sid); exmap[it.g]=it.ex; sets[it.g]=[...Array(n)].map(()=>({kg:sg.kg===''?'':liteKg(EX[it.ex],sg.kg,lite),reps:'',done:false})); });
+    sess={id:sid,type:'tpl',tpl:id,...(slot?{slot}:{}),plan:{name:t.name,cls:t.cls,mode:'sets',warm:t.warm!==false,items},date:key,start:Date.now(),sets,exmap,warm:{},finished:false,...(lite?{lite:true}:{})};
     Store.put(sid,stripId(sess)); }
   UI.session=sess.id; keepAwake(true); renderSession(true);
 }
@@ -1399,7 +1493,7 @@ const GitSync = {
       else if(r.status!==404) throw new Error(r.status===401?'Token ungültig oder abgelaufen':r.status===403?'Token hat keine Rechte für dieses Repository':'GitHub antwortet mit Fehler '+r.status);
       const lt=this.times(); const keys=new Set([...Object.keys(remote.docs),...Object.keys(remote.t),...Object.keys(Store.cache),...Object.keys(lt)]);
       const out={docs:{},t:{}}; let changedLocal=false, changedRemote=false;
-      keys.forEach(k=>{ if(!/^(profile|mob|d-|w-|t-)/.test(k)) return;
+      keys.forEach(k=>{ if(!/^(profile|mob|d-|w-|t-|sk-)/.test(k)) return;
         const tl=lt[k]||0, tr=remote.t[k]||0;
         if(tr>tl){ if(k in remote.docs){ if(JSON.stringify(Store.cache[k])!==JSON.stringify(remote.docs[k])){ Store.cache[k]=remote.docs[k]; changedLocal=true; } } else if(k in Store.cache){ delete Store.cache[k]; changedLocal=true; } lt[k]=tr; }
         else if(tl>tr || (!(k in remote.docs) && k in Store.cache)){ changedRemote=true; }
@@ -1468,7 +1562,7 @@ const ICONS = {
   progress:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20h18M5 16l4-5 4 3 6-8"/></svg>',
   breath:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h7"/></svg>',
   tpl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2.5h6V4M9 10h6M9 14h6M9 18h3"/></svg>'};
-const TABS=[['home','Start'],['today','Heute'],['week','Woche'],['tpl','Workouts'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
+const TABS=[['home','Start'],['today','Heute'],['skills','Skills'],['week','Woche'],['tpl','Workouts'],['ex','Übungen'],['food','Ernährung'],['progress','Fortschritt']];
 
 function onData(){ syncBadge();
   if(!UI.session && !UI.guide && !UI.modal) render();
@@ -1480,7 +1574,7 @@ function syncBadge(){
 /* ============================== ANSICHTEN ============================== */
 function render(){
   $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${ICONS[k]||HICO[k]}<span>${l}</span></button>`).join('');
-  const v={home:vHome,today:vToday,week:vWeek,tpl:vTpl,ex:vEx,food:vFood,progress:vProgress}[UI.tab];
+  const v={home:vHome,today:vToday,skills:vSkills,week:vWeek,tpl:vTpl,ex:vEx,food:vFood,progress:vProgress}[UI.tab]||vHome;
   $('#main').innerHTML=v();
   if(UI.tab==='progress') drawCharts();
 }
@@ -1509,6 +1603,7 @@ const HICO={
   med:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>',
   home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
   pill:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="9" width="18" height="7" rx="3.5" transform="rotate(-35 12 12.5)"/><path d="M9.5 8.5l4.5 6.5"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5zM4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/></svg>',
   sleep:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18M3 18v-8M21 18v-4a3 3 0 0 0-3-3h-8v7M6.5 13.5a1.5 1.5 0 1 0 0-.01"/></svg>'};
 function nextBlock(day,key,doc){
   return day.blocks.find(b=>!blockDone(key,b,doc))||null;
@@ -1556,7 +1651,10 @@ function vHome(){
     {act:`data-act="mobpick" data-key="${rk}"`,ico:HICO.mob,n:'Mobility',s:'Nach Körperbereich'},
     {act:`data-act="yogapick" data-key="${day.blocks.some(b=>b.key==='yoga')?'yoga':rk}"`,ico:HICO.yoga,n:'Yoga-Flow',s:'Stil und Dauer wählen'},
     {act:`data-act="brquick" data-id="${bm.id}"`,ico:ICONS.breath,n:'Atmung',s:bm.n},
-    {act:'data-act="seq" data-seq="med" data-key="med"',ico:HICO.med,n:'Meditation',s:medMinutes()+' min'+(doc.done.med?' · erledigt':'')}];
+    {act:'data-act="seq" data-seq="med" data-key="med"',ico:HICO.med,n:'Meditation',s:medMinutes()+' min'+(doc.done.med?' · erledigt':'')},
+    {act:'data-act="tabskills"',ico:SKICO.skills,n:'Skillbank',s:SKILLS.length+' Skills mit Stufen'},
+    {act:'data-act="fxopen"',ico:SKICO.geist,n:'Fokusblock',s:'25 bis 90 min'},
+    {act:'data-act="rdopen"',ico:HICO.book,n:'Lesen',s:(()=>{ const b=booksDoc().list.filter(x=>x.status==='lese').pop(); return b?b.t:'Lese-Timer'; })()}];
   return `
   <section class="hhero">
     <div class="grow">
@@ -1567,7 +1665,9 @@ function vHome(){
     </div>
     <button class="hday-ring" data-tab="today" aria-label="Tagesplan: ${nDone} von ${nAll} erledigt">${ring(nDone,nAll,'Heute','')}</button>
   </section>
+  ${ampelCard('home')}
   ${next}
+  ${homeSkills()}
   <section class="section">
     <div class="row"><h2 class="grow">Deine Woche</h2><button class="btn small ghost" data-tab="week">Wochenplan ›</button></div>
     <div class="card hweek">${strip}</div>
@@ -1605,6 +1705,7 @@ function vHome(){
       <button class="btn" data-tab="tpl">${ICONS.tpl}Workouts</button>
       <button class="btn" data-tab="ex">${ICONS.ex}Übungen</button>
       <button class="btn" data-tab="food">${ICONS.food}Ernährung</button>
+      <button class="btn" data-tab="skills">${SKICO.skills}Skillbank</button>
       <button class="btn" data-act="brpick">${ICONS.breath}Atemübungen</button>
       <button class="btn" data-act="settings">${HICO.pill}Einstellungen</button>
     </div>
@@ -1644,6 +1745,7 @@ function vToday(){
     <h1>${esc(day.title)}</h1>
     <div class="row">${deload?'<span class="pill amber">Leichte Woche: halbe Satzzahl</span>':''}<span class="pill">Krafteinheiten ${ws.strength}/3</span><span class="pill">Zirkel ${ws.circuit?'✓':'offen'}</span><span class="pill">Meditation ${ws.med}/7</span></div>
   </section>
+  ${ampelCard('today')}
   <section class="timeline" aria-label="Tagesablauf">${tl}</section>
   ${regenCard(key)}
   ${breathCard()}
@@ -1890,14 +1992,17 @@ function startTraining(type,slot){
   const key=todayKey(); let sess=workouts().find(w=>!w.finished && w.date===key && w.type===type);
   if(!sess){
     const s=prof().settings, deload=isDeload(key), id='w-'+Date.now();
-    const sets={}, exmap={}, sugg={};
-    WORKOUTS[type].items.forEach(raw=>{ const it=resolveItem(raw,s,key); const n=deload?Math.ceil(it.sets/2):it.sets; const sg=suggestion(it,id);
-      exmap[raw.g]=it.ex; sets[raw.g]=[...Array(n)].map(()=>({kg:sg.kg===''?'':sg.kg,reps:'',done:false})); });
-    sess={id,type,...(slot&&slot!==type?{slot}:{}),date:key,start:Date.now(),sets,exmap,warm:{},finished:false};
+    const sets={}, exmap={}, sugg={}, lite=liteToday();
+    WORKOUTS[type].items.forEach(raw=>{ const it=resolveItem(raw,s,key); const n=liteSets(it.sets,deload,lite); const sg=suggestion(it,id);
+      exmap[raw.g]=it.ex; sets[raw.g]=[...Array(n)].map(()=>({kg:sg.kg===''?'':liteKg(EX[it.ex],sg.kg,lite),reps:'',done:false})); });
+    sess={id,type,...(slot&&slot!==type?{slot}:{}),date:key,start:Date.now(),sets,exmap,warm:{},finished:false,...(lite?{lite:true}:{})};
     Store.put(id,stripId(sess));
   }
   UI.session=sess.id; keepAwake(true); renderSession(true);
 }
+function liteToday(){ const c=ckGet(); return !!(c&&c.choice==='lite'); }
+function liteSets(n,deload,lite){ const d=deload?Math.ceil(n/2):n; return lite?Math.max(1,Math.min(d,Math.ceil(n*2/3))):d; }
+function liteKg(e,kg,lite){ if(!lite||kg===''||kg==null) return kg; const st=e&&e.step||1; return Math.max(0,Math.round(+kg*.9/st)*st); }
 function stripId(o){ const {id,...rest}=o; return rest; }
 function sessObj(){ return UI.session?{id:UI.session,...Store.get(UI.session)}:null; }
 function saveSess(s){ Store.put(s.id,stripId(s)); }
@@ -1927,13 +2032,14 @@ function renderSession(top){
       </div></div>
       ${raw.wt?`<p class="small wt"><b>Gewicht:</b> ${esc(raw.wt)}</p>`:''}
       ${tipFor(ex.ex)?`<div style="margin:0 12px 10px">${tipsHtml(ex.ex,false)}</div>`:''}
-      <div class="hint ${sg.up?'up':''} ${sg.down?'down':''}" style="margin:0 12px 10px">${esc(sg.text)}${sg.trend?`<br><span class="small muted">Verlauf: ${esc(sg.trend)}</span>`:''}${kgCol&&barOf(e)?`<br><span class="small muted">Eintrag = nur Scheiben${e.imp==='kh2'?' pro Hantel':''}, Stange ${fmtNum(barOf(e),2)} kg wird addiert.</span>`:''}</div>
+      <div class="hint ${sg.up?'up':''} ${sg.down?'down':''}" style="margin:0 12px 10px">${s.lite&&kgCol&&sg.kg!==''?'<b>Ampel-Gelb:</b> heute etwa 90 %, also '+esc(fmtNum(liteKg(e,sg.kg,true),2))+' kg, Satz endet mit 3 Wdh. Reserve. Ursprünglicher Vorschlag: ':s.lite?'<b>Ampel-Gelb:</b> Satz endet mit 3 Wdh. Reserve. ':''}${esc(sg.text)}${sg.trend?`<br><span class="small muted">Verlauf: ${esc(sg.trend)}</span>`:''}${kgCol&&barOf(e)?`<br><span class="small muted">Eintrag = nur Scheiben${e.imp==='kh2'?' pro Hantel':''}, Stange ${fmtNum(barOf(e),2)} kg wird addiert.</span>`:''}</div>
       <div class="sets">${rows}</div></article>`;
   }).join('');
   const elapsed=Math.round((Date.now()-s.start)/60000);
   $('#overlay').innerHTML=`<div class="overlay" role="dialog" aria-label="${esc(w.name)}">
     <div class="ov-head"><button class="iconbtn" data-act="closeSess" aria-label="Schließen">✕</button><div class="grow"><h2>${esc(w.name)}</h2><div class="small muted">${fmtShort(s.date)} · seit ${elapsed} min${s.slot?' · statt '+esc(slotName(s.slot)):''}</div></div><button class="btn primary" data-act="finish">Fertig</button></div>
     <div class="ov-body">
+      ${s.lite?'<div class="card ckcard y small"><b>Leichtes Training nach Ampel:</b> etwa ein Drittel weniger Sätze, rund 90 % Gewicht, jeder Satz mit 3 Wiederholungen Reserve, nichts bis zum Versagen. Geht es dir nach dem Einstieg deutlich besser, darfst du normal weitermachen.</div>':''}
       ${w.warm===false?'':`<details class="card" ${warmDone<WARMUP.length?'open':''}><summary>Einstieg · 10 min <span class="pill ${warmDone===WARMUP.length?'good':''}">${warmDone}/${WARMUP.length}</span></summary>
         <div style="margin:10px 0"><button class="btn primary" data-act="seq" data-seq="warmup" data-key="warmup">Geführt mit Timer</button></div>
         <div class="list">${WARMUP.map((x,i)=>{ const e=x.ex?EX[x.ex]:null; const big=UI.wuBig===i;
@@ -2016,7 +2122,7 @@ function finishGuide(completed){
     beep(784,.25,3);
     if(g.key==='warmup' && UI.session){ const s=sessObj(); WARMUP.forEach((_,i)=>s.warm[i]=true); saveSess(s); }
     else if(g.key){ const k=todayKey(), d=dayDoc(k); d.done[g.key]=true; saveDay(k,d); }
-    if(g.onDone) g.onDone();
+    if(g.onDone) g.onDone(); else if(g.seq==='med') skAuto('meditation',{min:Math.round(g.steps.reduce((a,x)=>a+(x.sec||0),0)/60),src:'plan'});
     toast(g.title+' erledigt');
   }
   if(!UI.session) keepAwake(false);
@@ -2039,6 +2145,29 @@ const brSigh=(i,t,o)=>[BP('in',i,{to:.8,h:'Nase, tief in den Bauch'}),BP('top',t
 const br478=(i,h,o)=>[BP('in',i,{h:'Nase, Mund geschlossen'}),BP('hold',h,{h:'Zunge hinter den oberen Schneidezähnen'}),BP('out',o,{h:'Mund, hörbar „Whoosh“'})];
 
 const BR = [
+{id:'belly',n:'Bauchatmung',sub:'Zwerchfellatmung, die Grundlage',goal:'ruhe',ev:'mittel',
+ tag:'Langsam in den Bauch atmen, Brust bleibt ruhig. Die Basis für jede andere Technik.',
+ when:'Jederzeit, besonders als Einstieg ins Atemtraining, im Büro, vor dem Einschlafen oder bei flacher, hoher Atmung unter Stress.',
+ how:['Bequem sitzen oder liegen, eine Hand auf die Brust, eine auf den Bauch.','Durch die Nase einatmen: Die Hand auf dem Bauch hebt sich, die auf der Brust bleibt fast ruhig.','Durch die Nase oder locker durch den Mund ausatmen, der Bauch sinkt von selbst.','Leise atmen, ohne Kraft. Wenn du gähnen musst: gutes Zeichen.'],
+ eff:'Das Zwerchfell ist der Hauptatemmuskel. Wer gestresst ist, atmet oft flach in die Brust und mit Nacken und Schultern. Langsame Bauchatmung senkt die Atemfrequenz und erhöht die Aktivität des Vagusnervs. In einer kontrollierten Studie verbesserten 8 Wochen Zwerchfellatmung die Aufmerksamkeit und senkten Cortisol und negative Gefühle.',
+ src:['Ma et al. 2017, Frontiers in Psychology 8:874 (randomisiert, 40 Teilnehmende)','Hamasaki 2020, Medicines 7(10):65 (Übersicht Zwerchfellatmung)'],
+ vars:[{n:'4-6',pat:brEven(4,6,'Nase, Bauch hebt sich','Bauch sinkt von selbst')},{n:'Ruhig 5-7',pat:brEven(5,7,'Nase, Bauch hebt sich','Bauch sinkt von selbst')}],lens:[3,5,10],len:5,unit:'min'},
+{id:'buteyko',n:'Sanft reduziertes Atmen',sub:'Nach dem Buteyko-Prinzip, für die Kontrollpause',goal:'ruhe',ev:'mittel',
+ tag:'Kleiner, leiser atmen, bis ein leichter Lufthunger entsteht. Trainiert eine ruhige Grundatmung.',
+ when:'Bei Neigung zu schneller oder Mundatmung, vor dem Schlafen, als Training für die Kontrollpause im Skill Atemkontrolle.',
+ how:['Aufrecht sitzen, Mund zu, nur durch die Nase atmen.','Etwas weniger Luft nehmen als sonst, etwa 70 Prozent, und entspannt ausatmen.','Ein leichter, angenehmer Lufthunger ist das Ziel. Wird er unangenehm, 15 Sekunden normal atmen, dann weiter.','Schultern und Bauch bleiben weich, die Atmung wird leise und klein.'],
+ eff:'Wer dauerhaft zu viel atmet, senkt das Kohlendioxid im Blut und reagiert empfindlicher auf Stress. Reduziertes Atmen gewöhnt das Atemzentrum an etwas mehr CO₂, die Grundatmung wird ruhiger und die Kontrollpause länger. Bei Asthma verringerte die Methode in Studien Beschwerden und Bedarfsspray, ohne die Lungenfunktion zu ändern.',
+ src:['Cowie et al. 2008, Respiratory Medicine 102(5):726 (randomisiert, Asthma)','Bruton und Lewith 2005, Complementary Therapies in Medicine 13(1):41 (Übersicht)'],
+ warn:'Bei Asthma das Notfallspray immer griffbereit, die Methode ersetzt keine Medikamente. Nicht bei Schwangerschaft oder Herz-Kreislauf-Erkrankungen ohne ärztliche Rücksprache.',
+ vars:[{n:'Sanft 3-4',pat:[BP('in',3,{to:.75,h:'Nase, nur ein kleiner Atemzug'}),BP('out',4,{h:'Nase, locker und leise'})]},{n:'Mit Pause',pat:[BP('in',3,{to:.75,h:'Nase, klein'}),BP('out',4,{h:'Nase, leise'}),BP('rest',2,{h:'Kurz leer bleiben'})]}],lens:[3,5,10,15],len:5,unit:'min'},
+{id:'kapal',n:'Feueratem',sub:'Kapalabhati, kurze Ausatemstöße',goal:'energie',ev:'trad',
+ tag:'Schnelle, kurze Stöße aus dem Bauch. Weckt auf, ohne Luftanhalten.',
+ when:'Morgens, im Mittagstief, vor dem Training. Auf nüchternen Magen, nicht am Abend.',
+ how:['Aufrecht sitzen, Hände auf den Bauch.','Kurz und kräftig durch die Nase ausatmen, indem du den Bauch nach innen ziehst.','Das Einatmen passiert von allein, wenn der Bauch loslässt.','Etwa ein Stoß pro Sekunde, 30 Stöße, dann 30 Sekunden ruhig atmen. Das ist eine Runde.'],
+ eff:'Die aktive Ausatmung trainiert die Bauchmuskeln und erhöht kurzfristig Puls und Wachheit, ähnlich wie ein kurzer Sprint für das Nervensystem. Studien sind klein, zeigen aber eine Verschiebung zur aktivierenden Seite des Nervensystems während der Übung und mehr Aufmerksamkeit danach.',
+ src:['Raghuraj et al. 1998, Indian Journal of Physiology and Pharmacology 42(4):467 (Herzratenvariabilität)'],
+ warn:'Nicht bei Schwangerschaft, Bluthochdruck, Herzerkrankungen, Epilepsie, Leisten- oder Nabelbruch, nach Bauch-OPs oder während der Periode bei Beschwerden. Bei Schwindel aufhören und normal atmen.',
+ vars:[{n:'30 Stöße',leg:'30 Stöße (je 1 s) · 30 s ruhig atmen',pat:[...[...Array(30)].flatMap(()=>[BP('in',.5,{to:.7,lab:'Lassen'}),BP('out',.5,{to:.5,lab:'Stoß'})]),BP('rest',30,{h:'Ruhig atmen, nachspüren'})]},{n:'20 Stöße langsam',leg:'20 Stöße (je 1,5 s) · 30 s ruhig atmen',pat:[...[...Array(20)].flatMap(()=>[BP('in',.8,{to:.7,lab:'Lassen'}),BP('out',.7,{to:.5,lab:'Stoß'})]),BP('rest',30,{h:'Ruhig atmen, nachspüren'})]}],lens:[2,3,5],len:3,unit:'Runden'},
 {id:'sigh',n:'Physiologischer Seufzer',sub:'Zyklisches Seufzen',goal:'ruhe',ev:'mittel',
  tag:'Doppelt einatmen, lang ausatmen. Der schnellste Weg runter bei Stress.',
  when:'Akuter Stress, vor einem Termin, nach dem Training. Schon 1 bis 3 Seufzer wirken, 5 min täglich für den Langzeiteffekt.',
@@ -2107,6 +2236,17 @@ const BR = [
  vars:[{n:'30 Atemzüge',b:30},{n:'40 Atemzüge',b:40}],lens:[2,3,4],len:3,unit:'Runden'},
 ];
 const brMode=id=>BR.find(m=>m.id===id);
+/* Einsatzzweck: welche Technik wofür */
+const BR_USE = {
+  schlaf:{n:'Einschlafen',ids:['478','exhale','belly','bhramari','buteyko']},
+  stress:{n:'Akuter Stress',ids:['sigh','exhale','coherent','box']},
+  termin:{n:'Vor Termin oder Prüfung',ids:['sigh','box','belly']},
+  fokus:{n:'Fokus',ids:['box','nadi','coherent','ujjayi']},
+  energie:{n:'Energie, Mittagstief',ids:['kapal','whm','box']},
+  training:{n:'Nach dem Training',ids:['sigh','belly','exhale']},
+  kopf:{n:'Grübeln, Anspannung im Kopf',ids:['bhramari','coherent','exhale']},
+  kontrolle:{n:'Atemkontrolle, CO₂',ids:['buteyko','belly','ujjayi']}};
+const brUses=id=>Object.values(BR_USE).filter(u=>u.ids.includes(id)).map(u=>u.n);
 const brCyc=pat=>pat.reduce((t,p)=>t+p.s,0);
 const fmtS=s=>String(+s.toFixed(1)).replace('.',',');
 function brCfg(){ const m=Store.get('mob')||{}, b=m.breath||{}; return {set:{tone:true,vib:true,voice:false,...(b.set||{})},last:{...(b.last||{})}}; }
@@ -2117,7 +2257,7 @@ function brLenTxt(m,len){ return m.unit==='min'?len+' min':len+' '+(len===1?m.un
 function brPatBar(m,v){
   if(m.whm){ const b=m.vars[v].b; return `<div class="brpat" aria-hidden="true"><i class="in" style="flex:${b*3}"></i><i class="rest" style="flex:60"></i><i class="hold" style="flex:15"></i></div><div class="brleg small muted">${b} tiefe Atemzüge · Luft anhalten · 15 s halten</div>`; }
   const pat=m.vars[v].pat;
-  return `<div class="brpat" aria-hidden="true">${pat.map(p=>`<i class="${p.k}${p.hum?' hum':''}" style="flex:${p.s}"></i>`).join('')}</div><div class="brleg small muted">${esc(pat.map(p=>(p.lab||BR_KIND[p.k])+' '+fmtS(p.s)+' s').join(' · '))}</div>`;
+  return `<div class="brpat" aria-hidden="true">${pat.map(p=>`<i class="${p.k}${p.hum?' hum':''}" style="flex:${p.s}"></i>`).join('')}</div><div class="brleg small muted">${esc(m.vars[v].leg||pat.map(p=>(p.lab||BR_KIND[p.k])+' '+fmtS(p.s)+' s').join(' · '))}</div>`;
 }
 function brSuggest(){
   const h=new Date().getHours(), k=todayKey();
@@ -2140,19 +2280,22 @@ function breathCard(){
 }
 
 /* Auswahl */
-function openBreathPick(key,sel){ UI.bp={goal:'alle',sel:sel||null,key:key||null,ok:false,info:false}; if(sel) brSelInit(sel); UI.modal='brpick'; renderBreathPick(true); }
+function openBreathPick(key,sel){ UI.bp={goal:'alle',use:null,sel:sel||null,key:key||null,ok:false,info:false}; if(sel) brSelInit(sel); UI.modal='brpick'; renderBreathPick(true); }
 function brSelInit(id){ const m=brMode(id), c=brChoice(m); Object.assign(UI.bp,{sel:id,v:c.v,len:c.len,ok:false,info:false}); }
 function renderBreathPick(top){
   const P=UI.bp, ov=$('#overlay .overlay'), y=ov?ov.scrollTop:0;
   if(P.sel){ renderBreathDetail(top); return; }
-  const list=BR.filter(m=>P.goal==='alle'||m.goal===P.goal), sug=brSuggest();
+  const list=BR.filter(m=>P.use?BR_USE[P.use].ids.includes(m.id):(P.goal==='alle'||m.goal===P.goal)), sug=brSuggest();
+  if(P.use) list.sort((a,b)=>BR_USE[P.use].ids.indexOf(a.id)-BR_USE[P.use].ids.indexOf(b.id));
   $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>Atemübungen</h2><div class="small muted">Geführt mit Animation, Ton und Timer</div></div></div>
   <div class="ov-body">
-    <div class="chips" role="group" aria-label="Ziel"><button class="chip" data-act="brgoal" data-g="alle" aria-pressed="${P.goal==='alle'}">Alle</button>${Object.entries(BR_GOAL).map(([k,n])=>`<button class="chip" data-act="brgoal" data-g="${k}" aria-pressed="${P.goal===k}">${esc(n)}</button>`).join('')}</div>
+    <div class="chips" role="group" aria-label="Ziel"><button class="chip" data-act="brgoal" data-g="alle" aria-pressed="${!P.use&&P.goal==='alle'}">Alle</button>${Object.entries(BR_GOAL).map(([k,n])=>`<button class="chip" data-act="brgoal" data-g="${k}" aria-pressed="${!P.use&&P.goal===k}">${esc(n)}</button>`).join('')}</div>
+    <div class="label" style="margin-top:4px">Wofür brauchst du es gerade?</div>
+    <div class="chips scroll" role="group" aria-label="Einsatzzweck">${Object.entries(BR_USE).map(([k,u])=>`<button class="chip" data-act="bruse" data-u="${k}" aria-pressed="${P.use===k}">${esc(u.n)}</button>`).join('')}</div>
     <div class="brgrid">${list.map(m=>{ const c=brChoice(m); return `<button class="brc" data-act="brsel" data-id="${m.id}">
       <div class="row" style="gap:6px"><span class="pill">${esc(BR_GOAL[m.goal])}</span><span class="pill ${BR_EV[m.ev].c}">${esc(BR_EV[m.ev].n)}</span>${m.id===sug.id?'<span class="pill accent">Jetzt passend</span>':''}</div>
       <h3>${esc(m.n)}</h3><div class="small muted" style="margin-top:-4px">${esc(m.sub)}</div>
-      <p class="small">${esc(m.tag)}</p>${brPatBar(m,c.v)}</button>`; }).join('')}</div>
+      <p class="small">${esc(m.tag)}</p>${brUses(m.id).length?`<p class="small muted">Hilft bei: ${esc(brUses(m.id).join(', '))}</p>`:''}${brPatBar(m,c.v)}</button>`; }).join('')}</div>
     <div class="card warnbox small"><b>Sicher üben.</b> Nie beim Autofahren, im Stehen bei Power-Atmung oder im Wasser. Bei Schwindel normal weiteratmen. Bei Herz-Kreislauf-Erkrankungen, Epilepsie, Schwangerschaft oder Panikstörung Übungen mit Luftanhalten oder schnellem Atmen nur nach ärztlicher Rücksprache.</div>
     <p class="small muted">Die Einstufung „Viele Studien“ heißt: Meta-Analysen oder mehrere kontrollierte Studien. „Einzelne Studien“: mindestens eine kontrollierte Studie. „Tradition“: seit Jahrhunderten im Yoga überliefert, bisher nur kleine Studien.</p>
   </div></div>`;
@@ -2306,7 +2449,8 @@ function brFinish(completed){
   try{ window.speechSynthesis&&speechSynthesis.cancel(); }catch(e){}
   b.end=true; b.sec=sec; b.completed=completed;
   if(sec>=30){ const k=todayKey(), d=dayDoc(k); d.breath=[...(d.breath||[]),{m:b.id,v:b.v,sec,at:Date.now(),...(b.ret.length?{ret:b.ret}:{})}];
-    if(completed&&b.key) d.done[b.key]=true; saveDay(k,d); b.saved=true; }
+    if(completed&&b.key) d.done[b.key]=true; saveDay(k,d); b.saved=true;
+    if(b.onDone) b.onDone(sec); else if(sec>=60) skAuto('atem',{min:Math.round(sec/60),src:'breath',m:b.id}); }
   if(completed){ brTone(523,784,.9,.12); setTimeout(()=>brTone(659,988,.9,.1),250); try{ navigator.vibrate&&navigator.vibrate([80,60,80]); }catch(e){} }
   keepAwake(false); renderBreath();
 }
@@ -2321,11 +2465,967 @@ function renderBreathEnd(){
       <p class="muted">${m.whm?esc(b.ret.length+' '+(b.ret.length===1?'Runde':'Runden')):esc(cyc+' '+(cyc===1?'Atemzyklus':'Atemzyklen'))}${b.saved?' · gespeichert':' · unter 30 s, nicht gespeichert'}</p>
       ${b.ret.length?`<div class="card" style="min-width:240px"><div class="label">Luft angehalten</div><div class="brret">${b.ret.map((r,i)=>`<div><span class="small muted">Runde ${i+1}</span><b class="num">${mmss(r)}</b></div>`).join('')}</div><p class="small muted" style="margin-top:6px">Die Zeiten werden mit Übung meist länger. Es geht nicht um Rekorde.</p></div>`:''}
       ${b.key&&b.completed?`<p class="small" style="color:var(--good);font-weight:600">${esc((DAYS[new Date().getDay()].blocks.find(x=>x.key===b.key)||{n:'Eintrag'}).n)} abgehakt</p>`:''}
-      <p class="small muted">Diese Woche: ${wk.n} ${wk.n===1?'Atemübung':'Atemübungen'} · ${Math.round(wk.sec/60)} min</p>
+      <p class="small muted">Diese Woche: ${wk.n} ${wk.n===1?'Atemübung':'Atemübungen'} · ${Math.round(wk.sec/60)} min${b.saved&&b.sec>=60?' · zählt für den Skill Atemkontrolle':''}</p>
     </div>
     <div class="controls"><button class="btn" data-act="brpick">Andere Übung</button><button class="btn primary" data-act="brclose">Fertig</button></div>
   </div></div>`;
 }
+
+/* ============================== SKILLBANK: INHALTE ============================== */
+/* Test-Arten: reps (Wdh.), hold (Sekunden), kgbw (Faktor × Körpergewicht, mit Wdh.), cm (kleiner ist besser), sess (Einheiten mit Mindestdauer), book (beendete Bücher) */
+const SK_CAT = {kg:'Körpergewicht',ger:'Mit Geräten',mob:'Beweglichkeit',geist:'Geist'};
+const SK_LOAD = {1:'sanft',2:'mittel',3:'fordernd'};
+const T=(type,target,o)=>({type,target,...(o||{})});
+const E=(n,d,ex)=>({n,d,ex:ex||null});
+const LV=(n,goal,test,ex,cue)=>({n,goal,test,ex,cue});
+const SKILLS = [
+/* ---------- Körpergewicht ---------- */
+{id:'klimmzug',n:'Klimmzug',cat:'kg',load:3,area:'Rücken, Bizeps, Griff',
+ intro:'Vom aktiven Hängen bis zum Klimmzug mit Zusatzgewicht. Grundlage für Muscle-up und Front Lever.',
+ lv:[LV('Aktiv hängen','30 s aktiv hängen, Schultern weg von den Ohren',T('hold',30),[E('Aktives Hängen','3 × 20–30 s','deadhang'),E('Schulterblatt-Klimmzüge','3 × 6–8','scappull'),E('Negative Klimmzüge','3 × 3, je 5 s ablassen','negpull')],'Erst die Schulterblätter nach unten ziehen, dann die Arme beugen.'),
+  LV('Erster Klimmzug','1 sauberer Klimmzug aus dem toten Hang, Kinn klar über der Stange',T('reps',1),[E('Negative Klimmzüge','4 × 3, je 5–8 s','negpull'),E('Klimmzug mit Bandhilfe','3 × 5–8','assistpull'),E('Oben halten','3 × 10–20 s','flexhang')],'Brust zur Stange, nicht nur das Kinn recken.'),
+  LV('5 am Stück','5 saubere Klimmzüge am Stück',T('reps',5),[E('Klimmzug-Leiter','1-2-3 Wdh., 2–3 Durchgänge','pullup'),E('Negative Klimmzüge','2 × 3 langsam','negpull'),E('Über den Tag verteilt','5 × die Hälfte deines Maximums','pullup')],'Jede Wiederholung unten ganz strecken.'),
+  LV('10 am Stück','10 saubere Klimmzüge am Stück',T('reps',10),[E('Klimmzüge','5 × 5, 2 min Pause','pullup'),E('Klimmzüge Untergriff','3 × Maximum minus 2','chinup'),E('Pausierte Klimmzüge','3 × 3, oben 2 s halten','pullup')],'Körper leicht hohl, Beine geschlossen, kein Schwung.'),
+  LV('15 am Stück','15 saubere Klimmzüge am Stück',T('reps',15),[E('Klimmzüge','4 × 8–10','pullup'),E('Weite Klimmzüge','3 × 6','widepull'),E('Commando-Klimmzüge','3 × 4 pro Seite','commando')],'Gleichmäßiges Tempo, unten kurz ruhig werden.'),
+  LV('Gewichtet','3 Klimmzüge mit Zusatzgewicht von einem Viertel deines Körpergewichts',T('kgbw',0.25,{reps:3,add:true}),[E('Klimmzüge mit Zusatzgewicht','5 × 3, 2–3 min Pause','weightpull'),E('Klimmzüge','2 × 8 ohne Gewicht','pullup'),E('Handtuch-Klimmzüge','2 × 3–5 für den Griff','towelpull')],'Kurzhantel zwischen die Füße klemmen oder Rucksack mit Scheiben.')],
+ tech:['Start im toten Hang, Arme ganz gestreckt, Griff etwas mehr als schulterbreit.','Bewegung beginnt mit den Schulterblättern: nach unten und leicht zusammen, dann die Ellbogen Richtung Hüfte ziehen.','Brust zur Stange, Blick geradeaus. Das Kinn landet über der Stange, ohne den Kopf zu recken.','Bauch fest, Po angespannt, Beine geschlossen und leicht vor dem Körper (Hollow).','Ablassen in 2 bis 3 Sekunden bis ganz unten, Schultern bleiben dabei aktiv.','Unten einatmen, beim Hochziehen ausatmen oder oben kurz die Luft halten.'],
+ err:['Halbe Wiederholungen ohne volle Streckung unten.','Kinn nach vorn recken statt Brust zur Stange.','Strampeln oder Schwung aus der Hüfte: zählt nicht als sauber.','Schultern ziehen zu den Ohren, dadurch Stress im Schultergelenk.'],
+ drills:[['Schulterblatt-Klimmzüge','3 × 8','Lehrt, den Zug aus dem Rücken zu starten statt aus den Armen.'],['Negative Klimmzüge','3 × 3, je 5–8 s','Exzentrische Kraft wächst schneller und überträgt sich auf den ganzen Klimmzug.'],['Hollow-Hang','3 × 20 s','Bauch und Po am Hang fest: kein Pendeln, mehr Kraft pro Wiederholung.'],['Klimmzug mit Bandhilfe und Pause','3 × 5, oben 2 s halten','Stärkt den schwächsten Punkt kurz vor der Stange.'],['Totes Hängen','2 × Maximum','Wenn der Griff vor dem Rücken aufgibt.']],
+ plan:['Klimmzüge stehen schon im Kraftplan. An Krafttagen reicht der Test am Ende, sonst an freien Tagen 2 bis 3 Einheiten pro Woche.','Für Stufe 2 bis 4 wirkt „Greasing the Groove“ gut: über den Tag 5 bis 8 lockere Sätze mit der Hälfte deines Maximums, nie bis zum Versagen.','Test nur ausgeruht, am Anfang der Einheit.'],
+ safe:['Bei Ziehen im inneren Ellbogen Untergriff weglassen und Volumen halbieren.','Türrahmenstange vor jeder Einheit auf festen Sitz prüfen.']},
+
+{id:'einarmliege',n:'Einarmiger Liegestütz',cat:'kg',load:2,area:'Brust, Trizeps, Core',
+ intro:'Vom perfekten Liegestütz über Archer-Varianten bis zum einarmigen Liegestütz auf dem Boden.',
+ lv:[LV('20 perfekte','20 Liegestütze am Stück, Körper wie ein Brett, Brust bis knapp über den Boden',T('reps',20),[E('Liegestütze in Zeitlupe','3 × 8, je 3 s ab','tempopush'),E('Enge Liegestütze','3 × 10','closepush'),E('Unterarmstütz','3 × 40 s','plank')],'Ellbogen etwa 45 Grad vom Körper, nicht seitlich ausgestellt.'),
+  LV('Archer','5 Archer-Liegestütze pro Seite',T('reps',5),[E('Archer-Liegestütze','4 × 3–5 pro Seite','archer'),E('Liegestütze, Füße erhöht','3 × 10','pushup'),E('Schulter-Tippen im Stütz','3 × 10 pro Seite','shtaps')],'Der gestreckte Arm hilft nur mit, die Arbeit macht der gebeugte.'),
+  LV('Einarmig erhöht','5 einarmige Liegestütze pro Seite mit Händen auf der Bank',T('reps',5),[E('Einarmige Liegestütze an der Bank','4 × 3–5 pro Seite'),E('Archer-Liegestütze','3 × 5 pro Seite','archer'),E('Seitstütz','3 × 30 s pro Seite','sideplank')],'Füße weit auseinander, Hüfte bleibt parallel zum Boden.'),
+  LV('Einarmig Boden','1 einarmiger Liegestütz pro Seite auf dem Boden',T('reps',1),[E('Negative einarmige Liegestütze','4 × 2 pro Seite, 5 s ab'),E('Einarmig am Liegestützbrett (niedrig)','3 × 3 pro Seite'),E('Archer-Liegestütze','3 × 6 pro Seite','archer')],'Freie Hand auf den Rücken, Rumpf gegen die Drehung anspannen.'),
+  LV('5 einarmig','5 einarmige Liegestütze pro Seite am Stück',T('reps',5),[E('Einarmige Liegestütze','5 × 2–3 pro Seite'),E('Explosive Liegestütze','3 × 5','clap'),E('Seitstütz mit Hüftheben','3 × 10 pro Seite','sideplankhip')],'Langsam ab, kraftvoll hoch, Schulter bleibt über der Hand.')],
+ tech:['Hände unter den Schultern, Finger leicht gespreizt, Druck über die ganze Handfläche.','Körperspannung von Kopf bis Ferse: Po fest, Bauch fest, Rippen nicht nach vorn kippen.','Beim einarmigen Liegestütz Füße weit auseinander, je enger, desto schwerer.','Die Stützhand dreht leicht nach außen, der Ellbogen bleibt nah am Körper.','Unten kurz die Brust nahe am Boden, oben Schulterblätter auseinander drücken.'],
+ err:['Hüfte hängt durch oder ragt nach oben.','Ellbogen schießen seitlich weg, die Schulter wird gereizt.','Beim Einarmigen dreht der Rumpf auf, die Arbeit wandert in die Rotation.'],
+ drills:[['Liegestütz in Zeitlupe','3 × 5, je 4 s ab, 1 s Pause','Mehr Zeit unter Spannung, sauberere Linie.'],['Plank mit einem Arm','3 × 15 s pro Seite','Lernt die Anti-Rotation, die der einarmige Liegestütz braucht.'],['Liegestütz-Plus','2 × 12','Oben die Schulterblätter weit auseinander schieben: gesunde Schulter.']],
+ plan:['2 Einheiten pro Woche, gut nach dem Krafttag oder an freien Tagen.','Bei Stufe 3 und 4 die Hände schrittweise tiefer stellen: Bank, Liegestützbrett, Boden.'],
+ safe:['Bei Schmerzen im Handgelenk auf Fäusten oder Liegestützgriffen arbeiten.']},
+
+{id:'handstand',n:'Handstand',cat:'kg',load:2,area:'Schultern, Core, Balance',
+ intro:'Von der Wand zum freien Handstand. Viel Technik, wenig Kraft: täglich kurz üben bringt am meisten.',
+ lv:[LV('Wand, Bauch zur Wand','30 s im Handstand mit dem Bauch zur Wand, Hände 10–20 cm vor der Wand',T('hold',30),[E('Wall Walks','3 × 3','wallwalk'),E('Handstand an der Wand','4 × 15–30 s','wallhs'),E('Pike Push-ups','3 × 8','pike')],'Arme durchgestreckt, Ohren zwischen den Armen, Blick zu den Händen.'),
+  LV('Wand 60 s','60 s an der Wand mit gerader Linie',T('hold',60),[E('Handstand an der Wand','3 × 45–60 s','wallhs'),E('Schulter-Tippen an der Wand','3 × 5 pro Seite'),E('Hollow Hold','3 × 30 s','hollow')],'Rippen rein, Po fest, Fußspitzen strecken.'),
+  LV('Erste freie Sekunden','5 s frei stehen nach dem Abheben von der Wand oder Hochschwingen',T('hold',5),[E('Zehen von der Wand lösen','6 × 5–10 s','wallhs'),E('Hochschwingen und Abrollen üben','10 Versuche'),E('Krähe','3 × 20 s','crow')],'Balance kommt aus den Fingern: zu weit vorn, Finger drücken.'),
+  LV('15 s frei','15 s freier Handstand',T('hold',15),[E('Freie Versuche','10–15 Versuche, je max 20 s'),E('Handstand an der Wand','2 × 60 s','wallhs'),E('Schulter-Dislocates mit Band','2 × 10','dislocate')],'Kleine Korrekturen mit den Fingern und Handballen.'),
+  LV('30 s frei','30 s freier Handstand',T('hold',30),[E('Freie Versuche','10 Versuche, Ziel 30 s'),E('Gestreckte Linie an der Wand, Rücken zur Wand','2 × 45 s','wallhs')],'Atem ruhig weiterfließen lassen.'),
+  LV('60 s frei','60 s freier Handstand',T('hold',60),[E('Freie Versuche','6–8 lange Versuche'),E('Handstand-Liegestütz Vorstufen','3 × 5','hspu')],'Locker bleiben: zu viel Spannung macht wackelig.')],
+ tech:['Hände schulterbreit, Finger gespreizt, Zeigefinger zeigen nach vorn.','Arme ganz gestreckt, Schultern aktiv zu den Ohren schieben (Schultern hoch, nicht zusammen sacken).','Rippen zum Becken ziehen, Po fest, Beine geschlossen: der Körper ist eine Linie.','Blick zwischen die Hände oder leicht vor die Finger.','Balance über die Hände: kippst du Richtung Rücken, drückst du mit den Fingern; kippst du zurück, mit dem Handballen.','Abrollen oder seitlich abdrehen (Radschlag) lernen, bevor du frei übst.'],
+ err:['Hohlkreuz, die Banane: Rippen stehen vor.','Gebeugte Arme oder versunkene Schultern.','Zu kräftiges Hochschwingen, dadurch Überkippen.'],
+ drills:[['Wall Walk mit Halten','3 × 2, je 10 s oben','Gewöhnt Schultern und Kopf an die Position.'],['Schulter-Hochdrücken im Hang an der Wand','3 × 10','Trainiert das aktive Hochschieben der Schultern.'],['Handgelenk-Aufwärmen','2 min vor jeder Einheit','Kreisen, Handflächen und Handrücken dehnen: schützt die Handgelenke.'],['Radschlag aus dem Handstand','5 × pro Seite','Sicherer Ausstieg, nimmt die Angst.']],
+ plan:['Am besten täglich 10 bis 15 Minuten, ausgeruht. Lieber oft kurz als selten lang.','Freie Versuche zählen erst, wenn du an der Wand 60 s sauber hältst.'],
+ safe:['Platz frei räumen, nichts Hartes hinter dir.','Bei Bluthochdruck oder Augenerkrankungen (z. B. Glaukom) erst ärztlich abklären.']},
+
+{id:'hspu',n:'Handstand-Liegestütz',cat:'kg',load:3,area:'Schultern, Trizeps',
+ intro:'Senkrechtes Drücken mit dem ganzen Körpergewicht. Vom Pike Push-up zur vollen Wiederholung an der Wand.',
+ req:'Handstand an der Wand 30 s (Skill Handstand Stufe 1).',
+ lv:[LV('Pike Push-up','10 Pike Push-ups, Kopf berührt den Boden vor den Händen',T('reps',10),[E('Pike Push-ups','4 × 6–10','pike'),E('Schulterdrücken stehend','3 × 8','ohp'),E('Handstand an der Wand','3 × 30 s','wallhs')],'Hüfte hoch, Kopf landet vor den Händen, sodass ein Dreieck entsteht.'),
+  LV('Erhöhter Pike','10 Pike Push-ups mit Füßen auf der Bank',T('reps',10),[E('Pike Push-ups, Füße auf der Bank','4 × 6–10','pike'),E('Schulterdrücken Kurzhanteln','3 × 8','dbohp')],'Hüfte möglichst über den Schultern.'),
+  LV('Negativ an der Wand','5 langsame negative Handstand-Liegestütze (je 5 s)',T('reps',5),[E('Negative an der Wand','4 × 3, je 5 s','hspu'),E('Halbe Wiederholungen auf Kissen','3 × 5','hspu')],'Kontrolliert ab, Kopf und Hände bilden ein Dreieck.'),
+  LV('Erste volle','1 volle Handstand-Liegestütze an der Wand',T('reps',1),[E('Handstand-Liegestütze, Kissen unter dem Kopf','5 × 2–3','hspu'),E('Negative','3 × 3','hspu')],'Ellbogen leicht nach vorn, nicht seitlich.'),
+  LV('5 volle','5 volle Handstand-Liegestütze an der Wand',T('reps',5),[E('Handstand-Liegestütze','5 × 2–4','hspu'),E('Pike Push-ups erhöht','2 × 10','pike')],'Ruhig ausatmen beim Drücken.')],
+ tech:['Hände schulterbreit, etwa eine Handbreit vor der Wand.','Ab in ein Dreieck: Kopf etwas vor die Hände, nicht direkt dazwischen.','Ellbogen zeigen schräg nach vorn, etwa 45 Grad.','Druck durch die ganze Hand, oben Schultern zu den Ohren schieben.'],
+ err:['Ellbogen fallen seitlich weg.','Kopf knallt auf den Boden: immer weiche Unterlage, kontrolliert ablassen.','Hohlkreuz an der Wand.'],
+ drills:[['Pike Hold','3 × 20 s','Gewöhnt Schultern an das Körpergewicht über dem Kopf.'],['Teilwiederholungen auf Kissenstapel','3 × 5','Kissen nach und nach abbauen, so wächst die Bewegungsweite.']],
+ plan:['2 Einheiten pro Woche, nicht am Tag vor dem Krafttag mit Schulterdrücken.'],
+ safe:['Immer Kissen oder Matte unter den Kopf.','Bei Nackenproblemen nur bis Stufe 2 üben.']},
+
+{id:'pistol',n:'Pistol Squat',cat:'kg',load:2,area:'Beine, Balance, Hüfte',
+ intro:'Die einbeinige Kniebeuge bis ganz unten. Braucht Kraft, Sprunggelenk-Beweglichkeit und Balance.',
+ lv:[LV('Box-Pistol','5 einbeinige Kniebeugen pro Seite auf die Bank',T('reps',5),[E('Einbeinig auf die Bank setzen','3 × 5 pro Seite'),E('Bulgarische Kniebeuge','3 × 8 pro Seite','bss'),E('Kosakenkniebeuge','3 × 6 pro Seite','cossack')],'Langsam absetzen, nicht fallen lassen.'),
+  LV('Mit Gegengewicht','5 Pistol Squats pro Seite mit einer Kurzhantel vor dem Körper',T('reps',5),[E('Pistol mit Kurzhantel als Gegengewicht','4 × 3–5 pro Seite','pistol'),E('Waden-Dehnung an der Wand','2 × 45 s pro Seite','calfst')],'Gewicht weit nach vorn: das macht es leichter.'),
+  LV('Erster Pistol','1 Pistol Squat pro Seite ohne Hilfe',T('reps',1),[E('Pistol Squat','5 × 1–2 pro Seite','pistol'),E('Negative Pistols','3 × 3 pro Seite, 5 s ab','pistol')],'Unten nicht entspannen: die Spannung bleibt.'),
+  LV('5 Pistols','5 Pistol Squats pro Seite am Stück',T('reps',5),[E('Pistol Squat','4 × 3–5 pro Seite','pistol'),E('Shrimp Squat','3 × 3 pro Seite','shrimp')],'Ferse bleibt am Boden, Knie zeigt über die Zehen.'),
+  LV('Gewichtet','5 Pistols pro Seite mit 10 kg',T('kg',10,{reps:5}),[E('Pistol mit Kurzhantel (Goblet)','4 × 3–5 pro Seite','pistol'),E('Shrimp Squat','3 × 5 pro Seite','shrimp')],'Kurzhantel vor der Brust halten.')],
+ tech:['Stehbein-Fuß ganz am Boden, Ferse bleibt unten.','Freies Bein gestreckt nach vorn, Hüftbeuger aktiv halten.','Arme nach vorn als Gegengewicht.','Knie folgt der Richtung der Zehen, nicht nach innen.','Oberkörper darf sich nach vorn neigen, Rücken bleibt lang.'],
+ err:['Ferse hebt ab: Sprunggelenk zu steif.','Unten „fallen“ und aus dem Schwung hoch.','Knie knickt nach innen.'],
+ drills:[['Sprunggelenk-Mobilisation','2 × 10 pro Seite','Knie über die Zehen zur Wand schieben: mehr Tiefe ohne Ferse abheben.'],['Pistol-Hold unten','3 × 10 s pro Seite','An einem Türrahmen festhalten und unten halten: Kraft am tiefsten Punkt.'],['Bein heben im Sitz','2 × 10 pro Seite','Das freie Bein bleibt sonst am Boden hängen.']],
+ plan:['2 Einheiten pro Woche, nicht vor einem Beintag (Kraft B am Mittwoch).'],
+ safe:['Bei Knieschmerzen nur bis zu schmerzfreier Tiefe.']},
+
+{id:'lsit',n:'L-Sit',cat:'kg',load:2,area:'Core, Hüftbeuger, Trizeps',
+ intro:'Im Stütz sitzen mit gestreckten Beinen. Auf zwei Kurzhanteln als Griffe oder zwischen zwei Stühlen.',
+ lv:[LV('Tuck Sit','20 s im Stütz mit angezogenen Knien',T('hold',20),[E('Stütz mit hohen Schultern','3 × 20 s'),E('Tuck Sit auf Kurzhanteln','4 × 10–20 s','lsit'),E('Hängendes Knieheben','3 × 10','kneeraise')],'Schultern nach unten drücken, langer Hals.'),
+  LV('Ein Bein','15 s mit einem gestreckten Bein, Seiten wechseln',T('hold',15),[E('L-Sit einbeinig','4 × 10–15 s je Seite','lsit'),E('Beinheben auf der Bank','3 × 10','benchlr')],'Gestrecktes Bein aktiv hoch ziehen, Zehen strecken.'),
+  LV('L-Sit 10 s','10 s voller L-Sit',T('hold',10),[E('L-Sit auf Kurzhanteln','5 × 5–10 s','lsit'),E('Kompressionsheben im Sitz','3 × 10')],'Knie durchdrücken, Beine parallel zum Boden.'),
+  LV('L-Sit 20 s','20 s voller L-Sit',T('hold',20),[E('L-Sit auf Kurzhanteln','5 × 10–15 s','lsit'),E('L-Sitz im Hang','3 × 15 s','lhang')],'Ruhig weiteratmen.'),
+  LV('L-Sit 30 s','30 s voller L-Sit',T('hold',30),[E('L-Sit','4 × 15–30 s','lsit'),E('V-Ups','3 × 10','vup')],'Hüfte leicht nach vorn schieben, Schultern tief.')],
+ tech:['Hände neben der Hüfte, Arme gestreckt und gesperrt.','Schultern aktiv nach unten drücken: so hebt sich der Körper.','Becken leicht nach hinten kippen, Beine aus der Hüfte heben.','Knie gestreckt, Füße zusammen, Zehen gestreckt.'],
+ err:['Schultern sacken hoch zu den Ohren.','Gebeugte Knie in den vollen Stufen.','Luft anhalten.'],
+ drills:[['Kompressionsheben','3 × 10','Im Sitz mit gestreckten Beinen die Hände neben die Knie, Beine abheben: trainiert den Hüftbeuger in kurzer Position.'],['Stütz-Hochdrücken','3 × 10','Im Stütz die Schultern auf und ab: lernt das Herunterdrücken.'],['Vorbeuge im Sitz','2 × 45 s','Steife Beinrückseiten machen den L-Sit viel schwerer.']],
+ plan:['3 bis 4 kurze Einheiten pro Woche, passt gut ans Ende jeder Einheit.'],
+ safe:['Kurzhanteln stabil hinlegen, Sechskant-Hanteln rollen nicht.']},
+
+{id:'planche',n:'Planche-Vorstufen',cat:'kg',load:3,area:'Schultern, Core, Handgelenke',
+ intro:'Der waagerechte Stütz ist ein Mehrjahres-Ziel. Diese Stufen bauen die Grundlagen bis zur Advanced Tuck Planche.',
+ lv:[LV('Planche Lean','20 s Planche Lean, Schultern deutlich vor den Händen',T('hold',20),[E('Planche Lean','4 × 15–20 s'),E('Pseudo-Planche-Liegestütze','3 × 8','pseudo'),E('Hollow Hold','3 × 30 s','hollow')],'Arme ganz gestreckt, Rücken leicht rund (Protraktion).'),
+  LV('Krähe','30 s Krähe',T('hold',30),[E('Krähe','4 × 15–30 s','crow'),E('Planche Lean','3 × 20 s')],'Knie hoch an die Oberarme, Blick nach vorn.'),
+  LV('Tuck Planche 5 s','5 s Tuck Planche, Arme gestreckt, Hüfte auf Schulterhöhe',T('hold',5),[E('Tuck Planche','6 × 3–5 s'),E('Pseudo-Planche-Liegestütze','3 × 8','pseudo')],'Rücken rund schieben, Hüfte hoch.'),
+  LV('Tuck Planche 15 s','15 s Tuck Planche',T('hold',15),[E('Tuck Planche','5 × 8–12 s'),E('Planche Lean','3 × 30 s')],'Kein Knie auf den Armen ablegen.'),
+  LV('Advanced Tuck','10 s Advanced Tuck Planche (Rücken flach)',T('hold',10),[E('Advanced Tuck Planche','6 × 4–8 s'),E('Pseudo-Planche-Liegestütze, Füße erhöht','3 × 6','pseudo')],'Rücken flach, Hüfte öffnen.')],
+ tech:['Hände schulterbreit, Finger leicht nach außen oder hinten gedreht, wenn die Handgelenke es mögen.','Arme ganz gestreckt, Ellbogenbeuge zeigt nach vorn.','Schulterblätter weit auseinander schieben (Protraktion), oberer Rücken leicht rund.','Schultern deutlich vor die Hände lehnen: je weiter, desto schwerer.','Becken nach hinten kippen, Po fest.'],
+ err:['Gebeugte Arme: die Last landet im Bizeps-Ansatz.','Schulterblätter fallen zusammen.','Zu schnelles Steigern: Sehnen brauchen Monate.'],
+ drills:[['Handgelenk-Vorbereitung','3 min vor jeder Einheit','Im Vierfüßlerstand Gewicht über die Hände schaukeln, Handrücken und Finger dehnen.'],['Stütz-Plus','3 × 10','Im Stütz Schultern auseinander schieben: das Grundmuster der Planche.'],['Frog Stand mit Lean','3 × 10 s','Aus der Krähe weiter nach vorn: Übergang zur Tuck Planche.']],
+ plan:['3 Einheiten pro Woche, ausgeruht und am Anfang.','Rechne mit Monaten pro Stufe ab Tuck Planche. Das ist normal.'],
+ safe:['Bei Schmerzen im Bizeps-Ansatz oder Handgelenk sofort zurückgehen.']},
+
+{id:'frontlever',n:'Front-Lever-Vorstufen',cat:'kg',load:3,area:'Latissimus, Core',
+ intro:'Waagerecht unter der Stange hängen. Braucht die Klimmzugstange, ideal mit fester Wand- oder Deckenhalterung.',
+ req:'5 saubere Klimmzüge.',
+ lv:[LV('Tuck Lever','10 s Tuck Front Lever',T('hold',10),[E('Tuck Front Lever','5 × 5–10 s'),E('Schulterblatt-Klimmzüge','3 × 8','scappull'),E('Hängendes Knieheben','3 × 10','kneeraise')],'Arme gestreckt, Knie an die Brust, Rücken waagerecht.'),
+  LV('Advanced Tuck','10 s Advanced Tuck (Rücken flach)',T('hold',10),[E('Advanced Tuck Front Lever','5 × 5–8 s'),E('Front-Lever-Ziehen im Tuck','3 × 5')],'Hüfte öffnen, Rücken flach.'),
+  LV('Ein Bein','10 s mit einem gestreckten Bein pro Seite',T('hold',10),[E('Front Lever einbeinig','5 × 5–8 s je Seite'),E('Überzüge','3 × 10','pullover')],'Gestrecktes Bein in Linie mit dem Rumpf.'),
+  LV('Straddle','5 s Straddle Front Lever',T('hold',5),[E('Straddle Front Lever','6 × 3–5 s'),E('Negative Front Lever','3 × 3')],'Beine weit gegrätscht, Po fest.'),
+  LV('Voller Front Lever','3 s voller Front Lever',T('hold',3),[E('Front Lever','6 × 2–3 s'),E('Negative Front Lever','3 × 3')],'Druck mit geraden Armen nach unten zur Hüfte.')],
+ tech:['Arme bleiben gestreckt, Kraft kommt aus dem Latissimus: Stange Richtung Hüfte drücken.','Schulterblätter nach unten ziehen, Brust nicht einsinken lassen.','Becken leicht nach hinten kippen, Bauch fest.','Hilfe: Band um die Stange und unter die Hüfte.'],
+ err:['Gebeugte Arme.','Hüfte hängt unter Schulterhöhe.','Schwung statt Halten.'],
+ drills:[['Überzüge mit Kurzhantel','3 × 10','Trainiert genau die Zugrichtung des Front Levers.'],['Hollow Hold','3 × 30 s','Die Körperform, die du im Hang halten willst.'],['Bandunterstützte Halte','3 × 10 s','Mehr Zeit in der Zielposition.']],
+ plan:['2 bis 3 Einheiten pro Woche, nicht vor dem Krafttag mit Klimmzügen.'],
+ safe:['Nicht an einer Türrahmenstange mit Hebelwirkung, sie kann sich lösen.']},
+
+{id:'muscleup',n:'Muscle-up',cat:'kg',load:3,area:'Rücken, Brust, Trizeps, Explosivkraft',
+ intro:'Vom Hang in den Stütz über der Stange. Explosiver Zug, schneller Übergang, Dip zum Abschluss.',
+ req:'10 Klimmzüge und 15 Dips an der Bank. Nur an einer freien Stange mit Platz über dem Kopf, nicht im Türrahmen.',
+ lv:[LV('Brust zur Stange','5 explosive Klimmzüge, Brust berührt die Stange',T('reps',5),[E('Explosive Klimmzüge','5 × 3','pullup'),E('Dips an der Bank','3 × 15','benchdip'),E('Weite Klimmzüge','3 × 6','widepull')],'So explosiv ziehen, dass die Hände kurz leicht werden.'),
+  LV('Hüfte zur Stange','5 Klimmzüge bis die Stange unter der Brust ist (Bauchnabel-Höhe)',T('reps',5),[E('Hohe Klimmzüge','5 × 3','pullup'),E('Hochziehen weiter Griff','3 × 8','highpull')],'Ziehen nach hinten unten, Körper leicht schräg.'),
+  LV('Negativ','3 langsame negative Muscle-ups',T('reps',3),[E('Negative Muscle-ups','4 × 2, je 5 s'),E('Stütz über der Stange','3 × 15 s')],'Kontrolliert vom Stütz über die Stange in den Hang.'),
+  LV('Erster','1 Muscle-up',T('reps',1),[E('Muscle-up mit Band','5 × 2'),E('Explosive Klimmzüge','3 × 3','pullup')],'Übergang: Handgelenke schnell über die Stange drehen.'),
+  LV('3 Muscle-ups','3 Muscle-ups am Stück',T('reps',3),[E('Muscle-ups','5 × 1–2'),E('Explosive Klimmzüge','3 × 4','pullup')],'Erst sauber, dann Menge.')],
+ tech:['Falscher Griff (Handgelenk über der Stange) erleichtert den Übergang.','Zug nach hinten und unten zur Hüfte, nicht nur nach oben.','Leichter Hollow-Schwung vor dem Zug, kein wildes Kippen.','Am höchsten Punkt Brust schnell über die Stange bringen, dann Dip.'],
+ err:['Einen Arm zuerst rüber (Chicken Wing).','Zu wenig Zughöhe: Explosivität fehlt.'],
+ drills:[['Stütz an der Stange','3 × 20 s','Gewöhnt an die Endposition.'],['Gerade Dips an der Stange','3 × 5','Kraft für den letzten Teil.'],['Übergang am niedrigen Barren oder Stuhl','3 × 5','Lernt die Drehbewegung ohne Höhe.']],
+ plan:['2 Einheiten pro Woche, frisch am Anfang.'],
+ safe:['Nur an einer stabilen Stange mit Platz nach oben. Türrahmen und Kopf vertragen sich nicht.']},
+
+{id:'t2b',n:'Toes to Bar',cat:'kg',load:2,area:'Bauch, Hüftbeuger, Griff',
+ intro:'Im Hang die Zehen kontrolliert zur Stange bringen. Der Core-Skill an der Klimmzugstange.',
+ lv:[LV('Knieheben','10 hängende Knieheben bis über die Hüfte, ohne Schwung',T('reps',10),[E('Hängendes Knieheben','3 × 10','kneeraise'),E('Reverse Crunch auf der Bank','3 × 12','revcrunch')],'Becken einrollen, nicht nur die Beine heben.'),
+  LV('Beine 90 Grad','10 gestreckte Beinheben bis zur Waagerechten',T('reps',10),[E('Hängendes Beinheben gestreckt','3 × 8–10','legraise'),E('Beinheben auf der Bank','3 × 12','benchlr')],'Kontrolliert ablassen, kein Pendeln.'),
+  LV('Erste Toes to Bar','5 Toes to Bar',T('reps',5),[E('Toes to Bar','4 × 3–5','t2b'),E('L-Sitz im Hang','3 × 15 s','lhang')],'Arme leicht nach unten drücken (Latissimus), das hilft.'),
+  LV('10 Toes to Bar','10 Toes to Bar am Stück',T('reps',10),[E('Toes to Bar','4 × 5–8','t2b'),E('Scheibenwischer hängend','3 × 6','wiper')],'Gleichmäßiger Rhythmus.'),
+  LV('15 strikt','15 Toes to Bar ohne Schwung',T('reps',15),[E('Toes to Bar strikt','4 × 8–10','t2b'),E('Scheibenwischer hängend','3 × 8','wiper')],'Unten kurz ruhig werden lassen.')],
+ tech:['Aktiv hängen: Schultern weg von den Ohren.','Bewegung startet mit dem Einrollen des Beckens.','Arme gestreckt lassen und leicht gegen die Stange drücken.','Langsam ablassen, um Pendeln zu vermeiden.'],
+ err:['Großer Schwung aus dem Rücken.','Nur die Beine heben, Becken bleibt starr.'],
+ drills:[['Hollow-Hang','3 × 20 s','Ausgangsposition ohne Pendeln.'],['Kompressionsheben im Sitz','3 × 10','Kraft in kurzer Hüftbeuger-Position.'],['Vorbeuge-Dehnung','2 × 45 s','Steife Beinbeuger bremsen die gestreckten Beine.']],
+ plan:['2 bis 3 Einheiten pro Woche, gern am Ende einer Kraft- oder Skill-Einheit.'],
+ safe:['Bei Leistenschmerzen erst Knieheben sauber festigen.']},
+
+{id:'dragonflag',n:'Dragon Flag',cat:'kg',load:3,area:'Ganzer Rumpf',
+ intro:'Auf der Bank liegend den Körper wie ein Brett heben und senken. Ideal für deine flache Bank.',
+ lv:[LV('Hollow 60 s','60 s Hollow Hold',T('hold',60),[E('Hollow Hold','3 × 30–60 s','hollow'),E('Reverse Crunch auf der Bank','3 × 12','revcrunch')],'Lendenwirbel drücken in den Boden.'),
+  LV('Tuck Dragon Flag','8 Dragon Flags mit gebeugten Knien',T('reps',8),[E('Tuck Dragon Flag','4 × 5–8','dragonflag'),E('Beinheben auf der Bank','3 × 12','benchlr')],'Nur Schultern auf der Bank, Hüfte gestreckt.'),
+  LV('Negativ','5 negative Dragon Flags (je 5 s)',T('reps',5),[E('Negative Dragon Flag','4 × 3–5, je 5 s','dragonflag'),E('Hollow Hold','2 × 45 s','hollow')],'Körper bleibt ein Brett, Hüfte knickt nicht.'),
+  LV('Erste volle','3 volle Dragon Flags',T('reps',3),[E('Dragon Flag','5 × 2–3','dragonflag'),E('Negative','2 × 3','dragonflag')],'Langsam, mit Kontrolle.'),
+  LV('Dragon Flag 8','8 volle Dragon Flags am Stück',T('reps',8),[E('Dragon Flag','4 × 4–6','dragonflag'),E('Dragon Flag Halten auf halber Höhe','3 × 10 s','dragonflag')],'Ausatmen beim Absenken.')],
+ tech:['Rücken auf die Bank, Hände greifen hinter dem Kopf die Bank oder Kanten.','Gewicht liegt auf dem oberen Rücken, nicht auf dem Nacken.','Körper gerade von Schulter bis Fuß, Po fest.','Langsam absenken ist der eigentliche Trainingsreiz.'],
+ err:['Abknicken in der Hüfte.','Last auf dem Nacken.','Schwungholen.'],
+ drills:[['Hollow Rock','3 × 15','Verbindet Bauch und Hüfte zu einer Einheit.'],['Bank-Beinheben mit Hüftheben','3 × 8','Vorstufe für das Hochkommen.']],
+ plan:['2 Einheiten pro Woche, nicht an zwei Tagen hintereinander.'],
+ safe:['Bank mit dem Kopfende an die Wand, damit sie nicht kippt oder rutscht.','Bei Rückenschmerzen nur Hollow-Stufen.']},
+
+{id:'bruecke',n:'Brücke (Rad)',cat:'kg',load:2,area:'Wirbelsäule, Schultern, Hüftbeuger',
+ intro:'Rückbeuge aus der Rückenlage mit gestreckten Armen. Gesund für Brustwirbelsäule und Schultern.',
+ lv:[LV('Schulterbrücke','60 s Schulterbrücke, Hüfte hoch',T('hold',60),[E('Hüftbrücke halten','3 × 30–60 s','bridge'),E('Katze-Kuh','2 × 10','catcow'),E('Hüftbeuger-Dehnung','2 × 45 s pro Seite','hipflex')],'Po fest, Knie zeigen nach vorn.'),
+  LV('Kopfbrücke','5 Kopfbrücken: hochdrücken bis der Kopf aufliegt, 3 s halten',T('reps',5),[E('Kopfbrücke','3 × 5'),E('Brust-Dehnung am Türrahmen','2 × 45 s pro Seite','chest')],'Hände neben den Ohren, Finger zeigen zu den Füßen.'),
+  LV('Volle Brücke 10 s','10 s volle Brücke mit gestreckten Armen',T('hold',10),[E('Volle Brücke','4 × 5–10 s'),E('Brustwirbelsäulen-Rotation','2 × 8 pro Seite','tspine')],'Schultern über die Hände schieben.'),
+  LV('Volle Brücke 30 s','30 s volle Brücke',T('hold',30),[E('Volle Brücke','3 × 20–30 s'),E('Brücke mit Gewichtsverlagerung','3 × 6 vor und zurück')],'Atem fließt weiter.'),
+  LV('Wall Walk','3 × an der Wand in die Brücke laufen und zurück',T('reps',3),[E('Brücke an der Wand herunterlaufen','4 × 2'),E('Volle Brücke','2 × 30 s')],'Hüfte vor, Blick zur Wand.')],
+ tech:['Füße hüftbreit, Zehen nach vorn, Knie nicht nach außen fallen lassen.','Hände neben den Ohren, Finger zu den Schultern.','Zuerst Hüfte heben, dann durch die Arme drücken.','Schultern über die Hände schieben, Arme strecken.'],
+ err:['Knie fallen auseinander.','Druck nur aus dem unteren Rücken.'],
+ drills:[['Brust-Dehnung','2 × 45 s pro Seite','Steife Brustmuskeln verhindern gestreckte Arme.'],['Hüftbeuger-Dehnung','2 × 45 s pro Seite','Öffnet die Vorderseite der Hüfte.'],['Brücke auf Bank-Höhe','3 × 10 s','Hände auf der Bank: leichterer Einstieg.']],
+ plan:['3 Einheiten pro Woche, nach dem Aufwärmen.'],
+ safe:['Bei Bandscheibenproblemen nur Stufe 1.']},
+
+/* ---------- Beweglichkeit ---------- */
+{id:'hocke',n:'Tiefe Hocke',cat:'mob',load:1,area:'Sprunggelenk, Hüfte, Rücken',
+ intro:'Entspannt in der tiefen Hocke sitzen, Fersen am Boden. Gegenmittel zum Bürostuhl.',
+ lv:[LV('Mit Halt 30 s','30 s tiefe Hocke, mit den Händen an einem Türrahmen oder Tisch',T('hold',30),[E('Hocke mit Halt','4 × 30 s'),E('Goblet Squat mit Pause unten','3 × 8, 3 s Pause','goblet'),E('Waden-Dehnung','2 × 45 s pro Seite','calfst')],'Fersen bleiben am Boden.'),
+  LV('Frei 60 s','60 s frei, Fersen am Boden',T('hold',60),[E('Freie Hocke','4 × 45–60 s'),E('Frosch','2 × 60 s','frog')],'Ellbogen drücken die Knie leicht nach außen.'),
+  LV('2 min','2 min frei am Stück',T('hold',120),[E('Freie Hocke','3 × 2 min'),E('Kosakenkniebeuge','2 × 6 pro Seite','cossack')],'Ruhig atmen, Rücken lang werden lassen.'),
+  LV('5 min','5 min am Stück, entspannt',T('hold',300),[E('Hocke im Alltag','Beim Telefonieren, Zähneputzen'),E('Hocke mit Gewichtsverlagerung','2 × 10')],'Nicht verkrampfen.'),
+  LV('10 min','10 min am Stück',T('hold',600),[E('Lange Hocke','1 × 10 min')],'Kleine Bewegungen sind erlaubt.')],
+ tech:['Füße etwa schulterbreit, Zehen leicht nach außen.','Knie zeigen über die Zehen.','Fersen fest am Boden, Gewicht über den Mittelfuß.','Rücken darf unten leicht rund werden, solange es angenehm ist.'],
+ err:['Fersen heben ab: Unterlage unter die Fersen ist am Anfang erlaubt.','Knie fallen nach innen.'],
+ drills:[['Sprunggelenk-Mobilisation an der Wand','2 × 10 pro Seite','Knie über die Zehen Richtung Wand schieben.'],['Goblet-Hocke','3 × 30 s','Die Kurzhantel vorne gibt Gegengewicht und Ruhe.']],
+ plan:['Täglich, gern in die Arbeitspausen streuen. Jede Minute zählt.'],
+ safe:['Bei Knieschmerzen die Tiefe begrenzen.']},
+
+{id:'spagat',n:'Frontspagat',cat:'mob',load:1,area:'Hüftbeuger, Beinrückseite',
+ intro:'Gemessen wird der Abstand vom Schritt zum Boden. Langsamer, aber sehr messbarer Fortschritt.',
+ lv:[LV('Grundlagen','Tiefer Ausfallschritt 2 min pro Seite entspannt halten',T('hold',120),[E('Tiefer Ausfallschritt','2 × 60 s pro Seite','lowlunge'),E('Pyramide','2 × 60 s pro Seite','pyramid'),E('Hüftbeuger-Dehnung','2 × 45 s pro Seite','hipflex')],'Becken gerade nach vorn, nicht aufdrehen.'),
+  LV('30 cm','Abstand Schritt bis Boden 30 cm oder weniger (schwächere Seite)',T('cm',30,{from:50}),[E('Halbspagat (Pyramide kniend)','3 × 45 s pro Seite','pyramid'),E('Spagat mit Blöcken','3 × 45 s pro Seite')],'Vorderes Knie gestreckt, Zehen hoch.'),
+  LV('15 cm','Abstand 15 cm oder weniger',T('cm',15,{from:30}),[E('Spagat mit Blöcken','3 × 60 s pro Seite'),E('Aktives Beinheben','2 × 10 pro Seite')],'Hinteres Bein: Knie zeigt zum Boden.'),
+  LV('Boden','Schritt berührt den Boden (0 cm)',T('cm',0,{from:15}),[E('Spagat','3 × 60 s pro Seite'),E('Anspannen und Lösen (PNF)','3 × 10 s spannen, 20 s tiefer')],'Langsam ausatmen und sinken lassen.'),
+  LV('Aufrecht 30 s','30 s im Spagat, Becken gerade, Oberkörper aufrecht',T('hold',30),[E('Spagat aufrecht','3 × 30 s pro Seite')],'Rippen über dem Becken.')],
+ tech:['Becken zeigt nach vorn, nicht zur Seite aufdrehen.','Vorderes Bein: Knie gestreckt, Kniescheibe zur Decke.','Hinteres Bein: Knie zum Boden, Hüftbeuger wird gedehnt.','Bücher oder Blöcke unter die Hände.','Immer die schwächere Seite messen.'],
+ err:['Wippen oder Schmerzen in Kauf nehmen.','Kalt dehnen.'],
+ drills:[['Anspannen und Lösen (PNF)','3 Runden','10 s gegen den Boden drücken, dann ausatmen und 20 s tiefer sinken.'],['Aktive Beinheber','2 × 10','Bein im Sitz gestreckt heben: macht die neue Beweglichkeit nutzbar.']],
+ plan:['3 bis 5 Einheiten pro Woche, immer nach dem Aufwärmen, 10 bis 15 Minuten.','Messung: Hand hochkant unter den Schritt legen oder Zollstock.'],
+ safe:['Ziehen ist gut, Stechen nicht. Bei Schmerz in der Leiste stoppen.']},
+
+{id:'mittelspagat',n:'Mittelspagat',cat:'mob',load:1,area:'Adduktoren, Hüfte',
+ intro:'Beine zur Seite gegrätscht. Gemessen wird die Höhe vom Schritt zum Boden.',
+ lv:[LV('Grundlagen','Frosch 2 min entspannt halten',T('hold',120),[E('Frosch','3 × 60 s','frog'),E('Kosakenkniebeuge','3 × 6 pro Seite','cossack'),E('Sumo-Kniebeuge','3 × 10','sumosq')],'Rücken lang, Hüfte langsam nach hinten schieben.'),
+  LV('35 cm','Abstand Schritt bis Boden 35 cm oder weniger',T('cm',35,{from:55}),[E('Grätsche an der Wand','3 × 60 s'),E('Kosakenkniebeuge','3 × 8 pro Seite','cossack')],'Zehen zeigen zur Decke oder leicht nach vorn.'),
+  LV('20 cm','Abstand 20 cm oder weniger',T('cm',20,{from:35}),[E('Mittelspagat mit Händen am Boden','3 × 60 s'),E('Kopenhagen-Seitstütz','3 × 20 s pro Seite','copenhagen')],'Becken leicht nach vorn kippen.'),
+  LV('10 cm','Abstand 10 cm oder weniger',T('cm',10,{from:20}),[E('Mittelspagat','3 × 60 s'),E('Anspannen und Lösen','3 Runden')],'Langsam ausatmen.'),
+  LV('Boden','Schritt berührt den Boden',T('cm',0,{from:10}),[E('Mittelspagat','3 × 60 s')],'Geduld: hier dauert es lange.')],
+ tech:['Becken nach vorn kippen, nicht rund in den Rücken sinken.','Kniescheiben zeigen nach vorn oder zur Decke.','Gewicht auf den Händen, langsam tiefer gleiten.'],
+ err:['Knie zeigen zum Boden: Stress im Knie.','Ruckartiges Tiefergehen.'],
+ drills:[['Kopenhagen-Seitstütz','3 × 20 s','Kraft in der Adduktoren-Dehnposition schützt die Leiste.'],['Wand-Grätsche','5 min','Rücken an der Wand liegen, Beine sinken lassen: passiv und entspannt.']],
+ plan:['3 bis 4 Einheiten pro Woche, warm.'],
+ safe:['Bei Leistenschmerz pausieren.']},
+
+{id:'vorbeuge',n:'Vorbeuge',cat:'mob',load:1,area:'Beinrückseite, Rücken',
+ intro:'Im Stand mit gestreckten Beinen nach unten. Gemessen wird der Abstand der Fingerspitzen zum Boden.',
+ lv:[LV('Zehen','Fingerspitzen berühren die Zehen (0 cm)',T('cm',0,{from:20}),[E('Pyramide','2 × 45 s pro Seite','pyramid'),E('Herabschauender Hund','3 × 45 s','dog'),E('Rumänisches Kreuzheben','3 × 10 leicht','rdl')],'Knie gestreckt, aber nicht gesperrt.'),
+  LV('Finger flach','Finger flach am Boden',T('cm',-5,{from:0}),[E('Jefferson Curl leicht','3 × 8','jcurl'),E('Vorbeuge mit Anspannen und Lösen','3 Runden')],'Bauch Richtung Oberschenkel.'),
+  LV('Handflächen','Handflächen flach am Boden',T('cm',-12,{from:-5}),[E('Jefferson Curl','3 × 8','jcurl'),E('Pyramide','2 × 60 s pro Seite','pyramid')],'Ausatmen und sinken lassen.'),
+  LV('Bauch auf Beine','Bauch berührt die Oberschenkel im Sitz (Pike)',T('hold',30),[E('Vorbeuge im Sitz','3 × 60 s'),E('Kompressionsheben','3 × 10')],'Aus der Hüfte beugen.')],
+ tech:['Aus der Hüfte beugen, nicht aus dem Rücken.','Knie leicht weich am Anfang, dann strecken.','Kopf locker hängen lassen.','Messung: Zollstock am Boden, Wert unter null bedeutet tiefer als die Fußsohle.'],
+ err:['Nur den Rücken rund ziehen.','Wippen.'],
+ drills:[['Jefferson Curl mit Kurzhantel','3 × 8 langsam','Wirbel für Wirbel einrollen, sehr leichtes Gewicht: Kraft in der Dehnung.'],['Beinbeuger-Anspannen','3 × 10 s','Ferse in den Boden drücken, dann lösen und tiefer.']],
+ plan:['3 bis 5 kurze Einheiten pro Woche.'],
+ safe:['Jefferson Curl nur leicht und ohne Rückenbeschwerden.']},
+
+{id:'schulter',n:'Schulterbeweglichkeit',cat:'mob',load:1,area:'Schultern, Brust',
+ intro:'Gemessen wird die Griffbreite bei Schulter-Dislocates mit Band oder Besenstiel. Je enger, desto beweglicher.',
+ lv:[LV('Grundlagen','10 Dislocates mit gestreckten Armen in angenehmer Breite',T('reps',10),[E('Schulter-Dislocates','3 × 10','dislocate'),E('Brust-Dehnung','2 × 45 s pro Seite','chest'),E('Außenrotation mit Band','3 × 12','extrot')],'Arme bleiben gestreckt.'),
+  LV('Griff 90 cm','Dislocates mit 90 cm Griffabstand oder enger',T('cm',90,{from:120}),[E('Schulter-Dislocates','3 × 10, Griff schrittweise enger','dislocate'),E('Band Pull-Aparts','3 × 15','pullapart')],'Langsam, Rippen unten.'),
+  LV('Griff 70 cm','70 cm oder enger',T('cm',70,{from:90}),[E('Schulter-Dislocates','3 × 10','dislocate'),E('Brustwirbelsäulen-Rotation','2 × 8 pro Seite','tspine')],'Schultern nicht hochziehen.'),
+  LV('Griff 55 cm','55 cm oder enger',T('cm',55,{from:70}),[E('Schulter-Dislocates','3 × 8','dislocate'),E('Herabschauender Hund','3 × 45 s','dog')],'Kein Hohlkreuz.')],
+ tech:['Band oder Besenstiel mit weitem Griff, Arme gestreckt.','Langsam über den Kopf nach hinten und zurück führen.','Rippen bleiben unten, kein Hohlkreuz.','Abstand zwischen den Daumen messen.'],
+ err:['Ellbogen beugen, um durchzukommen.','Schwung holen.'],
+ drills:[['Außenrotation mit Band','3 × 12','Stärkt die Rotatorenmanschette: Beweglichkeit braucht Kontrolle.'],['Wandrutschen','3 × 10','Rücken an der Wand, Arme gleiten hoch: lernt Bewegung ohne Ausweichen.']],
+ plan:['Täglich 3 bis 5 Minuten, ideal als Aufwärmen vor Krafttagen.'],
+ safe:['Bei Schulterschmerzen nicht enger werden.']},
+
+/* ---------- Mit Geräten ---------- */
+{id:'kreuzheben',n:'Kreuzheben',cat:'ger',load:3,area:'Rückseite, Griff, ganzer Körper',
+ intro:'Meilensteine relativ zu deinem Körpergewicht. Die App rechnet das Ziel aus deinem letzten Gewichtseintrag.',
+ lv:[LV('Technik','8 saubere Wiederholungen mit 60 % deines Körpergewichts',T('kgbw',0.6,{reps:8}),[E('Kreuzheben','3 × 8 leicht','deadlift'),E('Rumänisches Kreuzheben','3 × 10','rdl'),E('Hüftbrücke mit Langhantel','3 × 10','hipbridge')],'Stange am Schienbein, Rücken neutral.'),
+  LV('1 × KG','5 Wiederholungen mit deinem Körpergewicht',T('kgbw',1,{reps:5}),[E('Kreuzheben','4 × 5','deadlift'),E('Rumänisches Kreuzheben','3 × 8','rdl')],'Vor dem Ziehen Spannung aufbauen: Stange „biegen“.'),
+  LV('1,5 × KG','5 Wiederholungen mit dem 1,5-fachen Körpergewicht',T('kgbw',1.5,{reps:5}),[E('Kreuzheben','5 × 5','deadlift'),E('Pendlay-Rudern','3 × 8','pendlay'),E('Farmer\'s Walk','3 × 30 m','farmer')],'Druck durch den ganzen Fuß.'),
+  LV('2 × KG','1 Wiederholung mit dem doppelten Körpergewicht',T('kgbw',2,{reps:1}),[E('Kreuzheben schwer','5 × 3 bei 85 %','deadlift'),E('Kreuzheben Pause unter dem Knie','3 × 2','deadlift')],'Nur an ausgeruhten Tagen testen.'),
+  LV('2,5 × KG','1 Wiederholung mit dem 2,5-fachen Körpergewicht',T('kgbw',2.5,{reps:1}),[E('Kreuzheben schwer','5 × 2 bei 88 %','deadlift'),E('Defizit-Kreuzheben','3 × 3 auf einer Scheibe','deadlift')],'Fortgeschrittenes Ziel, mit Geduld.')],
+ tech:['Füße hüftbreit, Stange über dem Mittelfuß.','Schienbeine an die Stange, Hände knapp außen.','Brust raus, Latissimus anspannen („Achseln zusammen“), Rücken neutral.','Ziehen, indem du den Boden wegdrückst. Stange bleibt am Körper.','Oben Hüfte strecken, nicht ins Hohlkreuz lehnen.','Ablassen: Hüfte zuerst nach hinten, Stange nah am Bein.'],
+ err:['Runder Rücken beim Abheben.','Hüfte schießt zuerst hoch.','Stange entfernt sich vom Körper.','Ruckartiger Start ohne Spannung.'],
+ drills:[['Pausiertes Kreuzheben','3 × 3, 2 s Pause unter dem Knie','Festigt die Position im schwächsten Bereich.'],['Rumänisches Kreuzheben','3 × 8','Lernt den Hüftknick.'],['Griffkraft: Halten oben','3 × 15 s','Wenn die Stange aus der Hand rutscht.']],
+ plan:['Kreuzheben steht im Kraftplan. Test am Ende eines Zyklus oder direkt nach dem Aufwärmen am Kraft-Tag.','Ein Test pro 3 bis 4 Wochen reicht. Zwischendurch zählt die Arbeit an der Stufe.'],
+ safe:['Nur bei grüner Ampel testen.','Bei Rückenschmerzen keine Maximalversuche.']},
+
+{id:'frontsq',n:'Frontkniebeuge',cat:'ger',load:3,area:'Beine, Core, oberer Rücken',
+ intro:'Kniebeuge ohne Rack: Stange per Umsetzen auf die Schultern bringen. Alternative Zercher-Kniebeuge.',
+ req:'Ab Stufe 2 brauchst du das Umsetzen (Skill Umsetzen Stufe 2).',
+ lv:[LV('Goblet tief','10 Goblet Squats tief mit 30 % deines Körpergewichts',T('kgbw',0.3,{reps:10}),[E('Goblet Squat','3 × 10, 2 s unten','goblet'),E('Tiefe Hocke','2 × 60 s')],'Ellbogen zwischen die Knie.'),
+  LV('0,75 × KG','5 Frontkniebeugen mit dem 0,75-fachen Körpergewicht',T('kgbw',0.75,{reps:5}),[E('Frontkniebeuge','4 × 5'),E('Zercher-Kniebeuge','3 × 6','zercher')],'Ellbogen hoch, Stange liegt auf den Schultern.'),
+  LV('1 × KG','5 Frontkniebeugen mit deinem Körpergewicht',T('kgbw',1,{reps:5}),[E('Frontkniebeuge','5 × 5'),E('Bulgarische Kniebeuge','3 × 8','bss')],'Oberkörper aufrecht.'),
+  LV('1,25 × KG','3 Frontkniebeugen mit dem 1,25-fachen Körpergewicht',T('kgbw',1.25,{reps:3}),[E('Frontkniebeuge','5 × 3'),E('Pausierte Frontkniebeuge','3 × 3','zercher')],'Knie folgen den Zehen.')],
+ tech:['Stange auf den vorderen Schultern, Finger locker unter der Stange, Ellbogen hoch.','Füße schulterbreit, Zehen leicht nach außen.','Tief gehen, Oberkörper bleibt aufrecht.','Ellbogen bleiben auf dem Weg hoch oben, sonst rollt die Stange nach vorn.','Ohne Rack: Umsetzen in die Frontposition, nach dem Satz kontrolliert absetzen.'],
+ err:['Ellbogen fallen ab, Rücken rundet.','Fersen heben ab.'],
+ drills:[['Frontposition halten','3 × 20 s','Gewöhnt Handgelenke und Lat an die Ablage.'],['Pausierte Goblet-Kniebeuge','3 × 5, 3 s unten','Kraft und Position unten.']],
+ plan:['1 Einheit pro Woche zusätzlich zum Kraftplan oder als Tausch für die Kniebeuge-Übung.'],
+ safe:['Ohne Rack und Ablage keine Grenzversuche: Satz endet mit 1 bis 2 Wiederholungen Reserve.']},
+
+{id:'bankdr',n:'Kurzhantel-Bankdrücken',cat:'ger',load:3,area:'Brust, Schultern, Trizeps',
+ intro:'Ohne Rack ist Kurzhantel-Bankdrücken die sichere Wahl. Gewicht pro Hand relativ zum Körpergewicht.',
+ lv:[LV('0,25 × KG','10 Wiederholungen mit je einem Viertel deines Körpergewichts pro Hand',T('kgbw',0.25,{reps:10,each:true}),[E('Bankdrücken','3 × 10','dbbench'),E('Fliegende auf der Bank','3 × 12','dbfly')],'Schulterblätter zusammen, Füße fest am Boden.'),
+  LV('0,35 × KG','8 Wiederholungen mit je 0,35 × KG pro Hand',T('kgbw',0.35,{reps:8,each:true}),[E('Bankdrücken','4 × 8','dbbench'),E('Bodendrücken','3 × 8','floorpress')],'Hanteln über der Brust, nicht über dem Gesicht.'),
+  LV('0,45 × KG','6 Wiederholungen mit je 0,45 × KG pro Hand',T('kgbw',0.45,{reps:6,each:true}),[E('Bankdrücken','5 × 6','dbbench'),E('Squeeze Press','3 × 10','squeeze')],'Kontrolliert ab, 1 s Pause unten.'),
+  LV('0,55 × KG','5 Wiederholungen mit je 0,55 × KG pro Hand',T('kgbw',0.55,{reps:5,each:true}),[E('Bankdrücken','5 × 5','dbbench'),E('Liegestütze mit Band','3 × 10','bandpush')],'Hanteln sicher auf die Oberschenkel bringen.')],
+ tech:['Hanteln auf den Oberschenkeln, beim Hinlegen mit den Knien hochkippen.','Schulterblätter zusammen und nach unten, leichter Bogen im oberen Rücken.','Ellbogen etwa 45 bis 60 Grad vom Körper.','Ablassen bis die Hanteln neben der Brust sind, dann nach oben und leicht zusammen drücken.'],
+ err:['Ellbogen seitlich bei 90 Grad.','Po hebt von der Bank.','Hanteln unkontrolliert fallen lassen.'],
+ drills:[['Pausiertes Bankdrücken','3 × 5, 2 s Pause unten','Kraft aus der tiefen Position.'],['Liegestütz-Plus','2 × 12','Gesunde Schulterblattbewegung.']],
+ plan:['Bankdrücken steht im Kraftplan. Test am Kraft-Tag statt des ersten Arbeitssatzes.'],
+ safe:['Bank mit Kopfende an die Wand.']},
+
+{id:'ohp',n:'Überkopfdrücken',cat:'ger',load:3,area:'Schultern, Trizeps, Core',
+ intro:'Stehendes Langhantel-Drücken. Ohne Rack: Umsetzen, dann drücken.',
+ lv:[LV('0,4 × KG','8 Wiederholungen mit 40 % deines Körpergewichts',T('kgbw',0.4,{reps:8}),[E('Schulterdrücken stehend','3 × 8','ohp'),E('Schulterdrücken Kurzhanteln','3 × 10','dbohp')],'Po und Bauch fest, kein Hohlkreuz.'),
+  LV('0,6 × KG','5 Wiederholungen mit 60 %',T('kgbw',0.6,{reps:5}),[E('Schulterdrücken stehend','4 × 5','ohp'),E('Pike Push-ups','3 × 8','pike')],'Kopf nach hinten weg, Stange gerade nach oben.'),
+  LV('0,75 × KG','3 Wiederholungen mit 75 %',T('kgbw',0.75,{reps:3}),[E('Schulterdrücken stehend','5 × 3','ohp'),E('Umsetzen und Drücken','3 × 3','cleanpress')],'Oben Kopf durch die Arme schieben.'),
+  LV('1 × KG','1 Wiederholung mit deinem Körpergewicht',T('kgbw',1,{reps:1}),[E('Schulterdrücken schwer','5 × 2','ohp'),E('Handstand-Liegestütze','3 × 3','hspu')],'Sehr anspruchsvolles Ziel.')],
+ tech:['Griff knapp schulterbreit, Unterarme senkrecht.','Stange liegt vorn auf den Schultern, Ellbogen leicht vor der Stange.','Po fest, Bauch fest, kein Zurücklehnen.','Kopf kurz nach hinten, Stange gerade hoch, oben Kopf wieder nach vorn.'],
+ err:['Hohlkreuz und Zurücklehnen.','Stange läuft in einem Bogen um den Kopf.'],
+ drills:[['Halten über Kopf','3 × 20 s','Stabilität in der Endposition.'],['Kurzhantel-Drücken einarmig','3 × 8 pro Seite','Deckt Seitenunterschiede auf.']],
+ plan:['Steht im Kraftplan. Test am Kraft-Tag direkt nach dem Aufwärmen.'],
+ safe:['Bei Schulterschmerzen auf Kurzhanteln ausweichen.']},
+
+{id:'umsetzen',n:'Umsetzen (Power Clean)',cat:'ger',load:3,area:'Explosivkraft, ganzer Körper',
+ intro:'Die Stange explosiv vom Boden auf die Schultern. Schlüssel für Frontkniebeuge und Drücken ohne Rack.',
+ lv:[LV('Muscle Clean','5 Muscle Cleans mit leerer Stange, sauber',T('reps',5),[E('Muscle Clean aus dem Hang','3 × 5 leere Stange'),E('Hochziehen weiter Griff','3 × 5','highpull'),E('Frontposition halten','3 × 20 s')],'Stange nah am Körper, Ellbogen schnell nach vorn.'),
+  LV('Hang Clean 0,5 × KG','3 Hang Power Cleans mit halbem Körpergewicht',T('kgbw',0.5,{reps:3}),[E('Hang Power Clean','5 × 3','powerclean'),E('Rumänisches Kreuzheben','3 × 6','rdl')],'Aus der Hüfte explodieren, dann unter die Stange.'),
+  LV('Vom Boden 0,75 × KG','3 Power Cleans vom Boden mit 75 %',T('kgbw',0.75,{reps:3}),[E('Umsetzen','5 × 3','powerclean'),E('Kreuzheben','3 × 3','deadlift')],'Langsam bis zum Knie, dann schnell.'),
+  LV('1 × KG','1 Power Clean mit deinem Körpergewicht',T('kgbw',1,{reps:1}),[E('Umsetzen','6 × 2','powerclean'),E('Umsetzen und Drücken','3 × 2','cleanpress')],'Ellbogen schnell, Füße landen schulterbreit.')],
+ tech:['Start wie beim Kreuzheben, Schultern etwas vor der Stange.','Bis über das Knie ruhig ziehen, dann Hüfte explosiv strecken (Sprung).','Schultern hochziehen, Ellbogen hoch und außen, unter die Stange fallen.','Ellbogen schnell nach vorn, Stange landet auf den Schultern, Knie leicht gebeugt.'],
+ err:['Mit den Armen ziehen statt aus der Hüfte.','Stange schwingt vom Körper weg.','Ellbogen zu langsam: Stange landet in den Händen.'],
+ drills:[['Hochziehen aus dem Hang','3 × 5','Explosive Hüftstreckung ohne Fangen.'],['Frontposition halten','3 × 20 s','Gewöhnt an die Ablage.'],['Fallen unter die Stange mit Stock','3 × 5','Schnelligkeit der Ellbogen.']],
+ plan:['2 Einheiten pro Woche, immer am Anfang, wenig Wiederholungen, viel Pause.','Videoanalyse hilft sehr: filme dich von der Seite.'],
+ safe:['Nur bei grüner Ampel schwer. Müdigkeit ruiniert die Technik.','Auf weichem Boden mit Gummischeiben üben, wenn möglich.']},
+
+{id:'tgu',n:'Turkish Get-up',cat:'ger',load:2,area:'Schultern, Core, ganzer Körper',
+ intro:'Mit einer Kurzhantel über dem Kopf vom Liegen zum Stehen und zurück. Stabilität pur.',
+ lv:[LV('Ohne Gewicht','3 saubere Get-ups pro Seite ohne Gewicht, Schuh auf der Faust',T('reps',3),[E('Turkish Get-up ohne Gewicht','3 × 2 pro Seite','tgu'),E('Halbe Get-ups','3 × 3 pro Seite','tgu')],'Blick bleibt beim Gewicht.'),
+  LV('0,12 × KG','1 Get-up pro Seite mit 12 % deines Körpergewichts',T('kgbw',0.12,{reps:1}),[E('Turkish Get-up','5 × 1 pro Seite','tgu'),E('Waiter Walk','3 × 20 m pro Seite','waiter')],'Arm senkrecht, Schulter gepackt.'),
+  LV('0,25 × KG','1 Get-up pro Seite mit einem Viertel deines Körpergewichts',T('kgbw',0.25,{reps:1}),[E('Turkish Get-up','5 × 1 pro Seite','tgu'),E('Halo','3 × 8','halo')],'Langsam, jede Position einen Moment halten.'),
+  LV('0,33 × KG','1 Get-up pro Seite mit einem Drittel deines Körpergewichts',T('kgbw',0.33,{reps:1}),[E('Turkish Get-up','5 × 1 pro Seite','tgu')],'Gewicht sicher ablegen, nie fallen lassen.'),
+  LV('0,5 × KG','1 Get-up pro Seite mit halbem Körpergewicht',T('kgbw',0.5,{reps:1}),[E('Turkish Get-up','6 × 1 pro Seite','tgu')],'Elite-Ziel, mit großer Geduld.')],
+ tech:['Rückenlage, Hantel mit beiden Händen hochdrücken, gleiche Seite Bein aufstellen.','Auf den Ellbogen, dann auf die Hand rollen, Arm mit Hantel bleibt senkrecht.','Hüfte heben, hinteres Bein unter den Körper fädeln, ins Knien kommen.','Aufrichten und aufstehen. Rückweg genau umgekehrt.'],
+ err:['Arm mit Gewicht kippt aus der Senkrechten.','Hektik: Positionen werden übersprungen.'],
+ drills:[['Halber Get-up','3 × 3 pro Seite','Die ersten drei Positionen mit Pausen.'],['Waiter Walk','3 × 20 m','Stabile Schulter über Kopf.']],
+ plan:['2 Einheiten pro Woche, auch gut als Aufwärmen vor Schulter-Tagen.'],
+ safe:['Sechskant-Kurzhantel nutzen. Freie Fläche um dich herum.']},
+
+{id:'ohs',n:'Überkopf-Kniebeuge',cat:'ger',load:2,area:'Beweglichkeit, Schultern, Beine',
+ intro:'Kniebeuge mit gestreckten Armen über dem Kopf. Zeigt jede Steifheit in Schulter, Brustwirbelsäule und Sprunggelenk.',
+ lv:[LV('Mit Band','10 tiefe Überkopf-Kniebeugen mit Band oder Besenstiel',T('reps',10),[E('Überkopf-Kniebeuge mit Stock','3 × 10'),E('Schulter-Dislocates','3 × 10','dislocate'),E('Tiefe Hocke','2 × 60 s')],'Arme gestreckt, Stock über dem Mittelfuß.'),
+  LV('Leere Stange','5 tiefe Wiederholungen mit der leeren Langhantel',T('kgbw',0.15,{reps:5}),[E('Überkopf-Kniebeuge leere Stange','4 × 5'),E('Brustwirbelsäulen-Rotation','2 × 8 pro Seite','tspine')],'Achseln nach vorn drehen, Stange über dem Hinterkopf.'),
+  LV('0,5 × KG','3 Wiederholungen mit halbem Körpergewicht',T('kgbw',0.5,{reps:3}),[E('Überkopf-Kniebeuge','5 × 3'),E('Umsetzen und Drücken','3 × 3','cleanpress')],'Langsam ab, unten stabil, dann hoch.'),
+  LV('0,75 × KG','3 Wiederholungen mit 75 %',T('kgbw',0.75,{reps:3}),[E('Überkopf-Kniebeuge','5 × 3'),E('Kniebeuge mit Pause','3 × 3')],'Arme sperren, Schultern aktiv.')],
+ tech:['Weiter Griff (Reißgriff), Stange über dem Hinterkopf, Arme ganz gestreckt.','Schultern zu den Ohren schieben, Achseln nach vorn drehen.','Stange bleibt über dem Mittelfuß, während du tief gehst.','Ohne Rack: Umsetzen, Drücken im weiten Griff oder per Kurzhantel einarmig üben.'],
+ err:['Stange wandert nach vorn.','Fersen heben ab.','Arme werden weich.'],
+ drills:[['Einarmige Überkopf-Kniebeuge mit Kurzhantel','3 × 5 pro Seite','Leichter einzurichten, deckt Seitenunterschiede auf.'],['Stock-Kniebeuge an der Wand','3 × 8','Gesicht zur Wand: zwingt in eine aufrechte Haltung.']],
+ plan:['2 Einheiten pro Woche, gut als Aufwärmen vor Beintagen.'],
+ safe:['Abbruch nach hinten lernen: Stange nach hinten fallen lassen, nach vorn heraustreten.']},
+
+{id:'rollout',n:'Rollout mit der Langhantel',cat:'ger',load:2,area:'Bauch, Latissimus',
+ intro:'Mit runden Scheiben auf der Langhantel nach vorn rollen. Der härteste Anti-Streck-Skill für den Bauch.',
+ lv:[LV('Kniend halb','10 halbe Rollouts kniend',T('reps',10),[E('Rollout kniend, halbe Strecke','3 × 10','rollout'),E('Body Saw','3 × 10','bodysaw'),E('Unterarmstütz','3 × 45 s','plank')],'Po fest, Bauch fest, kein Hohlkreuz.'),
+  LV('Kniend voll','10 volle Rollouts kniend',T('reps',10),[E('Rollout kniend','4 × 8–10','rollout'),E('Hollow Hold','3 × 30 s','hollow')],'Arme fast über dem Kopf, Hüfte gestreckt.'),
+  LV('Kniend 20','20 volle Rollouts kniend',T('reps',20),[E('Rollout kniend','4 × 12–15','rollout'),E('Negative stehend an die Wand','3 × 3')],'Gleichmäßiges Tempo.'),
+  LV('Stehend 1','1 Rollout im Stand mit voller Strecke',T('reps',1),[E('Stehend an die Wand rollen','5 × 3'),E('Rollout kniend mit Pause vorn','3 × 6','rollout')],'Wand als Stopp: mit jedem Training weiter weg.'),
+  LV('Stehend 5','5 Rollouts im Stand',T('reps',5),[E('Rollout im Stand','5 × 2–3','rollout')],'Ausatmen beim Zurückziehen.')],
+ tech:['Runde Scheiben, die Stange liegt etwa unter den Schultern.','Becken leicht eingerollt, Po fest.','Nach vorn rollen, bis der Körper fast gestreckt ist, Rücken bleibt neutral.','Zurück mit Kraft aus Bauch und Latissimus, nicht aus der Hüfte knicken.'],
+ err:['Hohlkreuz am vorderen Punkt.','Hüfte geht zuerst zurück.'],
+ drills:[['Body Saw','3 × 10','Im Unterarmstütz vor und zurück schieben.'],['Rollout an die Wand','3 × 5','Begrenzt die Strecke sicher.']],
+ plan:['2 Einheiten pro Woche, gern am Ende des Krafttags.'],
+ safe:['Bei Rückenschmerzen nur halbe Strecke.']},
+
+{id:'griff',n:'Griffkraft',cat:'ger',load:1,area:'Unterarme, Hände',
+ intro:'Totes Hängen und Halten. Griffkraft hängt mit Gesundheit im Alter zusammen und hilft bei Kreuzheben und Klimmzügen.',
+ lv:[LV('60 s Hängen','60 s totes Hängen',T('hold',60),[E('Hängen an der Stange','3 × 30–60 s','deadhang'),E('Farmer\'s Walk','3 × 30 m','farmer'),E('Scheiben-Pinchgriff','3 × 20 s','platepinch')],'Locker hängen, Atmung ruhig.'),
+  LV('90 s Hängen','90 s totes Hängen',T('hold',90),[E('Hängen an der Stange','3 × 45–90 s','deadhang'),E('Handgelenk-Curls','3 × 15','wristcurl')],'Ganze Hand um die Stange.'),
+  LV('120 s Hängen','2 min totes Hängen',T('hold',120),[E('Hängen an der Stange','3 × max','deadhang'),E('Handtuch-Hängen','3 × 20 s')],'Daumen um die Stange.'),
+  LV('Einarmig 15 s','15 s einarmig hängen pro Seite',T('hold',15),[E('Einarmig hängen','5 × 5–15 s pro Seite'),E('Handtuch-Klimmzüge','3 × 3','towelpull')],'Schulter aktiv, nicht in das Gelenk sacken.'),
+  LV('Einarmig 30 s','30 s einarmig pro Seite',T('hold',30),[E('Einarmig hängen','5 × 15–30 s pro Seite')],'Andere Hand nur zur Sicherung bereit.')],
+ tech:['Volle Hand, Daumen um die Stange.','Schultern leicht aktiv, damit das Gelenk nicht passiv hängt.','Ruhig atmen, nicht verkrampfen.'],
+ err:['Nur Fingerspitzen.','Pendeln.'],
+ drills:[['Farmer\'s Walk','3 × 30 m','Schwere Kurzhanteln tragen: Griff, Schultern, Core.'],['Scheiben-Pinchgriff','3 × 20 s','Trainiert den Daumen.']],
+ plan:['3 kurze Einheiten pro Woche, passt ans Ende jeder Einheit.'],
+ safe:['Bei Schmerzen im Ellbogen pausieren.']},
+
+/* ---------- Geist ---------- */
+{id:'meditation',n:'Meditation',cat:'geist',load:1,area:'Aufmerksamkeit, Ruhe',kind:'med',
+ intro:'Geführt in Stufen: vom Atemanker bis zur stillen Sitzung. Jede abgeschlossene Einheit zählt auch für die Abend-Meditation im Plan.',
+ lv:[LV('Atemanker','7 Einheiten mit mindestens 5 min',T('sess',7,{min:5}),[E('Atemanker','5 min: Atem an Nase oder Bauch spüren')],'Abschweifen ist normal. Das Zurückkommen ist die Übung.'),
+  LV('Body-Scan','7 Einheiten mit mindestens 10 min',T('sess',7,{min:10}),[E('Body-Scan','10 min: von den Füßen bis zum Kopf')],'Nichts verändern, nur wahrnehmen.'),
+  LV('Zählen und Benennen','10 Einheiten mit mindestens 15 min',T('sess',10,{min:15}),[E('Atemzüge zählen 1 bis 10','und Gedanken kurz benennen')],'„Planen“, „Erinnern“, „Bewerten“, dann zurück.'),
+  LV('Mitgefühl','7 Einheiten mit mindestens 15 min',T('sess',7,{min:15}),[E('Metta','Gute Wünsche für dich, Nahestehende, Fremde, alle')],'Sätze leise wiederholen, Gefühl muss nicht kommen.'),
+  LV('Offenes Gewahrsein','10 Einheiten mit mindestens 20 min',T('sess',10,{min:20}),[E('Offenes Gewahrsein','Atem, Geräusche, Körper, Gedanken: alles darf da sein')],'Wie ein Himmel, durch den Wolken ziehen.'),
+  LV('Stille Sitzung','10 Einheiten mit mindestens 30 min',T('sess',10,{min:30}),[E('Stille Sitzung','Nur Gong zu Beginn und Ende')],'Du brauchst keine Anleitung mehr.')],
+ tech:['Aufrecht sitzen, auf Kissen, Stuhl oder im Fersensitz. Bequem ist wichtiger als perfekt.','Augen schließen oder Blick weich auf den Boden.','Ein Anker: Atem, Körper oder Geräusche. Wenn du abschweifst, bemerken und freundlich zurückkehren.','Gleiche Zeit, gleicher Ort: Gewohnheit macht es leichter.'],
+ err:['Gedanken „abstellen“ wollen. Das klappt nicht und ist nicht das Ziel.','Sich für Abschweifen kritisieren.','Direkt nach dem Essen oder im Bett: man schläft ein.'],
+ drills:[['Drei Atemzüge','mehrmals am Tag','Vor dem Öffnen des Laptops oder vor einer Nachricht: drei bewusste Atemzüge.'],['Gehmeditation','5 min','Langsam gehen, Fußsohlen spüren. Gut, wenn Sitzen zu unruhig ist.'],['Notiz statt Grübeln','nach der Sitzung','Was immer wieder auftauchte, kurz aufschreiben.']],
+ plan:['Täglich am Abend ist im Plan. Morgens wirkt sie oft fokussierender.','Jede Stufe kann so lange dauern, wie du willst. Länger auf einer Stufe ist kein Rückschritt.'],
+ safe:['Bei belastenden Erinnerungen oder Panik: Augen öffnen, Füße spüren, Sitzung beenden. Bei psychischen Erkrankungen mit Fachleuten absprechen.']},
+
+{id:'atem',n:'Atemkontrolle',cat:'geist',load:1,area:'Nervensystem, CO₂-Toleranz',kind:'breath',
+ intro:'Herr über deinen Atem werden: erst Grundlagen, dann wird die Kontrollpause gemessen. Ein längerer Wert zeigt ruhigere Grundatmung.',
+ lv:[LV('Bauchatmung','7 Einheiten Bauchatmung mit mindestens 5 min',T('sess',7,{min:5}),[E('Zwerchfellatmung','5 min, Hand auf den Bauch')],'Bauch hebt sich zuerst, Schultern bleiben ruhig.',),
+  LV('Langer Ausatem','7 Einheiten mit mindestens 10 min',T('sess',7,{min:10}),[E('Kohärenzatmung oder verlängertes Ausatmen','10 min')],'Ausatmen etwas länger als einatmen.'),
+  LV('Kontrollpause 20 s','Kontrollpause 20 s oder mehr',T('hold',20),[E('Kontrollpause messen','morgens vor dem Aufstehen'),E('Sanft reduziertes Atmen','5–10 min')],'Nach normalem Ausatmen Nase zu, Zeit bis zum ersten deutlichen Atemreiz.'),
+  LV('Kontrollpause 25 s','Kontrollpause 25 s oder mehr',T('hold',25),[E('Sanft reduziertes Atmen','10 min'),E('Box-Atmung','5 min')],'Danach ruhig weiteratmen, nicht nach Luft schnappen.'),
+  LV('Kontrollpause 30 s','Kontrollpause 30 s oder mehr',T('hold',30),[E('Sanft reduziertes Atmen','10–15 min'),E('Nasenatmung beim Spaziergang','20 min')],'Auch beim Gehen nur durch die Nase.'),
+  LV('Kontrollpause 40 s','Kontrollpause 40 s oder mehr',T('hold',40),[E('Nasenatmung bei Zone 2','ganze Einheit'),E('Ujjayi','10 min')],'Sehr gute Grundatmung.')],
+ runs:[['belly',0,5],['coherent',0,10],['buteyko',0,10],['buteyko',0,10],['box',0,5],['ujjayi',0,10]],
+ tech:['Kontrollpause messen: ruhig sitzen, normal durch die Nase ein- und ausatmen, Nase zuhalten und Stoppuhr starten.','Stopp beim ersten deutlichen Atemreiz, nicht beim Maximum. Danach muss die Atmung ruhig bleiben.','Am besten morgens nach dem Aufwachen messen, immer unter gleichen Bedingungen.','Grundsatz für den Alltag: durch die Nase, leise, in den Bauch.'],
+ err:['Die Kontrollpause als Luftanhalte-Wettbewerb missverstehen.','Nach dem Messen hastig nach Luft schnappen: Wert war zu lang.'],
+ drills:[['Nasenatmung im Alltag','ganzer Tag','Mund zu beim Gehen, Arbeiten und leichten Training.'],['Kurzer Lufthunger','3 × 1 min','Sanft weniger atmen, bis ein leichter Lufthunger entsteht, und den aushalten.'],['Ausatem verlängern','vor dem Schlafen','4 s ein, 6 bis 8 s aus.']],
+ plan:['Täglich 5 bis 10 Minuten. Die Kontrollpause einmal pro Woche messen.','Ampel Gelb oder Rot: Atemübungen sind die beste Wahl des Tages.'],
+ safe:['Kein Luftanhalten im Wasser oder beim Autofahren. Bei Herz-Kreislauf-Erkrankungen, Schwangerschaft oder Panikstörung mit Ärztin oder Arzt absprechen.']},
+
+{id:'fokus',n:'Fokusblöcke',cat:'geist',load:1,area:'Konzentration, Deep Work',kind:'focus',
+ intro:'Ein Block, eine Aufgabe. Die App zählt Ablenkungen, die du antippst. Weniger Ablenkungen bei längeren Blöcken heißt Fortschritt.',
+ lv:[LV('25 Minuten','3 Blöcke à 25 min',T('sess',3,{min:25}),[E('Fokusblock 25 min','mit 5 min Pause danach')],'Vorher eine Aufgabe in einem Satz aufschreiben.'),
+  LV('25 Minuten ruhig','5 Blöcke à 25 min mit höchstens 2 Ablenkungen',T('sess',5,{min:25,max:2}),[E('Fokusblock 25 min','Handy außer Sichtweite')],'Ablenkung antippen und sofort zurück.'),
+  LV('45 Minuten','5 Blöcke à 45 min mit höchstens 2 Ablenkungen',T('sess',5,{min:45,max:2}),[E('Fokusblock 45 min','danach 10 min Pause')],'Ein Glas Wasser vorher bereitstellen.'),
+  LV('60 Minuten','5 Blöcke à 60 min mit höchstens 1 Ablenkung',T('sess',5,{min:60,max:1}),[E('Fokusblock 60 min','Benachrichtigungen aus')],'Wenn dir etwas einfällt: auf einen Zettel, nicht erledigen.'),
+  LV('Deep Work 90','5 Blöcke à 90 min mit höchstens 1 Ablenkung',T('sess',5,{min:90,max:1}),[E('Deep-Work-Block 90 min','morgens, wenn du am frischesten bist')],'Ein großer Block pro Tag reicht.')],
+ tech:['Vorher: Aufgabe in einem Satz, Ziel des Blocks, alles Nötige bereit.','Handy in einen anderen Raum oder in eine Schublade. Außer Sicht wirkt stärker als stumm.','Nur ein Fenster oder Tab offen. Mail und Chat zu.','Ablenkung bemerkt? In der App antippen, kurz notieren, zurück zur Aufgabe.','Nach dem Block wirklich Pause: aufstehen, Fenster, Wasser, kein Handy.'],
+ err:['Zu lange Blöcke zu früh: lieber erfolgreich 25 Minuten als gescheiterte 90.','Pausen am Handy: das zieht dich heraus.','Mehrere Aufgaben in einen Block packen.'],
+ drills:[['Zettel neben die Tastatur','jeder Block','Gedanken parken statt ihnen nachzugehen.'],['Startritual','1 min','Drei tiefe Atemzüge oder ein physiologischer Seufzer vor dem Start.'],['Langeweile aushalten','5 min am Tag','Einfach warten, ohne Handy: trainiert genau den Muskel, den Ablenkung schwächt.']],
+ plan:['1 bis 3 Blöcke pro Arbeitstag, ideal am Vormittag.','Nach einem Block Box-Atmung für 2 Minuten.'],
+ safe:['Nach 90 Minuten Pause machen, auch wenn es gerade gut läuft.']},
+
+{id:'lesen',n:'Lesen',cat:'geist',load:1,area:'Wissen, Ruhe, Abend ohne Bildschirm',kind:'read',
+ intro:'Bücher eintragen, dezenter Lese-Timer, Seiten mitzählen. Kleine Schritte, die zu einer festen Gewohnheit werden.',
+ lv:[LV('Einstieg','5 Lese-Einheiten mit mindestens 10 min',T('sess',5,{min:10}),[E('10 Minuten lesen','abends statt Handy')],'Buch abends schon auf das Kissen legen.'),
+  LV('Gewohnheit','10 Einheiten mit mindestens 20 min',T('sess',10,{min:20}),[E('20 Minuten lesen','feste Zeit, fester Platz')],'Immer nach derselben Sache lesen, zum Beispiel nach der Meditation.'),
+  LV('Erstes Buch','1 Buch in der App beendet',T('book',1),[E('Buch zu Ende lesen','auch ein kurzes zählt')],'Ein Buch, das langweilt, darfst du abbrechen.'),
+  LV('Tiefe Einheiten','10 Einheiten mit mindestens 30 min',T('sess',10,{min:30}),[E('30 Minuten lesen','Handy in einem anderen Raum')],'Nach 10 Minuten wird es meist leichter.'),
+  LV('Leser','3 Bücher in der App beendet',T('book',3),[E('Weitere Bücher','Liste mit nächsten Büchern führen')],'Nächstes Buch schon bereitlegen.'),
+  LV('Lange Einheiten','10 Einheiten mit mindestens 45 min',T('sess',10,{min:45}),[E('45 Minuten lesen','am Wochenende ideal')],'Notizen am Rand oder in der App machen.')],
+ tech:['Fester Ort und feste Zeit, zum Beispiel 22:00 nach der Meditation, wenn das Licht ausgeht.','Papierbuch oder E-Reader ohne Benachrichtigungen statt Handy.','Ziel in Minuten, nicht in Seiten: das nimmt den Druck.','Am Ende kurz notieren, was hängen geblieben ist.'],
+ err:['„Ich lese nur kurz Nachrichten vorher“: das Handy gewinnt.','Zu schwere Bücher als Einstieg.'],
+ drills:[['Zwei-Minuten-Regel','an müden Tagen','Nur eine Seite lesen. Hauptsache, die Kette reißt nicht.'],['Lese-Erinnerung im Raum','sichtbar','Buch auf den Couchtisch, Handy in die Ladestation im Flur.'],['Rückblick','nach dem Kapitel','In einem Satz zusammenfassen: Das verankert.']],
+ plan:['5 bis 7 Tage pro Woche, ideal abends ohne Bildschirm. Das hilft auch dem Schlaf.'],
+ safe:[]}
+];
+const skById=id=>SKILLS.find(s=>s.id===id);
+
+/* Meditation: geführte Abläufe pro Stufe */
+function medScript(lvl,min){
+  const sec=Math.max(3,min)*60, R=(n,s,note)=>S(n,Math.round(s),null,note,'rest');
+  const open=R('Ankommen',60,'Aufrecht und bequem sitzen, Augen schließen. Drei tiefe Atemzüge, dann den Atem einfach laufen lassen.');
+  const close=R('Abschluss',45,'Atem wieder vertiefen, Finger bewegen. Kurz nachspüren: Wie fühlst du dich jetzt?');
+  const mid=sec-105;
+  if(lvl===0) return [open,R('Atemanker',mid,'Spür den Atem an der Nase oder am Bauch. Wenn Gedanken kommen: bemerken und freundlich zurück zum Atem. Das Zurückkommen ist die Übung.'),close];
+  if(lvl===1){ const parts=['Füße','Unterschenkel und Knie','Oberschenkel','Becken und Bauch','Brust und Rücken','Schultern und Arme','Hände','Nacken, Gesicht und Kopf'];
+    return [open,...parts.map(p=>R('Body-Scan: '+p,mid/parts.length,'Aufmerksamkeit hinlenken, wahrnehmen was da ist: Wärme, Kribbeln, Druck oder nichts. Nichts verändern.')),close]; }
+  if(lvl===2) return [open,R('Atemzüge zählen',mid*.6,'Beim Ausatmen zählen: eins bis zehn, dann von vorn. Verzählt? Bei eins neu beginnen, ohne Urteil.'),R('Gedanken benennen',mid*.4,'Ohne Zählen. Taucht ein Gedanke auf, kurz benennen: „Planen“, „Erinnern“, „Bewerten“. Dann zurück zum Atem.'),close];
+  if(lvl===3){ const p=[['Für dich','Leise wiederholen: Möge ich gesund sein. Möge ich zufrieden sein. Möge ich mit Leichtigkeit leben.'],['Für einen nahen Menschen','Stell dir jemanden vor, der dir gut tut. Möge es dir gut gehen …'],['Für einen neutralen Menschen','Jemand aus dem Alltag, den du kaum kennst. Möge es dir gut gehen …'],['Für einen schwierigen Menschen','Wenn es passt. Sonst wieder zu dir selbst. Möge es dir gut gehen …'],['Für alle','Alle Menschen, alle Lebewesen. Mögen alle gesund und zufrieden sein.']];
+    return [open,...p.map(([n,t])=>R('Mitgefühl: '+n,mid/p.length,t)),close]; }
+  if(lvl===4){ const p=[['Atem',.2,'Den Atem spüren, wo er am deutlichsten ist.'],['Geräusche',.2,'Geräusche kommen und gehen lassen, ohne sie zu benennen.'],['Körper',.2,'Empfindungen im ganzen Körper wahrnehmen.'],['Gedanken',.2,'Gedanken wie Wolken vorbeiziehen sehen. Du bist der Himmel.'],['Offenes Gewahrsein',.2,'Nichts festhalten. Alles darf da sein.']];
+    return [open,...p.map(([n,f,t])=>R(n,mid*f,t)),close]; }
+  return [R('Stille Sitzung',sec,'Nur du und der Atem. Der Gong kommt am Ende.')];
+}
+
+/* ============================== SKILLBANK: DATEN UND FORTSCHRITT ============================== */
+/* Store-Docs: sk-<skillId> {lvl, log:[{at,d,lvl,min,res,dist,ex,note,src}], passed:{lvl:datum}}, sk-meta {pin,hidden}, sk-books {list} */
+function skDoc(id){ const d=Store.get('sk-'+id)||{}; return {lvl:0,log:[],passed:{},...d}; }
+function skSaveDoc(id,d){ Store.put('sk-'+id,d); }
+function skMeta(){ const m=Store.get('sk-meta')||{}; return {pin:[],hidden:[],...m}; }
+function skMetaSave(m){ Store.put('sk-meta',m); }
+function bodyKg(){ const bw=[...(prof().bw||[])].sort((a,b)=>a.d<b.d?-1:1); return bw.length?+bw[bw.length-1].kg:66; }
+function secTxt(s){ s=Math.round(+s||0); if(s<60) return s+' s'; return s%60?Math.floor(s/60)+':'+pad(s%60)+' min':(s/60)+' min'; }
+const e1rm=(kg,r)=>(+kg||0)*(1+Math.min(+r||0,12)/30);
+function skTargetKg(t){ return t.type==='kg'?t.target:Math.round(t.target*bodyKg()*2)/2; }
+function skTargetTxt(t){
+  switch(t.type){
+    case 'reps': return t.target+(t.target===1?' Wiederholung':' Wiederholungen');
+    case 'hold': return secTxt(t.target)+' halten';
+    case 'cm': return 'höchstens '+t.target+' cm';
+    case 'sess': return t.target+' × mindestens '+t.min+' min'+(t.max!=null?', höchstens '+t.max+' Ablenkung'+(t.max===1?'':'en'):'');
+    case 'book': return t.target+(t.target===1?' Buch':' Bücher')+' beendet';
+    case 'kg': case 'kgbw': { const kg=skTargetKg(t); return (t.add?'+':'')+fmtNum(kg,1)+' kg'+(t.each?' je Hand':'')+' × '+t.reps+(t.type==='kgbw'?' ('+fmtNum(t.target,2)+' × '+fmtNum(bodyKg(),1)+' kg KG)':''); }
+  } return '';
+}
+function skResTxt(t,x){
+  if(!x) return '';
+  if(x.src==='read') return (x.min||0)+' min gelesen'+(x.pages?' · '+x.pages+' Seiten':'');
+  const r=x.res||{};
+  switch(t.type){
+    case 'reps': return r.v!=null&&r.v!==''?r.v+' Wdh.':'';
+    case 'hold': return r.v!=null&&r.v!==''?secTxt(r.v):'';
+    case 'cm': return r.v!=null&&r.v!==''?r.v+' cm':'';
+    case 'kg': case 'kgbw': return r.kg!=null&&r.kg!==''?(t.add?'+':'')+fmtNum(r.kg,2)+' kg × '+(r.reps||1):'';
+    case 'sess': return (x.min||0)+' min'+(x.dist!=null?' · '+x.dist+' Ablenk.':'');
+  } return '';
+}
+function booksDoc(){ const b=Store.get('sk-books')||{}; return {list:[],...b}; }
+function booksDone(){ return booksDoc().list.filter(b=>b.status==='fertig').length; }
+/* Fortschritt zur nächsten Stufe: pct 0..1, best als Text, pass */
+function skProg(sk,d,li){
+  const L=sk.lv[li]; if(!L) return {pct:1,pass:true,bestTxt:''};
+  const t=L.test, logs=d.log.filter(x=>x.lvl===li), cl=v=>Math.max(0,Math.min(1,v));
+  if(t.type==='reps'||t.type==='hold'){ const vals=logs.map(x=>+(x.res&&x.res.v)).filter(v=>v>0); const best=vals.length?Math.max(...vals):0;
+    return {pct:cl(best/t.target),pass:best>=t.target,bestTxt:best?(t.type==='hold'?secTxt(best):best+' Wdh.'):''}; }
+  if(t.type==='cm'){ const vals=logs.map(x=>x.res&&x.res.v).filter(v=>v!==''&&v!=null&&!isNaN(+v)).map(Number); if(!vals.length) return {pct:0,pass:false,bestTxt:''};
+    const best=Math.min(...vals), from=Math.max(t.from,vals[0]); return {pct:from===t.target?1:cl((from-best)/(from-t.target)),pass:best<=t.target,bestTxt:best+' cm'}; }
+  if(t.type==='kg'||t.type==='kgbw'){ const tk=skTargetKg(t), base=t.add?bodyKg():0; let best=null, bv=0, pass=false;
+    logs.forEach(x=>{ const r=x.res||{}; if(r.kg===''||r.kg==null) return; const kg=+r.kg, reps=+r.reps||1, v=e1rm(base+kg,reps); if(v>bv){ bv=v; best=r; } if(kg>=tk&&reps>=t.reps) pass=true; });
+    return {pct:pass?1:cl(bv/e1rm(base+tk,t.reps)),pass,bestTxt:best?(t.add?'+':'')+fmtNum(best.kg,2)+' kg × '+(best.reps||1):''}; }
+  if(t.type==='sess'){ const q=logs.filter(x=>(x.min||0)>=t.min&&(t.max==null||(x.dist||0)<=t.max)).length; return {pct:cl(q/t.target),pass:q>=t.target,bestTxt:q+' von '+t.target}; }
+  if(t.type==='book'){ const n=booksDone(); return {pct:cl(n/t.target),pass:n>=t.target,bestTxt:n+' von '+t.target}; }
+  return {pct:0,pass:false,bestTxt:''};
+}
+function skStats(d){
+  const now=Date.now(), l28=d.log.filter(x=>now-x.at<28*864e5), min=d.log.reduce((a,x)=>a+(+x.min||0),0);
+  const mon=mondayOf(new Date()), weeks=[...Array(8)].map((_,i)=>{ const a=addDays(mon,-7*(7-i)), b=addDays(a,7); return d.log.filter(x=>x.d>=a&&x.d<b).length; });
+  const last=d.log.length?d.log[d.log.length-1]:null;
+  const lvlName=l28.length>=8?'intensiv':l28.length>=4?'regelmäßig':l28.length>=1?'locker':'ruht';
+  return {n:d.log.length,min,l28:l28.length,weeks,last,lvlName,lv:l28.length>=8?3:l28.length>=4?2:l28.length>=1?1:0};
+}
+function skFollowed(){ const m=skMeta(); return SKILLS.filter(s=>!m.hidden.includes(s.id)&&(m.pin.includes(s.id)||skDoc(s.id).log.length)); }
+function skLog(id,entry){
+  const sk=skById(id); if(!sk) return null; const d=skDoc(id); const li=entry.lvl!=null?entry.lvl:d.lvl;
+  const before=skProg(sk,d,li).pass;
+  d.log.push({at:Date.now(),d:todayKey(),lvl:li,...entry}); if(d.log.length>400) d.log=d.log.slice(-400);
+  const p=skProg(sk,d,li); if(p.pass&&!d.passed[li]) d.passed[li]=todayKey();
+  skSaveDoc(id,d); const m=skMeta(); if(!m.pin.includes(id)){ m.pin.push(id); skMetaSave(m); }
+  return {pass:p.pass&&!before&&li===d.lvl,li};
+}
+/* Einheiten aus Atemübungen und Abend-Meditation zählen automatisch für die Geist-Skills */
+function skAuto(id,entry){ const r=skLog(id,entry); if(r&&r.pass) setTimeout(()=>toast(skById(id).n+': Stufe geschafft, in der Skillbank freischalten'),1600); }
+function weekBars(w){ const mx=Math.max(1,...w); return `<span class="skweeks" aria-hidden="true">${w.map(v=>`<i style="height:${v?Math.max(18,v/mx*100):6}%" class="${v?'on':''}"></i>`).join('')}</span>`; }
+function pctRing(p,lab){ const C=2*Math.PI*26, f=Math.max(0,Math.min(1,p)); return `<div class="hring ${f>=1?'full':''}"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" class="bg"/><circle cx="32" cy="32" r="26" class="fg ${f?'':'zero'}" stroke-dasharray="${(f*C).toFixed(1)} ${C.toFixed(1)}"/></svg><div class="rv num">${Math.round(f*100)}<small>%</small></div>${lab?`<div class="rl">${esc(lab)}</div>`:''}</div>`; }
+const SKICO={
+  kg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18"/><path d="M8 4v3a4 4 0 0 0 8 0V4"/><circle cx="12" cy="13" r="2"/><path d="M12 15v6M9 21h6"/></svg>',
+  ger:ICONS.ex,
+  mob:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M4 20l5-6 3 2 3-2 5 6M12 6v10"/></svg>',
+  geist:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>',
+  skills:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4v-6H4zM10 20h4V9h-4zM16 20h4V4h-4z"/></svg>'};
+
+/* ============================== TAGESAMPEL ============================== */
+const CK_EXTRA_AREAS=[{k:'quad',n:'Oberschenkel vorne'},{k:'knie',n:'Knie'},{k:'arme',n:'Arme und Ellbogen'},{k:'hand',n:'Handgelenke'}];
+const CK_AREAS=()=>[...MOB_AREAS.map(a=>({k:a.k,n:a.n})),...CK_EXTRA_AREAS];
+const CK_LIGHT={g:{n:'Grün',c:'g',t:'Bereit'},y:{n:'Gelb',c:'y',t:'Mit Bedacht'},r:{n:'Rot',c:'r',t:'Erholung zuerst'}};
+const CK_Q={
+  rec:{q:'Wie erholt fühlst du dich heute?',opts:[[1,'Völlig platt'],[2,'Müde'],[3,'Geht so'],[4,'Gut'],[5,'Topfit']]},
+  cause:{q:'Woran liegt es wohl?',sub:'Mehrere möglich',multi:1,opts:[['schlaf','Zu wenig oder schlecht geschlafen'],['stress','Stress oder viel im Kopf'],['training','Training steckt noch in den Knochen'],['krank','Ich werde krank oder bin krank'],['alkohol','Alkohol oder spätes, schweres Essen'],['essen','Zu wenig gegessen oder getrunken'],['weiss','Weiß ich nicht']]},
+  sick:{q:'Wo sitzen die Beschwerden?',opts:[['hals','Nur oberhalb des Halses: Schnupfen, leichtes Kratzen'],['koerper','Im Körper: Fieber, Gliederschmerzen, Husten, Magen-Darm']]},
+  sleep:{q:'Schlaf und Ruhepuls',sub:'Optional. Die Werte findest du in der Health-App (Schlaf, Herz › Ruhepuls). Die Web-App kann die Apple Watch nicht direkt auslesen.'},
+  sore:{q:'Muskelkater oder Schmerzen?',opts:[[0,'Nichts'],[1,'Leichter Muskelkater'],[2,'Deutlicher Muskelkater'],[3,'Schmerz, der sich anders anfühlt: stechend, im Gelenk, einseitig']]},
+  areas:{q:'Wo spürst du es?',sub:'Antippen, mehrere möglich',multi:1},
+  pain:{q:'Wird der Schmerz bei Bewegung oder Belastung stärker?',opts:[['ja','Ja'],['nein','Nein, eher gleich oder besser']]},
+  stress:{q:'Wie hoch ist dein Stress gerade?',opts:[[1,'Ganz entspannt'],[2,'Locker'],[3,'Normal'],[4,'Hoch'],[5,'Sehr hoch']]},
+  motiv:{q:'Wie viel Lust hast du heute auf Bewegung?',opts:[[1,'Gar keine'],[2,'Wenig'],[3,'Mittel'],[4,'Ziemlich'],[5,'Richtig Lust']]}
+};
+function ckNext(step,a){
+  const order=['rec','cause','sick','sleep','sore','areas','pain','stress','motiv','result'];
+  const skip={cause:()=>!(a.rec<=2),sick:()=>!(a.cause||[]).includes('krank'),areas:()=>!(a.sore>0),pain:()=>a.sore!==3};
+  let i=order.indexOf(step)+1; while(i<order.length&&skip[order[i]]&&skip[order[i]]()) i++; return order[i]||'result';
+}
+function ckGet(k){ const d=Store.get('d-'+(k||todayKey())); return d&&d.check||null; }
+function ckHist(n){ const out=[]; for(let i=n-1;i>=0;i--){ const k=addDays(todayKey(),-i), c=ckGet(k); out.push({k,c}); } return out; }
+function ckBase(){ const v=[]; for(let i=1;i<=21;i++){ const c=ckGet(addDays(todayKey(),-i)); if(c&&+c.rhr) v.push(+c.rhr); } if(v.length<3) return null; v.sort((a,b)=>a-b); return v[Math.floor(v.length/2)]; }
+function ckScore(a){
+  const why=[]; let s=0;
+  s+=(a.rec-1)/4*35;
+  if(a.sleep!=null&&a.sleep!==''){ const h=+a.sleep; s+=Math.max(0,Math.min(1,(h-5)/3))*20; if(h<6) why.push('kurzer Schlaf ('+fmtNum(h,2)+' h)'); }
+  else s+=(a.cause||[]).includes('schlaf')?6:13;
+  s+=[15,11,5,0][a.sore||0]; if(a.sore>=2) why.push(a.sore===3?'Schmerz':'deutlicher Muskelkater');
+  s+=(5-a.stress)/4*15; if(a.stress>=4) why.push('hoher Stress');
+  s+=(a.motiv-1)/4*15; if(a.motiv<=2) why.push('wenig Lust');
+  if(a.rec<=2) why.unshift(a.rec===1?'sehr müde':'müde');
+  const base=ckBase(); if(base&&+a.rhr){ const dif=+a.rhr-base; if(dif>=7){ s-=12; why.push('Ruhepuls '+dif+' über deinem Schnitt'); } else if(dif>=4){ s-=6; why.push('Ruhepuls leicht erhöht'); } }
+  let score=Math.round(Math.max(0,Math.min(100,s))), L=score>=60?'g':score>=30?'y':'r';
+  const sick=(a.cause||[]).includes('krank');
+  if(sick&&a.sick==='koerper'){ L='r'; why.unshift('Beschwerden im Körper'); }
+  else if(sick&&L==='g'){ L='y'; why.unshift('leichte Erkältung'); }
+  if(a.sore===3&&a.pain==='ja'&&L==='g') L='y';
+  if(a.rec===1&&L==='g') L='y';
+  return {score,light:L,why};
+}
+function ckStart(){ const d=dayDoc(todayKey()); UI.ck={step:'rec',hist:[],a:{sleep:d.sleep??'',rhr:'',cause:[],areas:[]}}; UI.modal='ck'; renderCk(); }
+function ckAnswer(v){ const C=UI.ck, q=C.step; C.a[q]=v; ckGo(ckNext(q,C.a)); }
+function ckGo(step){ const C=UI.ck; C.hist.push(C.step); C.step=step; if(step==='result') ckSaveResult(); renderCk(); }
+function ckSaveResult(){
+  const C=UI.ck, a=C.a, r=ckScore(a), k=todayKey(), d=dayDoc(k);
+  d.check={at:Date.now(),rec:a.rec,cause:a.rec<=2?a.cause:[],sick:a.sick||null,sleep:a.sleep===''?null:+a.sleep,rhr:a.rhr===''?null:+a.rhr,sore:a.sore||0,areas:a.sore?a.areas:[],pain:a.sore===3?a.pain:null,stress:a.stress,motiv:a.motiv,score:r.score,light:r.light,why:r.why,choice:null};
+  if(a.sleep!==''&&a.sleep!=null) d.sleep=+a.sleep;
+  saveDay(k,d);
+}
+function ckTrainItems(type){
+  const st=prof().settings, k=todayKey();
+  return (WORKOUTS[type]||{items:[]}).items.map(raw=>{ const it=resolveItem(raw,st,k), e=EX[it.ex], sets=Math.max(1,Math.ceil(it.sets*2/3));
+    const lp=lastPerf(it.ex), weighted=e.unit==='kg'||e.unit==='carry'; let kg='';
+    if(lp&&weighted){ const mx=Math.max(0,...lp.sets.map(x=>+x.kg||0)), step=e.step||1; if(mx) kg=Math.max(0,Math.round(mx*.9/step)*step); }
+    return {e,it,sets,kg,last:lp&&weighted?Math.max(0,...lp.sets.map(x=>+x.kg||0)):''};
+  });
+}
+function ckLightSvg(L,big){ return `<svg class="cklight ${big?'big':''}" viewBox="0 0 30 78" aria-hidden="true"><rect x="1" y="1" width="28" height="76" rx="14" class="housing"/>${['r','y','g'].map((c,i)=>`<circle cx="15" cy="${15+i*24}" r="9" class="lamp ${c} ${L===c?'on':''}"/>`).join('')}</svg>`; }
+function ckRec(c){
+  const day=DAYS[new Date().getDay()], tb=day.blocks.find(b=>b.train), L=c.light, causes=c.cause||[], out={head:'',lines:[],acts:[],back:[]};
+  const areas=(c.areas||[]).filter(k=>MOB_AREAS.some(a=>a.k===k)), areaN=(c.areas||[]).map(k=>(CK_AREAS().find(a=>a.k===k)||{n:k}).n);
+  const sickBody=causes.includes('krank')&&c.sick==='koerper';
+  if(L==='g'){
+    out.head=tb?'Plan wie vorgesehen: '+WORKOUTS[tb.train].name:'Plan wie vorgesehen';
+    out.lines.push(tb?'Du bist bereit. Gute Tage für schwere Sätze und Skill-Tests.':'Guter Tag für Skills: auch Tests und neue Stufen sind drin.');
+    if(c.motiv<=2) out.lines.push('Körper bereit, Kopf noch nicht: starte nur mit dem Einstieg. Nach 10 Minuten ist die Lust meist da, sonst darfst du neu entscheiden.');
+    if(tb) out.acts.push(['train','Training starten',`data-w="${tb.train}"`]);
+    out.acts.push(['tabskills','Zur Skillbank','']);
+  } else if(L==='y'){
+    if(tb){ out.head='Erhaltungs-Training statt voller Einheit';
+      out.lines.push('Gleiche Übungen, etwa ein Drittel weniger Sätze, rund 90 % der letzten Gewichte, jeder Satz endet mit 3 Wiederholungen Reserve, nichts bis zum Versagen. Längere Pausen sind erlaubt. So bleibt dein Kraftstand, ohne den Akku weiter zu leeren.');
+      out.plan=ckTrainItems(tb.train);
+      out.acts.push(['cklite','Leicht trainieren',''],['cknormal','Doch normal trainieren','']);
+    } else { out.head='Plan locker angehen';
+      out.lines.push('Bewegung ja, Anstrengung nein. Zone 2 wird zum zügigen Spaziergang, Skills nur Technik und Hilfsübungen, keine Tests.');
+      out.acts.push(['tabskills','Sanfte Skills','']); }
+    if(areas.length) out.acts.push(['ckregen','Regeneration '+areaN.slice(0,2).join(' + '),'']);
+  } else {
+    out.head=sickBody?'Heute Pause: Körper braucht Ruhe':'Erholung zuerst';
+    if(sickBody) out.lines.push('Bei Fieber, Gliederschmerzen oder Husten kein Training, auch nicht leicht. Viel trinken, schlafen. Erst wieder einsteigen, wenn du 24 Stunden ohne Fieber bist, dann mit Gelb-Volumen.');
+    else { out.lines.push(tb?'Kein Krafttraining heute. Verschiebe '+WORKOUTS[tb.train].name+' auf morgen oder übermorgen, aber nie zwei Krafttage direkt hintereinander.':'Nur sanfte Bewegung: Spaziergang, Mobility, Atmung.');
+      out.lines.push('Was hilft: 20 bis 30 Minuten Spaziergang bei Tageslicht, 10 Minuten Mobility für die betroffenen Bereiche, eine Atemübung und früh ins Bett.');
+      out.acts.push(['ckregen',areas.length?'Regeneration '+areaN.slice(0,2).join(' + '):'Regeneration 10 min',''],['ckwalk','Spaziergang starten','']); }
+    if(tb) out.acts.push(['cknormal','Trotzdem trainieren','']);
+  }
+  // Weg zurück ins Grün
+  if(causes.includes('schlaf')||(c.sleep!=null&&c.sleep<6.5)) out.back.push(['Schlaf','Heute Abend Licht aus um 22:30, ab 14 Uhr kein Koffein, eine Stunde vorher Bildschirm weg. Im Bett 4-7-8-Atmung.','478']);
+  if(causes.includes('stress')||c.stress>=4) out.back.push(['Stress','Jetzt 5 Minuten physiologischer Seufzer, später 20 Minuten Spaziergang ohne Handy. Ein Fokusblock statt Multitasking.','sigh']);
+  if(causes.includes('training')||c.sore>=1) out.back.push(['Muskeln','Leichte Bewegung fördert die Durchblutung mehr als Liegen. Mobility für '+(areaN.length?areaN.join(', '):'die beanspruchten Bereiche')+', Eiweißziel von '+prof().settings.protein+' g erreichen.','']);
+  if(c.sore===3&&c.pain==='ja') out.back.push(['Schmerz',areaN.length?'Belaste '+areaN.join(', ')+' heute nicht. Hält der Schmerz länger als ein paar Tage an oder wird er stärker, lass ihn ärztlich oder physiotherapeutisch abklären.':'Schmerzende Stelle nicht belasten. Hält es an, abklären lassen.','']);
+  if(causes.includes('alkohol')) out.back.push(['Flüssigkeit','2 bis 3 Liter Wasser über den Tag, eine Prise Salz oder Elektrolyte, heute kein Alkohol, früh schlafen.','']);
+  if(causes.includes('essen')) out.back.push(['Energie','Jetzt eine Mahlzeit mit Eiweiß und Kohlenhydraten, zum Beispiel dein Quark-Müsli. Wasser nicht vergessen.','']);
+  if(causes.includes('krank')&&!sickBody) out.back.push(['Erkältung','Nur Beschwerden oberhalb des Halses: Spaziergang und lockere Mobility sind okay, Intensität runter. Wird es schlimmer, Pause.','']);
+  if(c.motiv<=2&&L!=='g') out.back.push(['Lust','Wenig Lust ist ein Signal, kein Versagen. Mini-Ziel: 10 Minuten. Was danach kommt, entscheidest du neu.','']);
+  if(!out.back.length&&L!=='g') out.back.push(['Allgemein','Schlaf, Essen, Tageslicht und ein ruhiger Abend bringen dich am schnellsten zurück ins Grün.','coherent']);
+  const h=ckHist(3); if(h.every(x=>x.c&&x.c.light!=='g')) out.trend='Seit 3 Tagen nicht grün. Mach diese Woche zur leichten Woche mit halber Satzzahl und gib dem Schlaf Vorrang. Das ist Training, kein Rückschritt.';
+  return out;
+}
+function ampelCard(ctx){
+  const c=ckGet(), h=new Date().getHours();
+  if(!c) return `<section class="card ckcard none"><div class="row" style="align-items:center;flex-wrap:nowrap">${ckLightSvg('')}<div class="grow"><h3>${h<14?'Morgen-Check-in':'Tages-Check-in'}</h3><p class="small muted">Ein paar kurze Fragen, daraus wird deine Tagesampel mit einem Vorschlag, der zu deinem Kraftstand passt. Du entscheidest.</p></div></div><div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn primary" data-act="ckgo">Check-in · 1 min</button></div></section>`;
+  const L=CK_LIGHT[c.light], r=ckRec(c), ch=c.choice;
+  return `<section class="card ckcard ${L.c}"><div class="row" style="align-items:center;flex-wrap:nowrap">${ckLightSvg(c.light)}<div class="grow"><div class="label">Tagesampel · ${L.n} · ${c.score}</div><h3>${esc(r.head)}</h3>${c.why&&c.why.length?`<p class="small muted">${esc(c.why.join(', '))}</p>`:''}${ch?`<p class="small" style="font-weight:600;margin-top:2px">Deine Wahl: ${ch==='lite'?'leicht trainieren':ch==='normal'?'normal trainieren':'Erholung'}</p>`:''}</div></div>
+  <div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn ${ctx==='home'?'primary':''}" data-act="ckres">Empfehlung ansehen</button><button class="btn ghost" data-act="ckgo">Neu</button></div></section>`;
+}
+function renderCk(){
+  const C=UI.ck; if(!C){ $('#overlay').innerHTML=''; return; }
+  const total=['rec','sleep','sore','stress','motiv'].length, done=Math.min(total,C.hist.filter(s=>['rec','sleep','sore','stress','motiv'].includes(s)).length);
+  let body='';
+  if(C.step==='result'||C.step==='view'){ body=ckResultHtml(ckGet()); }
+  else {
+    const q=CK_Q[C.step], a=C.a; let inner='';
+    if(C.step==='sleep'){ inner=`<div class="formgrid"><div class="field"><label class="label" for="ck-sleep">Schlafdauer</label><div class="inp"><input id="ck-sleep" type="number" inputmode="decimal" step="0.25" min="0" max="14" value="${esc(a.sleep??'')}" placeholder="7,5" data-act="ckin" data-f="sleep"><span>h</span></div></div><div class="field"><label class="label" for="ck-rhr">Ruhepuls</label><div class="inp"><input id="ck-rhr" type="number" inputmode="numeric" step="1" min="30" max="120" value="${esc(a.rhr??'')}" placeholder="${ckBase()||58}" data-act="ckin" data-f="rhr"><span>bpm</span></div></div></div>${ckBase()?`<p class="small muted">Dein Schnitt der letzten Wochen: ${ckBase()} bpm. Liegt der Wert morgens 5 bis 7 Schläge darüber, ist das oft ein Zeichen für fehlende Erholung oder einen Infekt.</p>`:'<p class="small muted">Nach ein paar Tagen mit Ruhepuls vergleicht die App mit deinem Schnitt.</p>'}<div class="row"><button class="btn primary" data-act="cknext">Weiter</button><button class="btn ghost" data-act="ckskip">Überspringen</button></div>`; }
+    else if(C.step==='areas'){ inner=`<div class="chips">${CK_AREAS().map(x=>`<button class="chip" data-act="ckarea" data-k="${x.k}" aria-pressed="${a.areas.includes(x.k)}">${esc(x.n)}</button>`).join('')}</div><div class="row"><button class="btn primary" data-act="cknext">Weiter</button></div>`; }
+    else if(q.multi){ inner=`<div class="ckopts">${q.opts.map(([v,l])=>`<button class="ckopt" data-act="ckmulti" data-v="${v}" aria-pressed="${a.cause.includes(v)}"><span class="check" aria-hidden="true"></span>${esc(l)}</button>`).join('')}</div><div class="row"><button class="btn primary" data-act="cknext">Weiter</button></div>`; }
+    else { const scale=['rec','stress','motiv'].includes(C.step); inner=`<div class="ckopts ${scale?'scale':''}">${q.opts.map(([v,l])=>`<button class="ckopt" data-act="ckpick" data-v="${v}" aria-pressed="${String(a[C.step])===String(v)}">${scale?`<b class="num">${v}</b>`:''}<span>${esc(l)}</span></button>`).join('')}</div>`; }
+    body=`<div class="ckbar"><span style="width:${Math.round(done/total*100)}%"></span></div><section class="section ckq"><h2>${esc(q.q)}</h2>${q.sub?`<p class="small muted">${esc(q.sub)}</p>`:''}${inner}</section>`;
+  }
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head">${C.hist.length&&C.step!=='result'&&C.step!=='view'?'<button class="iconbtn" data-act="ckback" aria-label="Zurück">‹</button>':''}<button class="iconbtn" data-act="ckclose" aria-label="Schließen">✕</button><div class="grow"><h2>Tagesampel</h2><div class="small muted">${C.step==='result'||C.step==='view'?'Vorschlag für heute, du entscheidest':'Kurz ehrlich antworten'}</div></div></div><div class="ov-body">${body}</div></div>`;
+}
+function ckResultHtml(c){
+  if(!c) return '<p>Noch kein Check-in heute.</p>';
+  const L=CK_LIGHT[c.light], r=ckRec(c), hist=ckHist(7);
+  const plan=r.plan?`<div class="card"><h3>So sieht leicht heute aus</h3><div class="list small" style="margin-top:6px">${r.plan.map(p=>`<div class="li"><b class="grow">${esc(p.e.n)}</b><span class="num">${p.sets} × ${p.it.r[0]}${p.e.unit==='sec'?' s':p.e.unit==='carry'?' m':''}${p.kg!==''?' · '+fmtNum(p.kg,2)+' kg':''}</span>${p.last?`<span class="muted" style="min-width:5.5em;text-align:right">zuletzt ${fmtNum(p.last,2)}</span>`:''}</div>`).join('')}</div><p class="small muted" style="margin-top:6px">Gewichte gerundet auf 90 % deiner letzten Einheit, Wiederholungen am unteren Ende. Satz endet mit 3 Wiederholungen Reserve.</p></div>`:'';
+  return `<section class="ckres ${L.c}"><div class="row" style="flex-wrap:nowrap;align-items:center">${ckLightSvg(c.light,true)}<div class="grow"><div class="label">${L.t} · Wert ${c.score} von 100</div><h1>${L.n}</h1><p>${esc(r.head)}</p></div></div></section>
+  ${c.why&&c.why.length?`<p class="small muted">Eingeflossen: ${esc(c.why.join(', '))}. Erholung ${c.rec}/5, Stress ${c.stress}/5, Lust ${c.motiv}/5${c.sleep!=null?', Schlaf '+fmtNum(c.sleep,2)+' h':''}${c.rhr?', Ruhepuls '+c.rhr:''}.</p>`:''}
+  <div class="card">${r.lines.map(l=>`<p style="margin-bottom:6px">${esc(l)}</p>`).join('')}<div class="row" style="margin-top:8px">${r.acts.map(([a,l,x],i)=>`<button class="btn ${i===0?'primary':''}" data-act="${a}" ${x}>${esc(l)}</button>`).join('')}</div>${c.choice?`<p class="small muted" style="margin-top:8px">Gewählt: ${c.choice==='lite'?'leicht trainieren':c.choice==='normal'?'normal trainieren':'Erholung'}</p>`:''}</div>
+  ${plan}
+  ${r.back.length?`<section class="section"><h2>Dein Weg zurück ins Grün</h2><div class="ckback">${r.back.map(([n,t,br])=>`<div class="card"><div class="label">${esc(n)}</div><p class="small">${esc(t)}</p>${br&&brMode(br)?`<button class="btn small" style="margin-top:8px" data-act="brquick" data-id="${br}">${esc(brMode(br).n)} starten</button>`:''}</div>`).join('')}</div></section>`:''}
+  ${r.trend?`<div class="card warnbox small">${esc(r.trend)}</div>`:''}
+  <section class="section"><h3>Letzte 7 Tage</h3><div class="ckhist">${hist.map(x=>`<div><i class="${x.c?x.c.light:''}"></i><span>${parseKey(x.k).toLocaleDateString('de-DE',{weekday:'short'})}</span></div>`).join('')}</div></section>
+  <p class="small muted">Die Ampel ist ein Vorschlag aus deinen Antworten, keine Diagnose. Du entscheidest, was du machst.</p>`;
+}
+
+/* ============================== SKILLBANK: ANSICHT ============================== */
+function skSuggest(){
+  const c=ckGet(), L=c?c.light:'g', m=skMeta(), mine=skFollowed();
+  const ok=s=>L==='g'||(L==='y'?(s.load<=2||s.cat==='mob'||s.cat==='geist'):(s.cat==='geist'||(s.cat==='mob'&&s.load===1)));
+  let pool=(mine.length?mine:SKILLS.filter(s=>!m.hidden.includes(s.id))).filter(ok);
+  pool=pool.map(s=>{ const st=skStats(skDoc(s.id)); return {s,last:st.last?st.last.at:0}; }).sort((a,b)=>a.last-b.last).map(x=>x.s);
+  if(!mine.length) pool=['klimmzug','handstand','hocke','meditation','lesen','fokus','atem','kreuzheben'].map(skById).filter(s=>s&&ok(s));
+  return {L,list:pool.slice(0,3)};
+}
+function skCard(s){
+  const d=skDoc(s.id), st=skStats(d), n=s.lv.length, li=Math.min(d.lvl,n-1), L=s.lv[li], p=skProg(s,d,li), all=d.lvl>=n-1&&p.pass;
+  return `<article class="skc"><button class="skhead" data-act="skopen" data-id="${s.id}"><span class="skico" aria-hidden="true">${SKICO[s.cat]}</span><span class="grow" style="min-width:0"><b>${esc(s.n)}</b><small>${esc(s.area)}</small></span><span class="sklv num">${li+1}<small>/${n}</small></span></button>
+    <div class="small"><b>Stufe ${li+1}: ${esc(L.n)}</b> · <span class="muted">${esc(skTargetTxt(L.test))}</span></div>
+    <div class="row" style="gap:8px;flex-wrap:nowrap"><div class="bar grow"><span style="width:${Math.round(p.pct*100)}%;${p.pass?'background:var(--good)':''}"></span></div><span class="small muted num" style="min-width:3.2em;text-align:right">${all?'fertig':Math.round(p.pct*100)+' %'}</span></div>
+    <div class="row small muted" style="gap:8px;flex-wrap:nowrap">${weekBars(st.weeks)}<span class="grow">${st.n?st.l28+'× in 4 Wochen · '+esc(st.lvlName):'Noch nicht begonnen'}</span>${p.pass&&!all?'<span class="pill good">Stufe geschafft</span>':''}</div>
+    <div class="row" style="gap:8px"><button class="btn small primary" data-act="skgo" data-id="${s.id}">${s.kind==='read'?'Lesen':s.kind==='focus'?'Fokusblock':s.kind==='med'?'Meditieren':st.n?'Weiter üben':'Starten'}</button><button class="btn small ghost" data-act="skopen" data-id="${s.id}">Stufen und Tipps</button></div></article>`;
+}
+function vSkills(){
+  const m=skMeta(), f=UI.skf||(skFollowed().length?'mine':'alle'), sug=skSuggest(), c=ckGet();
+  let list=SKILLS.filter(s=>UI.skHidden?m.hidden.includes(s.id):!m.hidden.includes(s.id));
+  if(!UI.skHidden){ if(f==='mine') list=skFollowed(); else if(f!=='alle') list=list.filter(s=>s.cat===f); }
+  const mineN=skFollowed().length;
+  const tot=SKILLS.reduce((a,s)=>a+skDoc(s.id).log.filter(x=>Date.now()-x.at<7*864e5).length,0);
+  const hint={g:'Grüne Ampel: alle Skills offen, auch Tests.',y:'Gelbe Ampel: Technik, Hilfsübungen, Beweglichkeit und Geist. Tests lieber an einem grünen Tag.',r:'Rote Ampel: Geist-Skills und sanfte Beweglichkeit. Der Körper erholt sich.'}[sug.L];
+  return `<section class="hero"><div class="date">${tot?tot+' Einheiten in 7 Tagen':'Skillbank'}</div><h1>Skillbank</h1><p class="muted">${SKILLS.length} Skills mit Stufenpfad. Jeden Skill unabhängig üben, so oft du willst und so viele am Tag, wie du magst. Fortschritt: wie intensiv du ihn verfolgst und wie weit es bis zur nächsten Stufe ist.</p></section>
+  <section class="card skamp ${c?c.light:''}"><div class="row" style="flex-wrap:nowrap">${ckLightSvg(c?c.light:'')}<div class="grow"><b>${c?'Ampel '+CK_LIGHT[c.light].n:'Noch kein Check-in heute'}</b><p class="small muted">${c?esc(hint):'Mit dem Check-in schlägt die App Skills vor, die zu deinem Tag passen.'}</p></div><button class="btn small" data-act="${c?'ckres':'ckgo'}">${c?'Ansehen':'Check-in'}</button></div></section>
+  <section class="section"><h2>Heute passend</h2><div class="sksug">${sug.list.map(s=>{ const d=skDoc(s.id), li=Math.min(d.lvl,s.lv.length-1); return `<button class="htile" data-act="skgo" data-id="${s.id}"><span class="hi" aria-hidden="true">${SKICO[s.cat]}</span><b>${esc(s.n)}</b><small>Stufe ${li+1}: ${esc(s.lv[li].n)}</small></button>`; }).join('')}</div></section>
+  <div class="chips scroll" role="group" aria-label="Filter">${[['mine','Meine'+(mineN?' · '+mineN:'')],['alle','Alle'],...Object.entries(SK_CAT)].map(([k,n])=>`<button class="chip" data-act="skf" data-f="${k}" aria-pressed="${!UI.skHidden&&f===k}">${esc(n)}</button>`).join('')}</div>
+  ${list.length?`<section class="skgrid">${list.map(skCard).join('')}</section>`:`<div class="card"><p>${f==='mine'?'Noch keine Skills in Arbeit. Wähle unter „Alle“ einen Skill und starte die erste Einheit, dann erscheint er hier.':'Keine Skills in dieser Auswahl.'}</p></div>`}
+  <div class="row"><button class="btn small ghost" data-act="skhid">${UI.skHidden?'Zurück zur Skillbank':'Ausgeblendete Skills'+(m.hidden.length?' · '+m.hidden.length:'')}</button></div>`;
+}
+function skOpen(id){ UI.sk={id,open:null}; UI.modal='sk'; renderSkill(true); }
+function exRef(x){
+  const e=x.ex&&EX[x.ex];
+  return `<div class="skex">${e&&e.img?`<button class="th" data-act="skimg" data-ex="${x.ex}" aria-label="Animation ${esc(e.n)} groß"><img src="${imgSrc(e.img)}" alt="" loading="lazy"></button>`:`<span class="th none" aria-hidden="true">${SKICO.kg}</span>`}<div class="grow" style="min-width:0"><b>${esc(x.n)}</b> <span class="muted">· ${esc(x.d)}</span>${e?`<div class="small muted">${esc(e.cue)}</div>`:''}${e?`<div class="small"><a href="${ytUrl(e)}" target="_blank" rel="noopener">Video suchen</a>${tipFor(x.ex)?' · <button class="linkbtn" data-act="sktips" data-ex="'+x.ex+'">Haltung und Technik</button>':''}</div>`:`<div class="small"><a href="${ytUrl({n:x.n})}" target="_blank" rel="noopener">Video suchen</a></div>`}</div></div>`;
+}
+function renderSkill(top){
+  const U=UI.sk, s=skById(U.id), d=skDoc(s.id), st=skStats(d), n=s.lv.length, li=Math.min(d.lvl,n-1), L=s.lv[li], p=skProg(s,d,li), m=skMeta();
+  const ov=$('#overlay .overlay'), y=ov&&!top?ov.scrollTop:0, c=ckGet();
+  const li2=x=>x.map(t=>`<li>${esc(t)}</li>`).join('');
+  const hist=d.log.filter(x=>x.lvl===li&&skResTxt(L.test,x)).slice(-10);
+  const vals=hist.map(x=>{ const r=x.res||{}; return L.test.type==='kgbw'||L.test.type==='kg'?e1rm(+r.kg,+r.reps||1):L.test.type==='sess'?(x.min||0):+r.v||0; });
+  const levels=s.lv.map((l,i)=>{ const done=d.passed[i]||i<li, cur=i===li, open=U.open===i;
+    return `<div class="sklevel ${done?'done':''} ${cur?'cur':''}"><button class="sklh" data-act="sklvopen" data-i="${i}" aria-expanded="${open}"><span class="skdot">${done?'✓':i+1}</span><span class="grow"><b>${esc(l.n)}</b><small>${esc(l.goal)}</small></span><span class="muted">${open?'−':'+'}</span></button>
+      ${open?`<div class="sklb"><p class="small"><b>Kriterium:</b> ${esc(skTargetTxt(l.test))}</p><p class="small"><b>Fokus:</b> ${esc(l.cue)}</p>${l.ex.map(exRef).join('')}<div class="row">${i!==li?`<button class="btn small" data-act="sksetlvl" data-i="${i}">Auf diese Stufe setzen</button>`:'<span class="pill accent">Aktuelle Stufe</span>'}${d.passed[i]?`<span class="pill good">Geschafft am ${fmtShort(d.passed[i])}</span>`:''}</div></div>`:''}</div>`; }).join('');
+  const books=s.kind==='read'?readSection():'';
+  const extra=s.kind==='focus'||s.kind==='read'?focusHelp(s.kind):'';
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>${esc(s.n)}</h2><div class="small muted">${esc(SK_CAT[s.cat])} · ${esc(s.area)}</div></div></div>
+  <div class="ov-body">
+    <p>${esc(s.intro)}</p>${s.req?`<p class="hint"><b>Voraussetzung:</b> ${esc(s.req)}</p>`:''}
+    ${c&&c.light!=='g'&&s.load>=2?`<div class="card warnbox small">Ampel ${CK_LIGHT[c.light].n}: ${c.light==='y'?'heute Technik und Hilfsübungen, Test lieber an einem grünen Tag.':'heute besser einen Geist- oder Beweglichkeits-Skill.'}</div>`:''}
+    <section class="card skcur"><div class="row" style="flex-wrap:nowrap;align-items:flex-start">${pctRing(p.pct,'')}<div class="grow"><div class="label">Stufe ${li+1} von ${n}</div><h3>${esc(L.n)}</h3><p class="small">${esc(L.goal)}</p><p class="small muted">${['sess','book'].includes(L.test.type)?'Erfüllt':'Bisher bestes'}: ${p.bestTxt?esc(p.bestTxt):'noch kein Ergebnis'} · Ziel: ${esc(skTargetTxt(L.test))}</p></div></div>
+      ${p.pass&&li<n-1?`<div class="skpass"><b>Kriterium erfüllt.</b> Bereit für Stufe ${li+2}: ${esc(s.lv[li+1].n)}? <button class="btn small primary" data-act="skup">Nächste Stufe</button></div>`:p.pass?'<div class="skpass"><b>Alle Stufen geschafft.</b> Halte das Niveau oder arbeite an der Qualität.</div>':''}
+      <div class="row" style="margin-top:10px">${skGoBtns(s,li)}</div></section>
+    <section class="card"><h3>Wie intensiv du ihn verfolgst</h3><div class="stats" style="margin-top:8px"><div class="stat"><div class="label">Einheiten</div><div class="v">${st.n}</div></div><div class="stat"><div class="label">Zeit</div><div class="v">${st.min>=120?fmtNum(st.min/60,1)+'<small> h</small>':st.min+'<small> min</small>'}</div></div><div class="stat"><div class="label">4 Wochen</div><div class="v">${st.l28}<small>× ${esc(st.lvlName)}</small></div></div><div class="stat"><div class="label">Letzte 8 Wochen</div>${weekBars(st.weeks)}</div></div>${vals.length>=2?`<div class="row small muted" style="margin-top:8px">${spark(vals)}<span>Ergebnisse auf dieser Stufe</span></div>`:''}</section>
+    ${books}
+    <section class="section"><h2>Stufenpfad</h2><div class="sklevels">${levels}</div></section>
+    <section class="section"><h2>Tipps</h2>
+      <details class="tips" open><summary>Technik</summary><div class="tipbody"><ol>${li2(s.tech)}</ol></div></details>
+      <details class="tips"><summary>Häufige Fehler</summary><div class="tipbody"><ul class="warn">${li2(s.err)}</ul></div></details>
+      <details class="tips"><summary>Kleine Übungen für bessere Technik</summary><div class="tipbody">${s.drills.map(([a,b,c2])=>`<p style="margin-bottom:8px"><b>${esc(a)}</b> · ${esc(b)}<br><span class="muted">${esc(c2)}</span></p>`).join('')}</div></details>
+      <details class="tips"><summary>So baust du ihn in deine Woche ein</summary><div class="tipbody"><ul>${li2(s.plan)}</ul></div></details>
+      ${s.safe&&s.safe.length?`<details class="tips"><summary>Sicherheit</summary><div class="tipbody"><ul class="warn">${li2(s.safe)}</ul></div></details>`:''}
+    </section>
+    ${extra}
+    ${d.log.length?`<section class="section"><h2>Verlauf</h2><div class="card list small">${d.log.slice(-12).reverse().map(x=>`<div class="li"><span class="num muted" style="min-width:4.2em">${fmtShort(x.d)}</span><span class="grow">Stufe ${x.lvl+1}${skResTxt(s.lv[x.lvl]?s.lv[x.lvl].test:L.test,x)?' · <b>'+esc(skResTxt(s.lv[x.lvl]?s.lv[x.lvl].test:L.test,x))+'</b>':''}${x.min&&!/min/.test(skResTxt(s.lv[x.lvl]?s.lv[x.lvl].test:L.test,x))?' · '+x.min+' min':''}${x.note?'<br><span class="muted">'+esc(x.note)+'</span>':''}</span><button class="iconbtn" style="width:30px;height:30px" data-act="skdel" data-at="${x.at}" aria-label="Eintrag löschen">✕</button></div>`).join('')}</div></section>`:''}
+    <div class="row"><button class="btn small" data-act="skpin">${m.pin.includes(s.id)?'Nicht mehr unter „Meine“':'Unter „Meine“ verfolgen'}</button><button class="btn small ghost" data-act="skhide">${m.hidden.includes(s.id)?'Wieder einblenden':'Skill ausblenden'}</button></div>
+  </div></div>`;
+  const nov=$('#overlay .overlay'); if(nov) nov.scrollTop=y;
+}
+function skGoBtns(s,li){
+  if(s.kind==='med') return `<button class="btn primary" data-act="skmed" data-i="${li}">Meditation starten</button><button class="btn" data-act="sksess">Eintragen</button>`;
+  if(s.kind==='breath'){ const r=s.runs[li], bm=brMode(r[0]); return `<button class="btn primary" data-act="skbr" data-i="${li}">${esc(bm.n)} starten</button><button class="btn" data-act="sksess">${s.lv[li].test.type==='hold'?'Kontrollpause messen':'Eintragen'}</button>`; }
+  if(s.kind==='focus') return `<button class="btn primary" data-act="fxopen">Fokusblock starten</button><button class="btn" data-act="sksess">Eintragen</button>`;
+  if(s.kind==='read') return `<button class="btn primary" data-act="rdopen">Lese-Timer</button><button class="btn" data-act="sksess">Eintragen</button>`;
+  return `<button class="btn primary" data-act="sksess">Einheit starten</button><button class="btn" data-act="sksess" data-quick="1">Nur Ergebnis eintragen</button>`;
+}
+function focusHelp(kind){
+  return `<section class="section"><h2>${kind==='read'?'Ohne Ablenkung lesen':'Ablenkung aussperren'}</h2>
+  <div class="card small"><p><b>Ehrlich vorweg:</b> Eine Web-App kann andere Apps auf dem iPhone nicht sperren. Diese Wege funktionieren wirklich:</p>
+  <ol class="brhow">
+   <li><b>Geführter Zugriff</b> sperrt das iPhone in dieser App: Einstellungen › Bedienungshilfen › Geführter Zugriff einschalten und einen Code festlegen. Dann in der Hantelwoche dreimal die Seitentaste drücken und „Starten“. Raus nur mit Code.</li>
+   <li><b>Fokus „${kind==='read'?'Lesen':'Arbeiten'}“</b>: Einstellungen › Fokus › + › ${kind==='read'?'Lesen':'Arbeit'}. Mitteilungen nur von ausgewählten Personen, optional eine leere Home-Bildschirmseite. Die Apple Watch übernimmt den Fokus automatisch.</li>
+   <li><b>Bildschirmzeit</b>: Einstellungen › Bildschirmzeit › App-Limits für soziale Netzwerke, oder „Auszeit“ ab 21:30.</li>
+   <li><b>Graustufen</b>: Einstellungen › Bedienungshilfen › Anzeige & Textgröße › Farbfilter › Graustufen. Das Handy wird schlagartig langweilig.</li>
+   <li><b>Abstand</b>: Handy in einen anderen Raum legen. Eine viel zitierte Studie fand schon durch das sichtbare Handy auf dem Tisch weniger freie Denkkapazität, Nachfolgestudien sahen kleinere Effekte. Außer Sicht schadet in keinem Fall.</li></ol></div>
+  <details class="tips"><summary>${kind==='read'?'Tipps fürs konzentrierte Lesen':'Tipps für tiefe Konzentration'}</summary><div class="tipbody"><ul>${(kind==='read'?['Vorher kurz festlegen: bis wohin oder wie lange.','Bleistift in die Hand: Markieren hält den Kopf beim Text.','Abschweifen bemerkt? Den letzten Absatz noch einmal lesen, ohne Ärger.','Schweres Buch? Nach 20 Minuten ein Satz Zusammenfassung, dann weiter.','Licht warm und hell genug, aufrecht sitzen statt liegen, wenn du nicht einschlafen willst.','Lesezeit an etwas koppeln, das schon fest ist: nach der Meditation, im Zug, nach dem Abendessen.']:['Die schwerste Aufgabe zuerst, wenn du am frischesten bist.','Eine Aufgabe, ein Fenster. Alles andere zu.','Drang nach Ablenkung 10 Atemzüge lang aushalten: er wird meist schwächer.','Ablenkungen in der App antippen: Das Zählen allein macht sie seltener.','Kopfhörer mit gleichmäßigem Rauschen oder Musik ohne Text.','Nach jedem Block aufstehen, Wasser, Blick in die Ferne.']).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details></section>`;
+}
+
+/* ---------- Einheit erfassen ---------- */
+function skSessOpen(id,quick,lvl){ const d=skDoc(id), s=skById(id); UI.sks={id,li:lvl!=null?lvl:Math.min(d.lvl,s.lv.length-1),t0:Date.now(),quick:!!quick,done:{},w:{run:false,t0:0,acc:0,last:null},res:{},note:'',min:quick?'':null}; UI.modal='sks'; runSave(); renderSkSess(true); }
+function swMs(){ const w=UI.sks.w; return w.acc+(w.run?Date.now()-w.t0:0); }
+function renderSkSess(top){
+  const S2=UI.sks, s=skById(S2.id), L=s.lv[S2.li], t=L.test, c=ckGet(), ov=$('#overlay .overlay'), y=ov&&!top?ov.scrollTop:0;
+  const el=Math.round((Date.now()-S2.t0)/60000);
+  const showW=t.type==='hold'||!S2.quick;
+  let resIn='';
+  if(t.type==='kgbw'||t.type==='kg') resIn=`<div class="formgrid"><div class="field"><label class="label" for="sk-kg">${t.add?'Zusatzgewicht':'Gewicht'+(t.each?' je Hand':' gesamt')}</label><div class="inp"><input id="sk-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${esc(S2.res.kg??'')}" placeholder="${fmtNum(skTargetKg(t),1)}" data-act="skin" data-f="kg"><span>kg</span></div></div><div class="field"><label class="label" for="sk-reps">Wiederholungen</label><div class="inp"><input id="sk-reps" type="number" inputmode="numeric" min="1" value="${esc(S2.res.reps??'')}" placeholder="${t.reps}" data-act="skin" data-f="reps"></div></div></div>`;
+  else if(t.type==='reps'||t.type==='hold'||t.type==='cm') resIn=`<div class="field" style="max-width:220px"><label class="label" for="sk-v">${t.type==='reps'?'Beste Wiederholungen am Stück':t.type==='hold'?'Beste Haltezeit':'Gemessener Abstand'}</label><div class="inp"><input id="sk-v" type="number" inputmode="decimal" step="${t.type==='cm'?1:1}" value="${esc(S2.res.v??'')}" placeholder="${t.target}" data-act="skin" data-f="v"><span>${t.type==='reps'?'Wdh.':t.type==='hold'?'s':'cm'}</span></div></div>`;
+  else if(t.type==='sess') resIn=s.kind==='focus'?`<div class="field" style="max-width:220px"><label class="label" for="sk-dist">Ablenkungen</label><div class="inp"><input id="sk-dist" type="number" inputmode="numeric" min="0" value="${esc(S2.res.dist??'')}" placeholder="0" data-act="skin" data-f="dist"></div></div>`:'';
+  else if(t.type==='book') resIn=`<p class="small muted">Diese Stufe zählt beendete Bücher. Markiere ein Buch unter „Lesen“ als beendet.</p>`;
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="skclose" aria-label="Schließen ohne Speichern">✕</button><div class="grow"><h2>${esc(s.n)}</h2><div class="small muted">Stufe ${S2.li+1}: ${esc(L.n)}${S2.quick?' · Ergebnis eintragen':' · <span id="skel">seit '+el+' min</span>'}</div></div><button class="btn primary" data-act="sksave">Speichern</button></div>
+  <div class="ov-body">
+    ${c&&c.light!=='g'&&s.load>=2?`<div class="card warnbox small">Ampel ${CK_LIGHT[c.light].n}: ${c.light==='y'?'Technik und Hilfsübungen, Sätze mit Reserve, keinen Maximaltest.':'Heute nur ganz locker oder lieber einen sanften Skill.'}</div>`:''}
+    <p class="hint"><b>Ziel der Stufe:</b> ${esc(L.goal)}<br><b>Fokus:</b> ${esc(L.cue)}</p>
+    ${S2.quick?'':`<section class="section"><h3>Übungen</h3><div class="card list">${L.ex.map((x,i)=>`<div class="li" style="align-items:flex-start"><input type="checkbox" class="check" data-act="skexd" data-i="${i}" ${S2.done[i]?'checked':''} aria-label="${esc(x.n)} erledigt">${exRef(x)}</div>`).join('')}</div>
+      <details class="tips"><summary>Kleine Technik-Übungen dazu</summary><div class="tipbody">${s.drills.map(([a,b,c2])=>`<p style="margin-bottom:8px"><b>${esc(a)}</b> · ${esc(b)}<br><span class="muted">${esc(c2)}</span></p>`).join('')}</div></details></section>`}
+    ${showW?`<section class="card skwatch"><div class="label">Stoppuhr${t.type==='hold'?' für die Haltezeit':''}</div><div class="num big" id="skwatch">${mmss(swMs()/1000)}</div><div class="row"><button class="btn ${S2.w.run?'':'primary'}" data-act="skw">${S2.w.run?'Stopp':swMs()?'Weiter':'Start'}</button>${swMs()?`<button class="btn ghost" data-act="skwreset">Zurücksetzen</button>`:''}${t.type==='hold'&&!S2.w.run&&swMs()>=1000?`<button class="btn" data-act="skwuse">${Math.round(swMs()/1000)} s übernehmen</button>`:''}</div></section>`:''}
+    <section class="card"><h3>${t.type==='sess'||t.type==='book'?'Einheit':'Test heute'} <span class="small muted">(${t.type==='sess'||t.type==='book'?'Dauer zählt':'optional'})</span></h3><p class="small muted" style="margin:4px 0 8px">Ziel: ${esc(skTargetTxt(t))}</p>${resIn}
+      <div class="formgrid" style="margin-top:10px"><div class="field"><label class="label" for="sk-min">Dauer</label><div class="inp"><input id="sk-min" type="number" inputmode="numeric" min="0" value="${esc(S2.min??'')}" placeholder="${Math.max(1,el)}" data-act="skin" data-f="min"><span>min</span></div></div></div>
+      <div class="field" style="margin-top:10px"><label class="label" for="sk-note">Notiz</label><textarea id="sk-note" rows="2" class="search" placeholder="Was lief gut, was willst du nächstes Mal ändern?" data-act="skin" data-f="note">${esc(S2.note)}</textarea></div></section>
+    <button class="btn primary" data-act="sksave" style="align-self:flex-start">Einheit speichern</button>
+  </div></div>`;
+  const nov=$('#overlay .overlay'); if(nov) nov.scrollTop=y;
+}
+function skSessSave(){
+  const S2=UI.sks, s=skById(S2.id), L=s.lv[S2.li], t=L.test, el=Math.max(1,Math.round((Date.now()-S2.t0)/60000));
+  const min=S2.min!==''&&S2.min!=null?+S2.min:(S2.quick?0:el);
+  const res={}; ['v','kg','reps'].forEach(k=>{ if(S2.res[k]!==''&&S2.res[k]!=null) res[k]=+String(S2.res[k]).replace(',','.'); });
+  const entry={lvl:S2.li,min,res,ex:Object.values(S2.done).filter(Boolean).length,...(S2.note?{note:S2.note}:{}),...(S2.res.dist!==''&&S2.res.dist!=null?{dist:+S2.res.dist}:{})};
+  const r=skLog(S2.id,entry);
+  UI.sks=null; runClear(); toast(r&&r.pass?'Kriterium erfüllt: Stufe '+(r.li+1)+' geschafft':'Einheit gespeichert');
+  if(r&&r.pass) beep(784,.25,3);
+  skOpen(S2.id);
+}
+
+/* ---------- Meditation und Atmung aus der Skillbank ---------- */
+function skMedStart(li,min){
+  const s=skById('meditation'), L=s.lv[li], m=min||L.test.min, day=DAYS[new Date().getDay()];
+  const key=day.blocks.some(b=>b.key==='med')?'med':null;
+  UI.modal=null; UI.sk=null;
+  startSteps('Meditation · '+L.n,medScript(li,m),key,'skmed');
+  UI.guide.onDone=()=>{ const r=skLog('meditation',{lvl:li,min:m}); if(r&&r.pass) setTimeout(()=>toast('Meditation: Stufe geschafft'),1500); };
+}
+function skMedPick(li){
+  const s=skById('meditation'), L=s.lv[li];
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="skback" aria-label="Zurück">‹</button><div class="grow"><h2>Meditation · ${esc(L.n)}</h2><div class="small muted">Dauer wählen</div></div></div><div class="ov-body">
+  <p>${esc(L.ex[0].n)}: ${esc(L.ex[0].d)}</p><p class="small muted">Für die Stufe zählen Einheiten ab ${L.test.min} min. Eine Einheit von heute zählt auch für die Abend-Meditation im Plan.</p>
+  <div class="chips">${[5,10,15,20,25,30,45].map(n=>`<button class="chip" data-act="skmedgo" data-i="${li}" data-m="${n}" aria-pressed="${n===L.test.min}">${n} min</button>`).join('')}</div>
+  <section class="section"><h3>Andere Stufe üben</h3><div class="chips">${s.lv.map((l,i)=>`<button class="chip" data-act="skmed" data-i="${i}" aria-pressed="${i===li}">${i+1}. ${esc(l.n)}</button>`).join('')}</div><p class="small muted">Die Einheit zählt auf der Stufe, die du übst.</p></section></div></div>`;
+}
+
+/* ---------- Fokusblock ---------- */
+function fxOpen(){ const d=skDoc('fokus'), L=skById('fokus').lv[Math.min(d.lvl,4)]; const last=(Store.get('sk-meta')||{}).fx||{};
+  UI.fx={setup:true,task:'',min:L.test.min,awake:last.awake!==false,dist:0,acc:0,t0:0,run:false,end:false}; UI.modal='fx'; renderFx(); }
+function fxMs(){ const F=UI.fx; return F.acc+(F.run?Date.now()-F.t0:0); }
+function renderFx(){
+  const F=UI.fx; if(!F){ $('#overlay').innerHTML=''; return; }
+  if(F.setup){ $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="fxclose" aria-label="Schließen">✕</button><div class="grow"><h2>Fokusblock</h2><div class="small muted">Eine Aufgabe, ein Block</div></div></div><div class="ov-body">
+    <div class="field"><label class="label" for="fx-task">Woran arbeitest du? In einem Satz</label><input id="fx-task" class="search" value="${esc(F.task)}" placeholder="z. B. Bericht Kapitel 2 fertig schreiben" data-act="fxin" data-f="task"></div>
+    <div class="chips">${[25,45,60,90].map(n=>`<button class="chip" data-act="fxmin" data-m="${n}" aria-pressed="${F.min===n}">${n} min</button>`).join('')}</div>
+    <button class="ckopt" data-act="fxawake" aria-pressed="${F.awake}"><span class="check" aria-hidden="true"></span>Bildschirm anlassen (sonst läuft die Zeit trotzdem weiter)</button>
+    <div class="card small"><b>Vor dem Start:</b> Handy auf lautlos und außer Sicht oder Geführten Zugriff starten, Mail und Chat schließen, Wasser bereit, Zettel für Gedanken daneben.</div>
+    <button class="btn primary brbig" data-act="fxstart">Block starten</button>
+    ${focusHelp('focus')}</div></div>`; return; }
+  const left=Math.max(0,F.min*60-fxMs()/1000), pct=Math.min(100,fxMs()/(F.min*600));
+  if(F.end){ $('#overlay').innerHTML=`<div class="overlay fxov"><div class="player"><div class="ov-head"><button class="iconbtn" data-act="fxclose" aria-label="Schließen">✕</button><div class="grow"><h2>Fokusblock</h2></div></div>
+    <div class="stage"><div class="phase rest">${F.completed?'Block geschafft':'Beendet'}</div><div class="clock" style="font-size:clamp(3.5rem,16vw,6rem)">${Math.round(fxMs()/60000)}<small style="font-size:.4em"> min</small></div><p class="muted">${F.dist} ${F.dist===1?'Ablenkung':'Ablenkungen'}${F.saved?' · gespeichert':' · unter 5 min, nicht gespeichert'}</p>${F.task?`<p>${esc(F.task)}</p>`:''}<p class="small muted">Jetzt Pause: aufstehen, Fenster, Wasser. Kein Handy.</p></div>
+    <div class="controls"><button class="btn" data-act="fxagain">Noch ein Block</button><button class="btn primary" data-act="fxclose">Fertig</button></div></div></div>`; return; }
+  $('#overlay').innerHTML=`<div class="overlay fxov"><div class="player"><div class="ov-head"><button class="iconbtn" data-act="fxstop" aria-label="Block beenden">✕</button><div class="grow"><h2>${esc(F.task||'Fokusblock')}</h2><div class="small muted">${F.min} min</div></div><button class="btn small ghost" data-act="fxfull">Vollbild</button></div>
+    <div class="stage"><div class="phase work">${F.run?'Fokus':'Pause'}</div><div class="clock" id="fxclock">${mmss(left)}</div><div class="fxbar"><span id="fxbar" style="width:${pct}%"></span></div>
+    <button class="btn fxdist" data-act="fxdist">Abgelenkt <b class="num" id="fxdn">${F.dist}</b></button><p class="small muted">Gedanke an etwas anderes, Griff zum Handy? Antippen, kurz notieren, zurück zur Aufgabe.</p></div>
+    <div class="controls"><button class="btn" data-act="fxstop">Beenden</button><button class="btn primary" data-act="fxplay">${F.run?'Pause':'Weiter'}</button></div></div></div>`;
+}
+function fxFinish(completed){
+  const F=UI.fx; if(!F||F.end) return; if(F.run){ F.acc+=Date.now()-F.t0; F.run=false; }
+  F.end=true; F.completed=completed; const min=Math.round(F.acc/60000);
+  if(min>=5){ const r=skLog('fokus',{min,dist:F.dist,...(F.task?{note:F.task}:{})}); F.saved=true; if(r&&r.pass) setTimeout(()=>toast('Fokusblöcke: Stufe geschafft'),1200); }
+  if(completed){ beep(784,.25,3); try{ navigator.vibrate&&navigator.vibrate([120,80,120]); }catch(e){} }
+  keepAwake(false); runClear(); try{ document.fullscreenElement&&document.exitFullscreen(); }catch(e){} renderFx();
+}
+
+/* ---------- Lesen: Bücher und Timer ---------- */
+function readStats(){
+  const d=skDoc('lesen'), wk=mondayOf(new Date()), logs=d.log.filter(x=>x.src==='read'||x.min);
+  const week=logs.filter(x=>x.d>=wk).reduce((a,x)=>a+(+x.min||0),0);
+  const days=new Set(logs.filter(x=>(x.min||0)>=1).map(x=>x.d)); let streak=0, k=todayKey(); if(!days.has(k)) k=addDays(k,-1); while(days.has(k)){ streak++; k=addDays(k,-1); }
+  const pages=logs.reduce((a,x)=>a+(+x.pages||0),0);
+  return {week,streak,pages,books:booksDone()};
+}
+function readSection(){
+  const B=booksDoc(), st=readStats(), act=B.list.filter(b=>b.status!=='fertig'), fin=B.list.filter(b=>b.status==='fertig');
+  const row=b=>{ const pct=b.pages?Math.min(100,Math.round((b.page||0)/b.pages*100)):0; return `<div class="li" style="align-items:flex-start"><div class="grow" style="min-width:0"><b>${esc(b.t)}</b>${b.a?` <span class="muted small">· ${esc(b.a)}</span>`:''}<div class="small muted">${b.status==='fertig'?'Beendet am '+fmtShort(b.end):b.status==='liste'?'Auf der Leseliste':`Seite ${b.page||0}${b.pages?' von '+b.pages:''}`}${b.min?' · '+b.min+' min gelesen':''}</div>${b.status!=='fertig'&&b.pages?`<div class="bar" style="margin-top:6px"><span style="width:${pct}%"></span></div>`:''}</div><div class="row" style="gap:6px;flex-basis:100%">${b.status!=='fertig'?`<button class="btn small primary" data-act="rdopen" data-b="${b.id}">Lesen</button><button class="btn small" data-act="rdfin" data-b="${b.id}">Beendet</button>`:''}<button class="btn small ghost" data-act="rddel" data-b="${b.id}">${'Entfernen'}</button></div></div>`; };
+  return `<section class="section"><h2>Deine Bücher</h2>
+   <div class="stats card"><div class="stat"><div class="label">Diese Woche</div><div class="v">${st.week}<small> min</small></div></div><div class="stat"><div class="label">Tage in Folge</div><div class="v">${st.streak}</div></div><div class="stat"><div class="label">Seiten</div><div class="v">${st.pages}</div></div><div class="stat"><div class="label">Beendet</div><div class="v">${st.books}</div></div></div>
+   ${act.length?`<div class="card list rdlist">${act.map(row).join('')}</div>`:'<p class="small muted">Noch kein Buch eingetragen.</p>'}
+   <form class="card formgrid" data-form="rdbook"><div class="field" style="grid-column:1/-1"><label class="label" for="rb-t">Buch hinzufügen</label><input id="rb-t" name="t" class="search" placeholder="Titel" required></div><div class="field"><label class="label" for="rb-a">Autor</label><input id="rb-a" name="a" placeholder="optional"></div><div class="field"><label class="label" for="rb-p">Seiten</label><input id="rb-p" name="pages" type="number" inputmode="numeric" min="1" placeholder="320"></div><div class="field"><label class="label" for="rb-s">Status</label><select id="rb-s" name="status"><option value="lese">Lese ich gerade</option><option value="liste">Leseliste</option></select></div><div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">Hinzufügen</button></div></form>
+   ${fin.length?`<details class="card"><summary>Beendete Bücher · ${fin.length}</summary><div class="list" style="margin-top:6px">${fin.map(row).join('')}</div></details>`:''}</section>`;
+}
+function rdOpen(bid){ const B=booksDoc(), cur=B.list.filter(b=>b.status==='lese'); const meta=(Store.get('sk-meta')||{}).rd||{};
+  UI.rd={setup:true,b:bid||(cur[cur.length-1]||{}).id||null,show:!!meta.show,awake:!!meta.awake,acc:0,t0:0,run:false,end:false,page:''}; UI.modal='rd'; renderRd(); }
+function rdMs(){ const R=UI.rd; return R.acc+(R.run?Date.now()-R.t0:0); }
+function renderRd(){
+  const R=UI.rd; if(!R){ $('#overlay').innerHTML=''; return; }
+  const B=booksDoc(), bk=B.list.find(b=>b.id===R.b);
+  if(R.setup){ const opts=B.list.filter(b=>b.status!=='fertig');
+    $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="rdclose" aria-label="Schließen">✕</button><div class="grow"><h2>Lese-Timer</h2><div class="small muted">Dezent im Hintergrund</div></div></div><div class="ov-body">
+    ${opts.length?`<div class="label">Buch</div><div class="chips">${opts.map(b=>`<button class="chip" data-act="rdbk" data-b="${b.id}" aria-pressed="${R.b===b.id}">${esc(b.t)}</button>`).join('')}<button class="chip" data-act="rdbk" data-b="" aria-pressed="${!R.b}">Ohne Buch</button></div>`:'<p class="small muted">Kein Buch eingetragen. Du kannst trotzdem lesen und Bücher später unter Skillbank › Lesen hinzufügen.</p>'}
+    <button class="ckopt" data-act="rdshow" aria-pressed="${R.show}"><span class="check" aria-hidden="true"></span>Lesezeit sichtbar anzeigen (sonst nur ein ruhiger Punkt)</button>
+    <button class="ckopt" data-act="rdawake" aria-pressed="${R.awake}"><span class="check" aria-hidden="true"></span>Bildschirm anlassen (bei Papierbuch nicht nötig, die Zeit läuft weiter)</button>
+    <div class="card small"><b>Handy weg:</b> Starte den Timer, dann Geführten Zugriff oder Fokus „Lesen“ einschalten und das Handy umgedreht weglegen. Anleitung unten.</div>
+    <button class="btn primary brbig" data-act="rdstart">Lesen starten</button>${focusHelp('read')}</div></div>`; return; }
+  if(R.end){ $('#overlay').innerHTML=`<div class="overlay rdov"><div class="ov-head"><button class="iconbtn" data-act="rdclose" aria-label="Schließen">✕</button><div class="grow"><h2>${esc(bk?bk.t:'Lesen')}</h2></div></div><div class="ov-body">
+    <div class="phase rest" style="font-family:var(--display);letter-spacing:.12em;text-transform:uppercase">Gelesen</div><div class="num" style="font-size:3.5rem;font-weight:700;line-height:1">${Math.round(rdMs()/60000)}<small style="font-size:1.2rem;color:var(--muted)"> min</small></div>
+    ${bk?`<div class="field" style="max-width:240px"><label class="label" for="rd-page">Bis Seite</label><div class="inp"><input id="rd-page" type="number" inputmode="numeric" min="0" value="${esc(R.page)}" placeholder="${bk.page||0}" data-act="rdin" data-f="page"><span>${bk.pages?'von '+bk.pages:''}</span></div></div><button class="ckopt" data-act="rdfinflag" aria-pressed="${!!R.fin}"><span class="check" aria-hidden="true"></span>Buch beendet</button>`:''}
+    <div class="field"><label class="label" for="rd-note">Was ist hängen geblieben? (optional)</label><textarea id="rd-note" class="search" rows="2" data-act="rdin" data-f="note">${esc(R.note||'')}</textarea></div>
+    <div class="row"><button class="btn primary" data-act="rdsave">Speichern</button><button class="btn ghost" data-act="rdclose">Verwerfen</button></div></div></div>`; return; }
+  $('#overlay').innerHTML=`<div class="overlay rdov run" data-act="rdtap"><div class="rdrun"><div class="rdtitle">${esc(bk?bk.t:'Lesen')}</div><div class="rdclock ${R.show?'':'hid'}" id="rdclock">${mmss(rdMs()/1000)}</div><span class="rddot ${R.run?'on':''}" aria-label="${R.run?'Timer läuft':'Pausiert'}"></span><p class="small rdhint">${R.run?'Timer läuft. Tippe, um die Zeit kurz zu sehen.':'Pausiert'}</p></div>
+    <div class="controls"><button class="btn ghost" data-act="rdplay">${R.run?'Pause':'Weiter'}</button><button class="btn" data-act="rdstop">Fertig</button></div></div>`;
+}
+function rdSave(){
+  const R=UI.rd, min=Math.max(1,Math.round(rdMs()/60000)), B=booksDoc(), bk=B.list.find(b=>b.id===R.b); let pages=0;
+  if(bk){ const pg=R.page===''?null:+R.page; if(pg!=null&&!isNaN(pg)){ pages=Math.max(0,pg-(bk.page||0)); bk.page=pg; } bk.min=(bk.min||0)+min; if(bk.status==='liste') bk.status='lese'; if(R.fin){ bk.status='fertig'; bk.end=todayKey(); if(bk.pages) bk.page=bk.pages; } Store.put('sk-books',B); }
+  const r=skLog('lesen',{min,src:'read',...(pages?{pages}:{}),...(bk?{book:bk.id}:{}),...(R.note?{note:R.note}:{})});
+  UI.rd=null; runClear(); keepAwake(false); toast(r&&r.pass?'Lesen: Stufe geschafft':min+' min gelesen'+(pages?', '+pages+' Seiten':''));
+  skOpen('lesen');
+}
+/* Laufende Timer überstehen ein Neuladen der App (iOS beendet Web-Apps im Hintergrund gern) */
+function runSave(){ try{ localStorage.setItem(LS_KEY+'-run',JSON.stringify({m:UI.modal,sks:UI.sks||null,fx:UI.fx||null,rd:UI.rd||null})); }catch(e){} }
+function runClear(){ try{ localStorage.removeItem(LS_KEY+'-run'); }catch(e){} }
+function runRestore(){ try{ const r=JSON.parse(localStorage.getItem(LS_KEY+'-run')||'null'); if(!r) return;
+  if(r.m==='sks'&&r.sks&&skById(r.sks.id)){ UI.sks=r.sks; UI.modal='sks'; renderSkSess(true); toast('Offene Skill-Einheit wiederhergestellt'); }
+  else if(r.m==='fx'&&r.fx&&!r.fx.end){ UI.fx=r.fx; UI.modal='fx'; renderFx(); toast('Fokusblock läuft weiter'); }
+  else if(r.m==='rd'&&r.rd&&!r.rd.end){ UI.rd=r.rd; UI.modal='rd'; renderRd(); toast('Lese-Timer läuft weiter'); }
+  else runClear(); }catch(e){} }
+function skTick(){
+  if(UI.modal==='sks'&&UI.sks){ const w=$('#skwatch'); if(w&&UI.sks.w.run) w.textContent=mmss(swMs()/1000); const e=$('#skel'); if(e) e.textContent='seit '+Math.round((Date.now()-UI.sks.t0)/60000)+' min'; }
+  if(UI.modal==='fx'&&UI.fx&&!UI.fx.setup&&!UI.fx.end){ const F=UI.fx, left=F.min*60-fxMs()/1000; const c=$('#fxclock'); if(c) c.textContent=mmss(Math.max(0,left)); const b=$('#fxbar'); if(b) b.style.width=Math.min(100,fxMs()/(F.min*600))+'%'; if(left<=0&&F.run) fxFinish(true); }
+  if(UI.modal==='rd'&&UI.rd&&!UI.rd.setup&&!UI.rd.end){ const c=$('#rdclock'); if(c) c.textContent=mmss(rdMs()/1000); }
+}
+setInterval(skTick,1000);
+
+/* ---------- Ereignisse ---------- */
+function closeOv(){ UI.modal=null; $('#overlay').innerHTML=''; render(); }
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]'); if(!t) return; const a=t.dataset.act;
+  if(!/^(sk|ck|fx|rd|tabskills)/.test(a)) return;
+  if(['skin','skexd','ckin','fxin','rdin'].includes(a)) return;
+  switch(a){
+    case 'tabskills': UI.ck=null; UI.modal=null; $('#overlay').innerHTML=''; UI.tab='skills'; render(); window.scrollTo(0,0); break;
+    /* Ampel */
+    case 'ckgo': ckStart(); break;
+    case 'ckres': UI.ck={step:'view',hist:[],a:{}}; UI.modal='ck'; renderCk(); break;
+    case 'ckclose': UI.ck=null; closeOv(); break;
+    case 'ckpick': { const C=UI.ck, v=t.dataset.v; ckAnswer(isNaN(+v)?v:+v); break; }
+    case 'ckmulti': { const c=UI.ck.a.cause, v=t.dataset.v; const i=c.indexOf(v); if(i>=0) c.splice(i,1); else c.push(v); renderCk(); break; }
+    case 'ckarea': { const c=UI.ck.a.areas, v=t.dataset.k; const i=c.indexOf(v); if(i>=0) c.splice(i,1); else c.push(v); renderCk(); break; }
+    case 'cknext': ckGo(ckNext(UI.ck.step,UI.ck.a)); break;
+    case 'ckskip': UI.ck.a.sleep=''; UI.ck.a.rhr=''; ckGo(ckNext(UI.ck.step,UI.ck.a)); break;
+    case 'ckback': { const C=UI.ck; C.step=C.hist.pop()||'rec'; renderCk(); break; }
+    case 'cklite': case 'cknormal': { const k=todayKey(), d=dayDoc(k); if(d.check){ d.check.choice=a==='cklite'?'lite':'normal'; saveDay(k,d); }
+      const tb=DAYS[new Date().getDay()].blocks.find(b=>b.train); UI.ck=null; UI.modal=null; $('#overlay').innerHTML='';
+      if(tb) startTraining(tb.train); else render(); break; }
+    case 'ckregen': { const c=ckGet(), k=todayKey(), d=dayDoc(k); if(d.check&&!d.check.choice){ d.check.choice='rest'; saveDay(k,d); } const areas={}; (c&&c.areas||[]).filter(x=>MOB_AREAS.some(m=>m.k===x)).forEach(x=>areas[x]=2);
+      const r=Object.keys(areas).length?{areas,feel:c.sore>=2?'verspannt':'gut',min:10}:regenInfo(); const plan=mobPlan({...r,min:10}); UI.ck=null; UI.modal=null; startSteps('Regeneration · '+plan.short.slice(0,2).join(' + '),plan.steps,regenKey()); break; }
+    case 'ckwalk': { const k=todayKey(), d=dayDoc(k); if(d.check&&!d.check.choice){ d.check.choice='rest'; saveDay(k,d); } UI.ck=null; UI.modal=null; const wk=DAYS[new Date().getDay()].blocks.find(b=>b.seq==='walk'); startSteps('Spaziergang',[S('Spaziergang',25*60,null,'Ruhiges Tempo, Tageslicht, Handy in der Tasche. Durch die Nase atmen.')],wk?wk.key:null); break; }
+    /* Skillbank */
+    case 'skf': UI.skf=t.dataset.f; UI.skHidden=false; render(); break;
+    case 'skhid': UI.skHidden=!UI.skHidden; render(); break;
+    case 'skopen': skOpen(t.dataset.id); break;
+    case 'skgo': { const s=skById(t.dataset.id); if(s.kind==='read') rdOpen(); else if(s.kind==='focus') fxOpen(); else if(s.kind==='med'){ UI.sk={id:s.id}; UI.modal='sk'; skMedPick(Math.min(skDoc(s.id).lvl,s.lv.length-1)); } else if(s.kind==='breath'){ UI.sk={id:s.id}; const li=Math.min(skDoc(s.id).lvl,s.lv.length-1); skBrStart(li); } else skSessOpen(s.id,false); break; }
+    case 'sklvopen': UI.sk.open=UI.sk.open===+t.dataset.i?null:+t.dataset.i; renderSkill(); break;
+    case 'sksetlvl': { const d=skDoc(UI.sk.id); d.lvl=+t.dataset.i; skSaveDoc(UI.sk.id,d); UI.sk.open=null; renderSkill(true); toast('Stufe '+(d.lvl+1)+' ist jetzt aktiv'); break; }
+    case 'skup': { const s=skById(UI.sk.id), d=skDoc(s.id); d.passed[d.lvl]=d.passed[d.lvl]||todayKey(); d.lvl=Math.min(s.lv.length-1,d.lvl+1); skSaveDoc(s.id,d); renderSkill(true); toast('Neue Stufe: '+s.lv[d.lvl].n); break; }
+    case 'skpin': { const m=skMeta(), id=UI.sk.id; m.pin=m.pin.includes(id)?m.pin.filter(x=>x!==id):[...m.pin,id]; skMetaSave(m); renderSkill(); break; }
+    case 'skhide': { const m=skMeta(), id=UI.sk.id, h=m.hidden.includes(id); m.hidden=h?m.hidden.filter(x=>x!==id):[...m.hidden,id]; if(!h) m.pin=m.pin.filter(x=>x!==id); skMetaSave(m); if(h) renderSkill(); else { UI.sk=null; closeOv(); toast('Ausgeblendet. Unter „Ausgeblendete Skills“ holst du ihn zurück.'); } break; }
+    case 'skdel': if(t.dataset.sure){ const d=skDoc(UI.sk.id); d.log=d.log.filter(x=>String(x.at)!==t.dataset.at); skSaveDoc(UI.sk.id,d); renderSkill(); } else { t.dataset.sure='1'; t.textContent='?'; t.style.color='var(--warn)'; t.setAttribute('aria-label','Wirklich löschen? Nochmal tippen'); } break;
+    case 'sksess': skSessOpen(UI.sk?UI.sk.id:UI.sks.id,!!t.dataset.quick); break;
+    case 'skimg': { const ex=EX[t.dataset.ex]; const box=t.closest('.skex'); const big=box.querySelector('.skbig'); if(big) big.remove(); else box.insertAdjacentHTML('beforeend',`<img class="skbig" src="${imgSrc(ex.img)}" alt="Animation ${esc(ex.n)}">`); break; }
+    case 'sktips': { const box=t.closest('.skex'), x=box.querySelector('.tips'); if(x) x.remove(); else box.querySelector('.grow').insertAdjacentHTML('beforeend',tipsHtml(t.dataset.ex,true)); break; }
+    case 'skclose': { const S2=UI.sks; if(S2&&!S2.quick&&Date.now()-S2.t0>60000&&!t.dataset.sure){ t.dataset.sure='1'; t.textContent='?'; toast('Ohne Speichern schließen? Nochmal tippen'); break; } const id=S2&&S2.id; UI.sks=null; runClear(); if(id) skOpen(id); else closeOv(); break; }
+    case 'skw': { const w=UI.sks.w; if(w.run){ w.acc+=Date.now()-w.t0; w.run=false; w.last=Math.round(w.acc/1000); } else { w.t0=Date.now(); w.run=true; } runSave(); renderSkSess(); break; }
+    case 'skwreset': UI.sks.w={run:false,t0:0,acc:0,last:null}; runSave(); renderSkSess(); break;
+    case 'skwuse': UI.sks.res.v=Math.round(swMs()/1000); runSave(); renderSkSess(); break;
+    case 'sksave': skSessSave(); break;
+    case 'skmed': skMedPick(+t.dataset.i); break;
+    case 'skmedgo': skMedStart(+t.dataset.i,+t.dataset.m); break;
+    case 'skback': renderSkill(true); break;
+    case 'skbr': skBrStart(+t.dataset.i); break;
+    /* Fokus */
+    case 'fxopen': fxOpen(); break;
+    case 'fxmin': UI.fx.min=+t.dataset.m; renderFx(); break;
+    case 'fxawake': UI.fx.awake=!UI.fx.awake; renderFx(); break;
+    case 'fxstart': { const F=UI.fx, inp=$('#fx-task'); if(inp) F.task=inp.value.trim(); const m=skMeta(); m.fx={awake:F.awake}; skMetaSave(m); F.setup=false; F.run=true; F.t0=Date.now(); F.acc=0; F.dist=0; if(F.awake) keepAwake(true); try{ audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume(); }catch(_){} runSave(); renderFx(); break; }
+    case 'fxplay': { const F=UI.fx; if(F.run){ F.acc+=Date.now()-F.t0; F.run=false; } else { F.t0=Date.now(); F.run=true; } runSave(); renderFx(); break; }
+    case 'fxdist': { UI.fx.dist++; const n=$('#fxdn'); if(n) n.textContent=UI.fx.dist; try{ navigator.vibrate&&navigator.vibrate(30); }catch(e){} runSave(); break; }
+    case 'fxstop': if(t.dataset.sure||fxMs()<60000) fxFinish(false); else { t.dataset.sure='1'; toast('Block vorzeitig beenden? Nochmal tippen'); } break;
+    case 'fxfull': { const el=document.documentElement; if(el.requestFullscreen) el.requestFullscreen().catch(()=>toast('Vollbild ist hier nicht möglich')); else toast('Auf dem iPhone gibt es Vollbild nur in der installierten App. Zum Sperren: Geführter Zugriff.'); break; }
+    case 'fxagain': { const F=UI.fx; UI.fx={...F,setup:true,end:false,saved:false,completed:false,acc:0,dist:0,run:false}; renderFx(); break; }
+    case 'fxclose': { const F=UI.fx; if(F&&!F.setup&&!F.end){ fxFinish(false); break; } UI.fx=null; runClear(); keepAwake(false); try{ document.fullscreenElement&&document.exitFullscreen(); }catch(e){} if(UI.sk) renderSkill(true); else closeOv(); break; }
+    /* Lesen */
+    case 'rdopen': rdOpen(t.dataset.b||null); break;
+    case 'rdbk': UI.rd.b=t.dataset.b||null; renderRd(); break;
+    case 'rdshow': UI.rd.show=!UI.rd.show; renderRd(); break;
+    case 'rdawake': UI.rd.awake=!UI.rd.awake; renderRd(); break;
+    case 'rdstart': { const R=UI.rd, m=skMeta(); m.rd={show:R.show,awake:R.awake}; skMetaSave(m); R.setup=false; R.run=true; R.t0=Date.now(); R.acc=0; if(R.awake) keepAwake(true); runSave(); renderRd(); break; }
+    case 'rdtap': if(e.target.closest('button')) break; { const c=$('#rdclock'); if(c&&!UI.rd.show){ c.classList.remove('hid'); clearTimeout(UI.rdHide); UI.rdHide=setTimeout(()=>{ const c2=$('#rdclock'); if(c2&&UI.rd&&!UI.rd.show) c2.classList.add('hid'); },3000); } break; }
+    case 'rdplay': { const R=UI.rd; if(R.run){ R.acc+=Date.now()-R.t0; R.run=false; } else { R.t0=Date.now(); R.run=true; } runSave(); renderRd(); break; }
+    case 'rdstop': { const R=UI.rd; if(R.run){ R.acc+=Date.now()-R.t0; R.run=false; } R.end=true; keepAwake(false); runSave(); renderRd(); break; }
+    case 'rdfinflag': UI.rd.fin=!UI.rd.fin; renderRd(); break;
+    case 'rdsave': rdSave(); break;
+    case 'rdclose': { const R=UI.rd; UI.rd=null; runClear(); keepAwake(false); if(R&&R.end) toast('Lesezeit verworfen'); if(UI.sk) renderSkill(true); else closeOv(); break; }
+    case 'rdfin': { const B=booksDoc(), b=B.list.find(x=>x.id===t.dataset.b); if(b){ b.status='fertig'; b.end=todayKey(); if(b.pages) b.page=b.pages; Store.put('sk-books',B); const d=skDoc('lesen'), s=skById('lesen'), p=skProg(s,d,Math.min(d.lvl,s.lv.length-1)); if(p.pass&&!d.passed[d.lvl]){ d.passed[d.lvl]=todayKey(); skSaveDoc('lesen',d); } toast(b.t+' beendet'); } renderSkill(); break; }
+    case 'rddel': if(t.dataset.sure){ const B=booksDoc(); B.list=B.list.filter(x=>x.id!==t.dataset.b); Store.put('sk-books',B); renderSkill(); } else { t.dataset.sure='1'; t.textContent='Wirklich?'; t.style.color='var(--warn)'; } break;
+  }
+});
+function skBrStart(li){ const s=skById('atem'), r=s.runs[li]; UI.modal=null; brStart(r[0],r[1],r[2],null); UI.br.onDone=sec=>{ const x=skLog('atem',{lvl:li,min:Math.round(sec/60),src:'breath',m:r[0]}); if(x&&x.pass) setTimeout(()=>toast('Atemkontrolle: Stufe geschafft'),1500); }; }
+document.addEventListener('input',e=>{ const t=e.target, a=t.dataset.act;
+  if(a==='skin'&&UI.sks){ const f=t.dataset.f; if(f==='note') UI.sks.note=t.value; else if(f==='min') UI.sks.min=t.value; else UI.sks.res[f]=t.value; runSave(); }
+  else if(a==='ckin'&&UI.ck){ UI.ck.a[t.dataset.f]=t.value; }
+  else if(a==='fxin'&&UI.fx){ UI.fx[t.dataset.f]=t.value; }
+  else if(a==='rdin'&&UI.rd){ UI.rd[t.dataset.f]=t.value; }
+});
+document.addEventListener('change',e=>{ const t=e.target; if(t.dataset.act==='skexd'&&UI.sks){ UI.sks.done[t.dataset.i]=t.checked; runSave(); } });
+document.addEventListener('submit',e=>{ const f=e.target; if(f.dataset.form!=='rdbook') return; e.preventDefault(); const fd=new FormData(f), t=String(fd.get('t')||'').trim(); if(!t) return;
+  const B=booksDoc(); B.list.push({id:'b'+Date.now(),t,a:String(fd.get('a')||'').trim(),pages:+fd.get('pages')||0,page:0,status:fd.get('status')||'lese',start:todayKey(),min:0}); Store.put('sk-books',B); toast(t+' hinzugefügt'); renderSkill(); });
+
+ICONS.skills=SKICO.skills;
+function homeSkills(){ const mine=skFollowed().slice(0,4); if(!mine.length) return `<section class="card"><div class="row" style="align-items:flex-start"><div class="brico" aria-hidden="true">${SKICO.skills}</div><div class="grow" style="min-width:200px"><h3>Skillbank</h3><p class="small muted">${SKILLS.length} Skills von Klimmzug und Handstand über Kreuzheben bis Meditation und Lesen. Jeder mit Stufenpfad, Technik-Tipps und Fortschritt.</p></div></div><div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn primary" data-act="tabskills">Skills entdecken</button></div></section>`;
+  return `<section class="section"><div class="row"><h2 class="grow">Deine Skills</h2><button class="btn small ghost" data-tab="skills">Skillbank ›</button></div><div class="card list hsk">${mine.map(s=>{ const d=skDoc(s.id), li=Math.min(d.lvl,s.lv.length-1), p=skProg(s,d,li), st=skStats(d); return `<button class="li" data-act="skopen" data-id="${s.id}"><span class="skico" aria-hidden="true">${SKICO[s.cat]}</span><span class="grow" style="min-width:0;text-align:left"><b>${esc(s.n)}</b> <span class="small muted">Stufe ${li+1}/${s.lv.length}</span><span class="bar" style="display:block;margin-top:6px"><span style="width:${Math.round(p.pct*100)}%;${p.pass?'background:var(--good)':''}"></span></span></span>${weekBars(st.weeks)}</button>`; }).join('')}</div></section>`; }
 
 /* ============================== EINSTELLUNGEN ============================== */
 function openSettings(){
@@ -2374,7 +3474,7 @@ document.addEventListener('click',e=>{
     case 'settings': openSettings(); break;
     case 'ghsync': GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Abgeglichen'); if(UI.modal==='settings') openSettings(); }); break;
     case 'ghoff': GitSync.setCfg(null); GitSync.last=null; GitSync.err=''; toast('GitHub getrennt, Daten bleiben auf dem Gerät'); openSettings(); render(); break;
-    case 'closeModal': UI.modal=null; $('#overlay').innerHTML=''; render(); break;
+    case 'closeModal': UI.modal=null; UI.sk=null; $('#overlay').innerHTML=''; render(); break;
     case 'train': startTraining(t.dataset.w); break;
     case 'resume': UI.session=t.dataset.id; keepAwake(true); renderSession(true); break;
     case 'tplpick': openTplPick(t.dataset.slot); break;
@@ -2417,7 +3517,8 @@ document.addEventListener('click',e=>{
       startSteps('Mobility · '+(plan.short.length>2?plan.short.length+' Bereiche':plan.short.join(' + ')),plan.steps,m.key); break; }
     case 'brpick': if(UI.br){ UI.br=null; UI.modal=null; } openBreathPick(t.dataset.key); break;
     case 'brquick': { const m=brMode(t.dataset.id); if(m.whm) openBreathPick(null,m.id); else { const c=brChoice(m); brStart(m.id,c.v,c.len,null); } break; }
-    case 'brgoal': UI.bp.goal=t.dataset.g; renderBreathPick(); break;
+    case 'brgoal': UI.bp.goal=t.dataset.g; UI.bp.use=null; renderBreathPick(); break;
+    case 'bruse': UI.bp.use=UI.bp.use===t.dataset.u?null:t.dataset.u; renderBreathPick(); break;
     case 'brsel': brSelInit(t.dataset.id); renderBreathPick(true); break;
     case 'brback': UI.bp.sel=null; renderBreathPick(true); break;
     case 'brvar': UI.bp.v=+t.dataset.i; renderBreathPick(); break;
@@ -2459,7 +3560,7 @@ document.addEventListener('click',e=>{
     case 'closeGuide': { const g=UI.guide; if(g && g.i>=g.steps.length-1 && g.started){ finishGuide(true); } else { UI.guide=null; if(!UI.session) keepAwake(false); renderGuide(); if(!UI.session) render(); } break; }
     case 'export': doExport(); break;
     case 'askwipe': $('#dangerzone').innerHTML='<span class="small" style="color:var(--warn)">Alle Trainings, Gewichte und Häkchen werden gelöscht.</span><button class="btn small" data-act="wipe" style="color:var(--warn)">Ja, alles löschen</button><button class="btn small ghost" data-act="settings">Abbrechen</button>'; break;
-    case 'wipe': Object.keys(Store.cache).forEach(k=>Store.del(k)); toast('Alle Daten gelöscht'); openSettings(); break;
+    case 'wipe': runClear(); Object.keys(Store.cache).forEach(k=>Store.del(k)); toast('Alle Daten gelöscht'); openSettings(); break;
   }
 });
 document.addEventListener('toggle',e=>{ const d=e.target; if(d.classList&&d.classList.contains('tips')&&d.closest('.stage')) UI.tipsOpen=d.open; },true);
@@ -2475,7 +3576,7 @@ document.addEventListener('change',e=>{
     if(f==='cls'){ if(t.value==='__new'){ UI.ted.newCls=true; } else { d.cls=t.value; UI.ted.newCls=false; if(!d.items.length&&d.cls==='ausdauer') d.mode='timer'; } renderTed(); }
     else if(f==='warm'){ d.warm=t.checked; const m=$('#tedmin'); if(m) m.textContent='ca. '+tplMin(d)+' min'; } }
   else if(a==='tedi'&&UI.ted&&t.type==='checkbox'){ const it=UI.ted.d.items[+t.dataset.i]; it[t.dataset.f]=t.checked; if(t.dataset.f==='ss') renderTed(); else { const m=$('#tedmin'); if(m) m.textContent='ca. '+tplMin(UI.ted.d)+' min'; } }
-  else if(a==='import'){ const f=t.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); const docs=data.docs||data; let n=0; for(const key in docs){ if(/^(profile|mob|d-|w-|t-)/.test(key)){ Store.put(key,docs[key]); n++; } } toast(n+' Einträge geladen'); openSettings(); }catch(err){ toast('Die Datei ist keine gültige Sicherung (JSON aus „Daten als Datei sichern“).'); } }; r.readAsText(f); }
+  else if(a==='import'){ const f=t.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); const docs=data.docs||data; let n=0; for(const key in docs){ if(/^(profile|mob|d-|w-|t-|sk-)/.test(key)){ Store.put(key,docs[key]); n++; } } toast(n+' Einträge geladen'); openSettings(); }catch(err){ toast('Die Datei ist keine gültige Sicherung (JSON aus „Daten als Datei sichern“).'); } }; r.readAsText(f); }
 });
 document.addEventListener('input',e=>{
   const t=e.target, a=t.dataset.act;
@@ -2512,6 +3613,7 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 Store.load();
 if(!Store.get('profile')){ Store.cache.profile={settings:{...DEFAULT_SETTINGS},bw:[]}; Store.saveLocal(); Store.queue('profile'); } // ohne Zeitstempel, damit eine Online-Sicherung Vorrang hat
 onData();
+runRestore();
 (function resume(){ const open=workouts().find(w=>!w.finished && w.date===todayKey()); if(open) toast('Offene Einheit von heute: auf „Fortsetzen“ tippen'); })();
 Store.connect();
 setTimeout(()=>GitSync.sync(),300);
