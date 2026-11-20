@@ -397,11 +397,13 @@ details summary{cursor:pointer;font-weight:600}
 .skhead small{color:var(--muted);font-size:.78rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .skico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--accent);flex:none}
 .skico svg{width:22px;height:22px}
-.sklv{font-size:1.5rem;font-weight:700;color:var(--accent);flex:none}
+.sklv{font-size:1.5rem;font-weight:700;color:var(--accent);flex:none;white-space:nowrap}
 .sklv small{font-size:.9rem;color:var(--muted)}
 .skweeks{display:inline-flex;gap:2px;align-items:flex-end;height:20px;flex:none}
 .skweeks i{width:5px;border-radius:1px;background:var(--surface-2)}
 .skweeks i.on{background:var(--accent)}
+.skcats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.skcat .skx{opacity:.75;margin-top:2px}
 .sksug{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media (max-width:420px){.sksug{grid-template-columns:repeat(2,minmax(0,1fr))}.sksug .htile:last-child:nth-child(odd){grid-column:span 2}}
 .skcur .hring svg{width:76px;height:76px} .skcur .hring .rv{height:76px}
@@ -2473,7 +2475,7 @@ function renderBreathEnd(){
 
 /* ============================== SKILLBANK: INHALTE ============================== */
 /* Test-Arten: reps (Wdh.), hold (Sekunden), kgbw (Faktor × Körpergewicht, mit Wdh.), cm (kleiner ist besser), sess (Einheiten mit Mindestdauer), book (beendete Bücher) */
-const SK_CAT = {kg:'Körpergewicht',ger:'Mit Geräten',mob:'Beweglichkeit',geist:'Geist'};
+const SK_CAT = {kg:'Körpergewicht',ger:'Mit Geräten',mob:'Beweglichkeit',geist:'Geist und Fokus'};
 const SK_LOAD = {1:'sanft',2:'mittel',3:'fordernd'};
 const T=(type,target,o)=>({type,target,...(o||{})});
 const E=(n,d,ex)=>({n,d,ex:ex||null});
@@ -3123,19 +3125,30 @@ function skCard(s){
     <div class="row small muted" style="gap:8px;flex-wrap:nowrap">${weekBars(st.weeks)}<span class="grow">${st.n?st.l28+'× in 4 Wochen · '+esc(st.lvlName):'Noch nicht begonnen'}</span>${p.pass&&!all?'<span class="pill good">Stufe geschafft</span>':''}</div>
     <div class="row" style="gap:8px"><button class="btn small primary" data-act="skgo" data-id="${s.id}">${s.kind==='read'?'Lesen':s.kind==='focus'?'Fokusblock':s.kind==='med'?'Meditieren':st.n?'Weiter üben':'Starten'}</button><button class="btn small ghost" data-act="skopen" data-id="${s.id}">Stufen und Tipps</button></div></article>`;
 }
+const SK_CAT_SUB={kg:'Klimmzug, Handstand, L-Sit, Muscle-up …',ger:'Kreuzheben, Umsetzen, Get-up …',mob:'Spagat, tiefe Hocke, Schulter …',geist:'Meditation, Atmung, Fokus, Lesen'};
 function vSkills(){
-  const m=skMeta(), f=UI.skf||(skFollowed().length?'mine':'alle'), sug=skSuggest(), c=ckGet();
-  let list=SKILLS.filter(s=>UI.skHidden?m.hidden.includes(s.id):!m.hidden.includes(s.id));
-  if(!UI.skHidden){ if(f==='mine') list=skFollowed(); else if(f!=='alle') list=list.filter(s=>s.cat===f); }
-  const mineN=skFollowed().length;
+  const m=skMeta(), c=ckGet(), mine=skFollowed(), mineN=mine.length;
+  let cat=m.cat||null; if(cat==='mine'&&!mineN) cat=null;
   const tot=SKILLS.reduce((a,s)=>a+skDoc(s.id).log.filter(x=>Date.now()-x.at<7*864e5).length,0);
-  const hint={g:'Grüne Ampel: alle Skills offen, auch Tests.',y:'Gelbe Ampel: Technik, Hilfsübungen, Beweglichkeit und Geist. Tests lieber an einem grünen Tag.',r:'Rote Ampel: Geist-Skills und sanfte Beweglichkeit. Der Körper erholt sich.'}[sug.L];
-  return `<section class="hero"><div class="date">${tot?tot+' Einheiten in 7 Tagen':'Skillbank'}</div><h1>Skillbank</h1><p class="muted">${SKILLS.length} Skills mit Stufenpfad. Jeden Skill unabhängig üben, so oft du willst und so viele am Tag, wie du magst. Fortschritt: wie intensiv du ihn verfolgst und wie weit es bis zur nächsten Stufe ist.</p></section>
-  <section class="card skamp ${c?c.light:''}"><div class="row" style="flex-wrap:nowrap">${ckLightSvg(c?c.light:'')}<div class="grow"><b>${c?'Ampel '+CK_LIGHT[c.light].n:'Noch kein Check-in heute'}</b><p class="small muted">${c?esc(hint):'Mit dem Check-in schlägt die App Skills vor, die zu deinem Tag passen.'}</p></div><button class="btn small" data-act="${c?'ckres':'ckgo'}">${c?'Ansehen':'Check-in'}</button></div></section>
-  <section class="section"><h2>Heute passend</h2><div class="sksug">${sug.list.map(s=>{ const d=skDoc(s.id), li=Math.min(d.lvl,s.lv.length-1); return `<button class="htile" data-act="skgo" data-id="${s.id}"><span class="hi" aria-hidden="true">${SKICO[s.cat]}</span><b>${esc(s.n)}</b><small>Stufe ${li+1}: ${esc(s.lv[li].n)}</small></button>`; }).join('')}</div></section>
-  <div class="chips scroll" role="group" aria-label="Filter">${[['mine','Meine'+(mineN?' · '+mineN:'')],['alle','Alle'],...Object.entries(SK_CAT)].map(([k,n])=>`<button class="chip" data-act="skf" data-f="${k}" aria-pressed="${!UI.skHidden&&f===k}">${esc(n)}</button>`).join('')}</div>
-  ${list.length?`<section class="skgrid">${list.map(skCard).join('')}</section>`:`<div class="card"><p>${f==='mine'?'Noch keine Skills in Arbeit. Wähle unter „Alle“ einen Skill und starte die erste Einheit, dann erscheint er hier.':'Keine Skills in dieser Auswahl.'}</p></div>`}
-  <div class="row"><button class="btn small ghost" data-act="skhid">${UI.skHidden?'Zurück zur Skillbank':'Ausgeblendete Skills'+(m.hidden.length?' · '+m.hidden.length:'')}</button></div>`;
+  const vis=SKILLS.filter(s=>!m.hidden.includes(s.id));
+  const hint={g:'Grüne Ampel: alle Skills offen, auch Tests.',y:'Gelbe Ampel: Technik, Hilfsübungen, Beweglichkeit und Geist. Tests lieber an einem grünen Tag.',r:'Rote Ampel: Geist-Skills und sanfte Beweglichkeit. Der Körper erholt sich.'};
+  const amp=`<section class="card skamp ${c?c.light:''}"><div class="row" style="flex-wrap:nowrap">${ckLightSvg(c?c.light:'')}<div class="grow"><b>${c?'Ampel '+CK_LIGHT[c.light].n:'Noch kein Check-in heute'}</b><p class="small muted">${c?esc(hint[c.light]):'Mit dem Check-in schlägt die App Skills vor, die zu deinem Tag passen.'}</p></div><button class="btn small" data-act="${c?'ckres':'ckgo'}">${c?'Ansehen':'Check-in'}</button></div></section>`;
+  if(UI.skHidden){ const list=SKILLS.filter(s=>m.hidden.includes(s.id));
+    return `<section class="hero"><h1>Ausgeblendete Skills</h1></section>${list.length?`<section class="skgrid">${list.map(skCard).join('')}</section>`:'<div class="card"><p>Keine ausgeblendeten Skills.</p></div>'}<div class="row"><button class="btn small" data-act="skhid">Zurück zur Skillbank</button></div>`; }
+  const tiles=[...(mineN?[['mine','Meine Skills',mineN+' in Arbeit',SKICO.skills]]:[]),...Object.entries(SK_CAT).map(([k,n])=>{ const all=vis.filter(s=>s.cat===k), act=mine.filter(s=>s.cat===k).length; return [k,n,all.length+' Skills'+(act?' · '+act+' aktiv':''),SKICO[k],SK_CAT_SUB[k]]; })];
+  const catGrid=`<section class="section"><h2>Bereiche</h2><div class="skcats">${tiles.map(([k,n,sub,ico,ex])=>`<button class="htile skcat ${cat===k?'acc':''}" data-act="skf" data-f="${k}" aria-pressed="${cat===k}"><span class="hi" aria-hidden="true">${ico}</span><b>${esc(n)}</b><small>${esc(sub)}</small>${ex?`<small class="skx">${esc(ex)}</small>`:''}</button>`).join('')}</div></section>`;
+  if(!cat){ const sug=skSuggest();
+    return `<section class="hero"><div class="date">${tot?tot+' Einheiten in 7 Tagen':'Skillbank'}</div><h1>Skillbank</h1><p class="muted">Wähle einen Bereich. Jeder Skill läuft unabhängig, mit Stufenpfad und Fortschritt.</p></section>
+    ${amp}${catGrid}
+    <section class="section"><h2>Heute passend</h2><div class="sksug">${sug.list.map(s=>{ const d=skDoc(s.id), li=Math.min(d.lvl,s.lv.length-1); return `<button class="htile" data-act="skgo" data-id="${s.id}"><span class="hi" aria-hidden="true">${SKICO[s.cat]}</span><b>${esc(s.n)}</b><small>Stufe ${li+1}: ${esc(s.lv[li].n)}</small></button>`; }).join('')}</div></section>
+    <div class="row"><button class="btn small ghost" data-act="skhid">Ausgeblendete Skills${m.hidden.length?' · '+m.hidden.length:''}</button></div>`; }
+  let list=cat==='mine'?mine:vis.filter(s=>s.cat===cat);
+  list=list.map(s=>({s,a:skDoc(s.id).log.length?1:0})).sort((a,b)=>b.a-a.a).map(x=>x.s);
+  const title=cat==='mine'?'Meine Skills':SK_CAT[cat];
+  return `<section class="hero"><div class="date">Skillbank</div><div class="row"><h1 class="grow">${esc(title)}</h1><button class="btn small" data-act="skf" data-f="${cat}">‹ Alle Bereiche</button></div><p class="muted">${list.length} Skills${cat!=='mine'?' · '+esc(SK_CAT_SUB[cat]):''}</p></section>
+  <div class="chips scroll" role="group" aria-label="Bereich">${tiles.map(([k,n])=>`<button class="chip" data-act="skf" data-f="${k}" aria-pressed="${cat===k}">${esc(n)}</button>`).join('')}</div>
+  ${cat==='geist'||cat==='mob'?'':amp}
+  ${list.length?`<section class="skgrid">${list.map(skCard).join('')}</section>`:'<div class="card"><p>Keine Skills in diesem Bereich.</p></div>'}`;
 }
 function skOpen(id){ UI.sk={id,open:null}; UI.modal='sk'; renderSkill(true); }
 function exRef(x){
@@ -3363,8 +3376,8 @@ document.addEventListener('click',e=>{
       const r=Object.keys(areas).length?{areas,feel:c.sore>=2?'verspannt':'gut',min:10}:regenInfo(); const plan=mobPlan({...r,min:10}); UI.ck=null; UI.modal=null; startSteps('Regeneration · '+plan.short.slice(0,2).join(' + '),plan.steps,regenKey()); break; }
     case 'ckwalk': { const k=todayKey(), d=dayDoc(k); if(d.check&&!d.check.choice){ d.check.choice='rest'; saveDay(k,d); } UI.ck=null; UI.modal=null; const wk=DAYS[new Date().getDay()].blocks.find(b=>b.seq==='walk'); startSteps('Spaziergang',[S('Spaziergang',25*60,null,'Ruhiges Tempo, Tageslicht, Handy in der Tasche. Durch die Nase atmen.')],wk?wk.key:null); break; }
     /* Skillbank */
-    case 'skf': UI.skf=t.dataset.f; UI.skHidden=false; render(); break;
-    case 'skhid': UI.skHidden=!UI.skHidden; render(); break;
+    case 'skf': { const m=skMeta(), f=t.dataset.f, open=m.cat!==f||t.classList.contains('chip'); m.cat=open?f:null; skMetaSave(m); UI.skHidden=false; render(); window.scrollTo(0,0); break; }
+    case 'skhid': UI.skHidden=!UI.skHidden; render(); window.scrollTo(0,0); break;
     case 'skopen': skOpen(t.dataset.id); break;
     case 'skgo': { const s=skById(t.dataset.id); if(s.kind==='read') rdOpen(); else if(s.kind==='focus') fxOpen(); else if(s.kind==='med'){ UI.sk={id:s.id}; UI.modal='sk'; skMedPick(Math.min(skDoc(s.id).lvl,s.lv.length-1)); } else if(s.kind==='breath'){ UI.sk={id:s.id}; const li=Math.min(skDoc(s.id).lvl,s.lv.length-1); skBrStart(li); } else skSessOpen(s.id,false); break; }
     case 'sklvopen': UI.sk.open=UI.sk.open===+t.dataset.i?null:+t.dataset.i; renderSkill(); break;
