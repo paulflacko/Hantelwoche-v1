@@ -194,7 +194,7 @@ nav.tabs svg{width:22px;height:22px}
 .ex .b{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:.85rem}
-.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.chip[aria-pressed="true"],.chip.ntday:has(input:checked){background:var(--fg);color:var(--bg);border-color:var(--fg)}
 /* Bibliothek und Workout-Editor */
 .search{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:11px 12px;font:inherit;color:var(--fg);width:100%}
 .chips.scroll{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -1426,7 +1426,7 @@ const Store = {
   get(k){ return this.cache[k]; },
   put(k,v){ this.cache[k]=JSON.parse(JSON.stringify(v)); this.touch(k); this.saveLocal(); this.queue(k); },
   del(k){ delete this.cache[k]; this.touch(k); this.saveLocal(); this.queue(k); },
-  touch(k){ try{ const m=JSON.parse(localStorage.getItem(LS_KEY+'-t')||'{}'); m[k]=Date.now(); localStorage.setItem(LS_KEY+'-t',JSON.stringify(m)); }catch(e){} if(typeof GitSync!=='undefined') GitSync.soon(); },
+  touch(k){ try{ const m=JSON.parse(localStorage.getItem(LS_KEY+'-t')||'{}'); m[k]=Date.now(); localStorage.setItem(LS_KEY+'-t',JSON.stringify(m)); }catch(e){} if(typeof GitSync!=='undefined') GitSync.soon(); if(typeof Ntfy!=='undefined') Ntfy.soon(); },
   queue(k){ if(!this.col) return; this.dirty[k]=true; clearTimeout(this.timers[k]); this.timers[k]=setTimeout(()=>this.flush(k),700); },
   async flush(k){
     if(this.writing[k]){ this.timers[k]=setTimeout(()=>this.flush(k),400); return; }
@@ -3427,6 +3427,170 @@ ICONS.skills=SKICO.skills;
 function homeSkills(){ const mine=skFollowed().slice(0,4); if(!mine.length) return `<section class="card"><div class="row" style="align-items:flex-start"><div class="brico" aria-hidden="true">${SKICO.skills}</div><div class="grow" style="min-width:200px"><h3>Skillbank</h3><p class="small muted">${SKILLS.length} Skills von Klimmzug und Handstand über Kreuzheben bis Meditation und Lesen. Jeder mit Stufenpfad, Technik-Tipps und Fortschritt.</p></div></div><div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn primary" data-act="tabskills">Skills entdecken</button></div></section>`;
   return `<section class="section"><div class="row"><h2 class="grow">Deine Skills</h2><button class="btn small ghost" data-tab="skills">Skillbank ›</button></div><div class="card list hsk">${mine.map(s=>{ const d=skDoc(s.id), li=Math.min(d.lvl,s.lv.length-1), p=skProg(s,d,li), st=skStats(d); return `<button class="li" data-act="skopen" data-id="${s.id}"><span class="skico" aria-hidden="true">${SKICO[s.cat]}</span><span class="grow" style="min-width:0;text-align:left"><b>${esc(s.n)}</b> <span class="small muted">Stufe ${li+1}/${s.lv.length}</span><span class="bar" style="display:block;margin-top:6px"><span style="width:${Math.round(p.pct*100)}%;${p.pass?'background:var(--good)':''}"></span></span></span>${weekBars(st.weeks)}</button>`; }).join('')}</div></section>`; }
 
+/* ============================== BENACHRICHTIGUNGEN (ntfy) ==============================
+   Eigenständiges Modul. Kern: Kanal, Senden, Einplanen, Abgleich (Ntfy.*).
+   Inhalte kommen aus NTFY_TYPES[].items(); für eine neue App-Version nur diese Quellen austauschen.
+   Ablauf: Bei jedem Öffnen und nach jeder Änderung plant die App die nächsten 1–3 Tage über ntfy ein.
+   Jede Erinnerung hat eine feste Kennung (sequence_id). Erneutes Senden ersetzt die eingeplante Nachricht,
+   ist etwas schon erledigt, löscht die App sie wieder (GET /<kanal>/<kennung>/delete).
+   Gesendet wird als JSON an die Server-Wurzel ohne eigene Header: so braucht der Browser keine CORS-Vorabfrage.
+   Deep-Links: <App-Adresse>#go=<Ziel>, Ziele siehe goLink(). */
+const NTFY_WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+function ntfyAt(k,hhmm,lead){ const [h,m]=String(hhmm||'00:00').split(':').map(Number); const d=parseKey(k); d.setHours(h||0,(m||0)-(lead||0),0,0); return d.getTime(); }
+function ntfyBlockTime(b){ if(/^\d{1,2}:\d{2}$/.test(b.t)) return b.t; if(b.key==='check') return null; return {'vorm.':'10:00','nachm.':b.key==='prep'?'16:00':'14:00','abends':'19:00'}[b.t]||null; }
+function ntfyBlockType(b){ return b.train?'train':b.key==='med'?'med':(b.key==='check'||b.key==='prep')?'week':'move'; }
+const NTFY_TYPES=[
+  {k:'check',n:'Morgen-Check-in',d:'Tagesampel: Schlaf, Muskelkater, Stress. Die App sagt dir dann, ob heute Vollgas, leicht oder Erholung dran ist.',time:'07:00',
+   items(k,c,T,push){ const doc=dayDoc(k); if(doc.check) return; const day=DAYS[parseKey(k).getDay()], main=day.blocks.find(b=>b.main);
+     push('check',ntfyAt(k,T.time),{title:'Guten Morgen, kurzer Check-in',message:'Wie geht’s dir heute? 30 Sekunden Tagesampel.'+(main?' Geplant: '+main.n+(/^\d/.test(main.t)?' um '+main.t:'')+'.':''),tags:['sunrise'],go:'check'}); }},
+  {k:'train',n:'Krafttraining',d:'Mo, Mi, Fr vor Kraft A, B und C, mit den Übungen und dem Hinweis auf Entlastungswochen.',lead:30,
+   items(k,c,T,push){ const doc=dayDoc(k), day=DAYS[parseKey(k).getDay()], ck=doc.check;
+     day.blocks.filter(b=>b.train).forEach(b=>{ if(blockDone(k,b,doc)||(ck&&ck.choice==='rest')) return; const w=WORKOUTS[b.train]||{}, t=ntfyBlockTime(b);
+       const msg=(w.sub?w.sub+'. ':'')+(isDeload(k)?'Entlastungswoche: Gewichte etwa 10 % runter. ':'')+(ck&&ck.choice==='lite'?'Tagesampel sagt: leichte Variante. ':'')+'Woche '+weekNo(k)+'.';
+       push('train-'+b.train,ntfyAt(k,t,T.lead),{title:b.n+' um '+t,message:msg,tags:['muscle'],go:'today',prio:4}); }); }},
+  {k:'move',n:'Bewegung und Mobility',d:'Spaziergänge, Mobility, Yoga, lockere Ausdauer und der Zirkel am Samstag.',lead:10,
+   items(k,c,T,push){ const doc=dayDoc(k), day=DAYS[parseKey(k).getDay()];
+     day.blocks.forEach((b,i)=>{ if(ntfyBlockType(b)!=='move'||blockDone(k,b,doc)) return; const t=ntfyBlockTime(b); if(!t) return;
+       const after=day.blocks[i+1]&&day.blocks[i+1].t==='danach'?' Danach: '+day.blocks[i+1].n+'.':'';
+       const d=b.key==='z2'?z2Minutes()+' min locker, du kannst dabei noch reden.':b.d;
+       push('move-'+b.key,ntfyAt(k,t,T.lead),{title:b.n+(/^\d/.test(b.t)?' um '+t:''),message:(d||'Kurz raus und bewegen.')+after,tags:[b.key==='walk'?'walking':b.key==='yoga'||b.key==='mob'?'lotus_position':'runner'],go:'today'}); }); }},
+  {k:'med',n:'Meditation am Abend',d:'Um 22:00 Meditation, mit Erinnerung an Magnesium.',lead:0,
+   items(k,c,T,push){ const doc=dayDoc(k), day=DAYS[parseKey(k).getDay()];
+     day.blocks.filter(b=>b.key==='med').forEach(b=>{ if(blockDone(k,b,doc)) return; const t=ntfyBlockTime(b);
+       push('med',ntfyAt(k,t,T.lead),{title:'Meditation',message:medMinutes()+' min zur Ruhe kommen.'+(doc.supps&&doc.supps.mg?'':' Danach Magnesium.'),tags:['crescent_moon'],go:'today'}); }); }},
+  {k:'week',n:'Sonntag: Meal Prep und Wochencheck',d:'Vorkochen für Mo bis Mi und abends Gewicht, Trainingsgewichte und Termine.',time:'19:00',
+   items(k,c,T,push){ const doc=dayDoc(k), day=DAYS[parseKey(k).getDay()];
+     day.blocks.filter(b=>ntfyBlockType(b)==='week').forEach(b=>{ if(blockDone(k,b,doc)) return; const t=b.key==='check'?T.time:ntfyBlockTime(b); if(!t) return;
+       push('week-'+b.key,ntfyAt(k,t,0),{title:b.n,message:b.d||'',tags:[b.key==='prep'?'cooking':'bar_chart'],go:b.key==='check'?'progress':'today'}); }); }},
+  {k:'supp',n:'Supplements',d:'Zu den Zeiten aus deinem Plan, nur was noch nicht abgehakt ist.',
+   items(k,c,T,push){ const p=prof().settings, doc=dayDoc(k), by={};
+     SUPPS.filter(s=>(!s.opt||p[s.opt])&&!(doc.supps&&doc.supps[s.k])&&!(s.k==='mg'&&c.types.med&&c.types.med.on)).forEach(s=>(by[s.t]=by[s.t]||[]).push(s));
+     Object.keys(by).forEach(t=>push('supp-'+t.replace(':',''),ntfyAt(k,t,0),{title:'Supplements '+t,message:by[t].map(s=>s.n).join(', '),tags:['pill'],go:'today',prio:2})); }},
+  {k:'skill',n:'Skill-Impuls',d:'Ein Skill aus deiner Skillbank mit der Übung für deine aktuelle Stufe. Die App wechselt zwischen deinen Skills.',time:'17:00',days:[2,4,6],
+   items(k,c,T,push){ const wd=parseKey(k).getDay(); if(!(T.days||[]).includes(wd)) return;
+     const mine=typeof skFollowed==='function'?skFollowed():[];
+     if(!mine.length){ push('skill',ntfyAt(k,T.time,0),{title:'Skillbank',message:'Such dir einen Skill aus, auf den du hinarbeiten willst: Klimmzug, Handstand, Spagat, Meditation oder Lesen.',tags:['dart'],go:'skills'}); return; }
+     const s=mine[Math.floor(parseKey(k)/864e5)%mine.length], d=skDoc(s.id); if(d.log.some(e=>e.d===k)) return;
+     const li=Math.min(d.lvl,s.lv.length-1), lv=s.lv[li];
+     push('skill',ntfyAt(k,T.time,0),{title:s.n+' · Stufe '+(li+1)+': '+lv.n,message:'Ziel: '+lv.goal+'. Heute: '+(lv.ex||[]).slice(0,2).map(e=>e.n+' '+e.d).join(', ')+'.',tags:['dart'],go:'skill:'+s.id}); }},
+  {k:'sleep',n:'Schlafenszeit',d:'Abends ein Hinweis, Bildschirm weg und ins Bett. Schlaf ist Teil der Erholung.',time:'22:30',
+   items(k,c,T,push){ push('sleep',ntfyAt(k,T.time,0),{title:'Schlafenszeit',message:'Handy weg, Licht runter. Mit 7 bis 8 Stunden Schlaf wachsen die Muskeln besser als mit jedem Extrasatz.',tags:['zzz'],go:'home',prio:2}); }},
+];
+const Ntfy = {
+  KEY:LS_KEY+'-ntfy', LKEY:LS_KEY+'-ntfy-plan', busy:false, again:false, timer:null, last:null, err:'',
+  defaults(){ const types={}; NTFY_TYPES.forEach(t=>types[t.k]={on:['check','train','move','med','week'].includes(t.k),...(t.time?{time:t.time}:{}),...(t.lead!=null?{lead:t.lead}:{}),...(t.days?{days:t.days.slice()}:{})}); return {on:false,server:'https://ntfy.sh',topic:'',days:2,click:true,types}; },
+  cfg(){ const d=this.defaults(); let c={}; try{ c=JSON.parse(localStorage.getItem(this.KEY)||'{}')||{}; }catch(e){}
+    const types={}; for(const k in d.types) types[k]={...d.types[k],...((c.types||{})[k]||{})}; return {...d,...c,types}; },
+  save(c){ try{ localStorage.setItem(this.KEY,JSON.stringify(c)); }catch(e){} },
+  ledger(){ try{ return JSON.parse(localStorage.getItem(this.LKEY)||'null')||{topic:'',items:{}}; }catch(e){ return {topic:'',items:{}}; } },
+  saveLedger(L){ try{ localStorage.setItem(this.LKEY,JSON.stringify(L)); }catch(e){} },
+  newTopic(){ const a='abcdefghijkmnpqrstuvwxyz23456789', r=new Uint8Array(20); crypto.getRandomValues(r); return 'hantelwoche-'+Array.from(r,x=>a[x%a.length]).join(''); },
+  validTopic(t){ return /^[-_A-Za-z0-9]{12,64}$/.test(t||''); },
+  base(c){ return String(c.server||'https://ntfy.sh').trim().replace(/\/+$/,''); },
+  appUrl(){ return /^https?:$/.test(location.protocol)?location.href.split('#')[0]:''; },
+  hash(s){ let h=5381; for(let i=0;i<s.length;i++) h=(h*33+s.charCodeAt(i))|0; return (h>>>0).toString(36); },
+  async publish(c,m){
+    const body={topic:c.topic,title:m.title,message:m.message||'',tags:m.tags||[],priority:m.prio||3};
+    const app=this.appUrl(); if(c.click&&app) body.click=app+'#go='+encodeURIComponent(m.go||'home');
+    if(m.at) body.delay=String(Math.round(m.at/1000));
+    if(m.seq) body.sequence_id=m.seq;
+    const r=await fetch(this.base(c)+'/',{method:'POST',body:JSON.stringify(body)}); // text/plain: keine CORS-Vorabfrage
+    if(!r.ok){ let t=''; try{ t=(await r.json()).error||''; }catch(e){} throw new Error((r.status===429?'Zu viele Nachrichten, später nochmal':'Server antwortet '+r.status)+(t?' ('+t+')':'')); }
+  },
+  async cancel(c,topic,seq){ try{ await fetch(this.base(c)+'/'+topic+'/'+seq+'/delete'); }catch(e){} },
+  wanted(c){ const now=Date.now(), from=now+60e3, to=now+Math.min(Math.max(+c.days||2,1),3)*864e5-3600e3, out=[];
+    for(let k=dkey(new Date(now)); parseKey(k).getTime()<=to; k=addDays(k,1)){
+      NTFY_TYPES.forEach(t=>{ const T=c.types[t.k]; if(!T||!T.on) return;
+        try{ t.items(k,c,T,(id,at,m)=>{ if(at>=from&&at<=to) out.push({...m,at,seq:'hw-'+k.replace(/-/g,'')+'-'+id}); }); }catch(e){ console.warn('ntfy',t.k,e); } }); }
+    return out.sort((a,b)=>a.at-b.at); },
+  soon(ms){ if(!this.cfg().on&&!Object.keys(this.ledger().items).length) return; clearTimeout(this.timer); this.timer=setTimeout(()=>this.sync(),ms||4000); },
+  async sync(force){
+    if(this.busy){ this.again=true; return; } this.busy=true; ntfyRefresh();
+    const c=this.cfg(), L=this.ledger(), now=Date.now();
+    try{
+      if(L.topic && (!c.on || L.topic!==c.topic)){ for(const seq in L.items) if(L.items[seq].at>now+15e3) await this.cancel(c,L.topic,seq); L.items={}; L.topic=''; this.saveLedger(L); }
+      if(!c.on||!this.validTopic(c.topic)){ this.err=''; return; }
+      L.topic=c.topic; const want=this.wanted(c), keep={};
+      for(const m of want){ const h=this.hash(JSON.stringify([m.at,m.title,m.message,m.go,m.prio,c.click])); keep[m.seq]=1;
+        if(!force && L.items[m.seq] && L.items[m.seq].h===h) continue;
+        await this.publish(c,m); L.items[m.seq]={at:m.at,h,t:m.title}; this.saveLedger(L); }
+      for(const seq in L.items){ if(keep[seq]) continue; if(L.items[seq].at>now+60e3) await this.cancel(c,c.topic,seq); delete L.items[seq]; }
+      this.saveLedger(L); this.err=''; this.last=new Date();
+    }catch(e){ this.err=(e&&e.message)||'Keine Verbindung'; if(/Failed to fetch|NetworkError|Load failed/i.test(this.err)) this.err='Keine Verbindung zu ntfy'; }
+    finally{ this.busy=false; ntfyRefresh(); if(this.again){ this.again=false; this.soon(1000); } }
+  },
+  upcoming(){ const L=this.ledger(), now=Date.now(); return Object.entries(L.items).filter(([,v])=>v.at>now).sort((a,b)=>a[1].at-b[1].at); }
+};
+function ntfyWhen(ts){ const d=new Date(ts), k=dkey(d), t=todayKey(); return (k===t?'heute':k===addDays(t,1)?'morgen':NTFY_WD[d.getDay()]+' '+fmtShort(k))+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+function openNtfy(){
+  UI.modal='ntfy'; const c=Ntfy.cfg(); if(!c.topic){ c.topic=Ntfy.newTopic(); Ntfy.save(c); }
+  const sub='https://ntfy.sh/'+c.topic, own=Ntfy.base(c)!=='https://ntfy.sh';
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><h2 class="grow">Benachrichtigungen</h2></div>
+  <div class="ov-body"><form class="section" data-form="ntfy">
+    <p class="small muted">Erinnerungen kommen über die kostenlose App <b>ntfy</b> aufs Handy und auf die Apple Watch. Kein Konto nötig. Die Hantelwoche plant bei jedem Öffnen die nächsten Tage ein und löscht Erinnerungen wieder, sobald du etwas erledigt hast.</p>
+    <div class="card">
+      <h3>1 · Dein Kanal</h3>
+      <p class="small muted" style="margin:4px 0 10px">Der Kanal ist wie eine geheime Adresse: Wer den Namen kennt, kann mitlesen. Darum ist er lang und zufällig. Nicht weitergeben.</p>
+      <div class="field"><label class="label" for="nt-topic">Kanalname</label><input id="nt-topic" name="topic" value="${esc(c.topic)}" autocomplete="off" autocapitalize="off" spellcheck="false" style="font-family:ui-monospace,Menlo,monospace;font-size:.9rem"></div>
+      <div class="row" style="margin-top:10px"><button class="btn" type="button" data-act="ntfycopy">Kanal kopieren</button><button class="btn ghost" type="button" data-act="ntfynew">Neuen Kanal erzeugen</button></div>
+    </div>
+    <details class="card" ${c.on?'':'open'}><summary>2 · ntfy-App auf dem iPhone einrichten</summary>
+      <ol class="small" style="margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+        <li>Im App Store <b>„ntfy“</b> installieren (von Philipp Heckel, kostenlos) und öffnen.</li>
+        <li>Mitteilungen erlauben, wenn die App fragt.</li>
+        <li>Oben auf <b>+</b> tippen, bei „Topic name“ den Kanal einfügen (oben „Kanal kopieren“). Server bleibt <b>ntfy.sh</b>${own?` (du nutzt einen eigenen Server: ${esc(Ntfy.base(c))})`:''}. „Subscribe“.</li>
+        <li>Hier unten „Test-Nachricht senden“. Kommt sie an, ist alles verbunden.</li>
+        <li>Apple Watch: Die Mitteilungen erscheinen automatisch, wenn die Watch sie vom iPhone spiegelt (Watch-App › Mitteilungen › ntfy).</li>
+      </ol>
+      <p class="small muted" style="margin-top:8px">Android: ntfy aus dem Play Store, dann gleich wie oben. Am Laptop geht es auch im Browser unter <a href="${esc(sub)}" target="_blank" rel="noopener">ntfy.sh</a>.</p>
+    </details>
+    <div class="card">
+      <h3>3 · Testen und einschalten</h3>
+      <div class="row" style="margin-top:8px"><button class="btn" type="button" data-act="ntfytest">Test-Nachricht senden</button></div>
+      <div class="li" style="margin-top:10px;padding-left:0"><input type="checkbox" class="check" id="nt-on" name="on" ${c.on?'checked':''}><label for="nt-on"><b>Erinnerungen einplanen</b><br><span class="small muted">Aus: alle schon eingeplanten Nachrichten werden gelöscht.</span></label></div>
+    </div>
+    <h3 style="margin-top:6px">Was soll kommen?</h3>
+    <div class="card list">${NTFY_TYPES.map(t=>{ const T=c.types[t.k];
+      return `<div class="li" style="flex-wrap:wrap;align-items:flex-start"><input type="checkbox" class="check" id="nt-${t.k}" name="t-${t.k}" ${T.on?'checked':''}><label for="nt-${t.k}" class="grow" style="min-width:180px"><b>${esc(t.n)}</b><br><span class="small muted">${esc(t.d)}</span></label>
+        <div class="row" style="gap:6px;margin-left:auto">${t.time?`<input type="time" name="time-${t.k}" value="${esc(T.time)}" aria-label="Uhrzeit ${esc(t.n)}" style="width:auto">`:''}${t.lead!=null?`<select name="lead-${t.k}" aria-label="Vorlauf ${esc(t.n)}" style="width:auto">${[0,5,10,15,30,45,60,90].map(n=>`<option value="${n}" ${+T.lead===n?'selected':''}>${n?n+' min vorher':'pünktlich'}</option>`).join('')}</select>`:''}${t.time||t.lead!=null?'':'<span class="small muted">laut Plan</span>'}</div>
+        ${t.days?`<div class="chips" style="width:100%;padding-left:34px">${[1,2,3,4,5,6,0].map(d=>`<label class="chip ntday"><input type="checkbox" name="days-${t.k}" value="${d}" ${T.days.includes(d)?'checked':''} hidden>${NTFY_WD[d]}</label>`).join('')}</div>`:''}</div>`; }).join('')}
+    </div>
+    <details class="card"><summary>Mehr Optionen</summary><div class="formgrid" style="margin-top:10px">
+      <div class="field"><label class="label" for="nt-days">Im Voraus einplanen</label><select id="nt-days" name="days">${[1,2,3].map(n=>`<option value="${n}" ${+c.days===n?'selected':''}>${n===1?'1 Tag':n+' Tage'}</option>`).join('')}</select></div>
+      <div class="field"><label class="label" for="nt-server">Server</label><input id="nt-server" name="server" value="${esc(c.server)}" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    </div>
+    <div class="li" style="padding-left:0;margin-top:8px"><input type="checkbox" class="check" id="nt-click" name="click" ${c.click?'checked':''}><label for="nt-click"><b>Tippen öffnet die passende Stelle der App</b><br><span class="small muted">Auf dem iPhone öffnet sich dabei Safari, nicht die Home-Bildschirm-App. Mit GitHub-Sync sind deine Daten dort auch da.</span></label></div>
+    <p class="small muted" style="margin-top:8px">ntfy.sh plant höchstens 3 Tage voraus. Öffnest du die App länger nicht, kommen danach keine Erinnerungen mehr, bis du sie wieder öffnest.</p></details>
+    <div class="row"><button class="btn primary" type="submit">Speichern</button></div>
+  </form>
+  <section class="section" id="ntfyplan">${ntfyPlanHtml(c)}</section></div></div>`;
+}
+function ntfyPlanHtml(c){ const up=Ntfy.upcoming();
+  return `<div class="row"><h2 class="grow">Eingeplant</h2>${c.on?'<button class="btn small" data-act="ntfysync">Neu planen</button>':''}</div>
+    ${Ntfy.err?`<p class="hint" style="color:var(--amber)">Fehler: ${esc(Ntfy.err)}</p>`:''}
+    ${!c.on?'<p class="small muted">Ausgeschaltet. Es ist nichts eingeplant.</p>':Ntfy.busy?'<p class="small muted">Plane ein …</p>':up.length?`<div class="card list">${up.slice(0,40).map(([,v])=>`<div class="li"><span class="num small muted" style="min-width:104px">${ntfyWhen(v.at)}</span><span class="grow">${esc(v.t||'')}</span></div>`).join('')}</div>${Ntfy.last?`<p class="small muted" style="margin-top:6px">Zuletzt abgeglichen um ${Ntfy.last.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})}</p>`:''}`:'<p class="small muted">In den nächsten Tagen steht nichts an.</p>'}`; }
+function ntfyRefresh(){ const el=document.getElementById('ntfyplan'); if(UI.modal==='ntfy'&&el) el.innerHTML=ntfyPlanHtml(Ntfy.cfg()); }
+function ntfyForm(fd){
+  const c=Ntfy.cfg(); const topic=String(fd.get('topic')||'').trim();
+  if(!Ntfy.validTopic(topic)){ toast('Kanalname: 12–64 Zeichen, nur Buchstaben, Ziffern, - und _'); return null; }
+  c.topic=topic; c.on=fd.get('on')==='on'; c.click=fd.get('click')==='on'; c.days=Math.min(3,Math.max(1,+fd.get('days')||2));
+  const srv=String(fd.get('server')||'').trim()||'https://ntfy.sh'; if(!/^https:\/\/[^\s/]+/.test(srv)){ toast('Server muss mit https:// beginnen'); return null; } c.server=srv;
+  NTFY_TYPES.forEach(t=>{ const T=c.types[t.k]; T.on=fd.get('t-'+t.k)==='on'; if(t.time){ const v=fd.get('time-'+t.k); if(/^\d{2}:\d{2}$/.test(v)) T.time=v; } if(t.lead!=null) T.lead=+fd.get('lead-'+t.k)||0; if(t.days) T.days=fd.getAll('days-'+t.k).map(Number); });
+  return c;
+}
+/* Deep-Links aus Benachrichtigungen: #go=home|today|skills|week|tpl|ex|food|progress|check|skill:<id>|ntfy */
+function goLink(){
+  const m=/[#&]go=([^&]+)/.exec(location.hash||''); if(!m) return; const g=decodeURIComponent(m[1]);
+  try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+  if(UI.session||UI.guide||(UI.br&&!UI.br.end)) return;
+  UI.modal=null; $('#overlay').innerHTML='';
+  if(g==='check'){ UI.tab='home'; render(); if(ckGet()){ UI.ck={step:'view',hist:[],a:{}}; UI.modal='ck'; renderCk(); } else ckStart(); }
+  else if(g.startsWith('skill:')){ UI.tab='skills'; render(); if(skById(g.slice(6))) skOpen(g.slice(6)); }
+  else if(g==='ntfy'){ render(); openNtfy(); }
+  else { if(TABS.some(t=>t[0]===g)) UI.tab=g; render(); }
+  window.scrollTo(0,0);
+}
+
 /* ============================== EINSTELLUNGEN ============================== */
 function openSettings(){
   UI.modal='settings'; const s=prof().settings;
@@ -3446,6 +3610,9 @@ function openSettings(){
     </div>
     <div class="row"><button class="btn primary" type="submit">Speichern</button></div>
   </form>
+  <section class="section"><h2>Benachrichtigungen</h2>
+    ${(()=>{ const c=Ntfy.cfg(), n=Ntfy.upcoming().length; return `<div class="card"><div class="row" style="align-items:flex-start"><div class="grow" style="min-width:200px"><b>Erinnerungen aufs Handy</b><br><span class="small muted">${c.on?(Ntfy.err?'Fehler: '+esc(Ntfy.err):n+' Nachrichten eingeplant über ntfy'):'Über die kostenlose App ntfy: Training, Check-in, Mobility, Meditation, Skills.'}</span></div><button class="btn ${c.on?'':'primary'}" type="button" data-act="ntfyopen">${c.on?'Anpassen':'Einrichten'}</button></div></div>`; })()}
+  </section>
   <section class="section"><h2>Daten</h2>
     <p class="small muted">${Store.mode==='cloud'?'Deine Einträge liegen in deinem Claude-Konto, privat für dich, und erscheinen auf jedem Gerät, auf dem du diese Seite öffnest.':GitSync.on()?'Deine Einträge liegen in diesem Browser und werden automatisch in deinem GitHub-Repository gesichert.':'Deine Einträge liegen nur in diesem Browser. Sichere sie ab und zu als Datei oder verbinde unten GitHub.'}</p>
     <div class="row"><button class="btn" data-act="export">Daten als Datei sichern</button><label class="btn" for="imp">Sicherung laden</label><input id="imp" type="file" accept="application/json,.json" hidden data-act="import"></div>
@@ -3472,6 +3639,12 @@ document.addEventListener('click',e=>{
   const k=todayKey();
   switch(a){
     case 'settings': openSettings(); break;
+    case 'ntfyopen': openNtfy(); break;
+    case 'ntfysync': Ntfy.sync(true); break;
+    case 'ntfycopy': { const v=($('#nt-topic')||{}).value||Ntfy.cfg().topic; (navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Kanal kopiert, jetzt in ntfy einfügen')).catch(()=>{ const i=$('#nt-topic'); if(i){ i.select(); toast('Markiert, bitte kopieren'); } }); break; }
+    case 'ntfynew': { const c=Ntfy.cfg(); c.topic=Ntfy.newTopic(); Ntfy.save(c); openNtfy(); if(c.on) Ntfy.soon(500); toast('Neuer Kanal. In der ntfy-App neu abonnieren.'); break; }
+    case 'ntfytest': { const c=Ntfy.cfg(), v=String(($('#nt-topic')||{}).value||'').trim(); if(!Ntfy.validTopic(v)){ toast('Kanalname: 12–64 Zeichen, nur Buchstaben, Ziffern, - und _'); break; } c.topic=v;
+      Ntfy.publish(c,{title:'Hantelwoche ist verbunden',message:'Klappt! So sehen deine Erinnerungen aus. Tippen öffnet die App.',tags:['white_check_mark'],go:'home'}).then(()=>toast('Gesendet. Kommt sie in ntfy an?')).catch(e=>toast('Senden ging nicht: '+((e&&e.message)||'keine Verbindung').replace(/Failed to fetch|Load failed/,'keine Verbindung'))); break; }
     case 'ghsync': GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Abgeglichen'); if(UI.modal==='settings') openSettings(); }); break;
     case 'ghoff': GitSync.setCfg(null); GitSync.last=null; GitSync.err=''; toast('GitHub getrennt, Daten bleiben auf dem Gerät'); openSettings(); render(); break;
     case 'closeModal': UI.modal=null; UI.sk=null; $('#overlay').innerHTML=''; render(); break;
@@ -3595,6 +3768,7 @@ document.addEventListener('submit',e=>{
     if(pass.length<8){ toast('Bitte ein Passwort mit mindestens 8 Zeichen wählen'); return; }
     if(!(window.crypto&&crypto.subtle)){ toast('Verschlüsselung geht nur über https, nicht in der Offline-Datei'); return; }
     GitSync.setCfg({repo,token,pass,branch:'daten'}); toast('Verbinde mit GitHub …'); GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Mit GitHub abgeglichen'); if(UI.modal==='settings') openSettings(); }); return; }
+  if(f.dataset.form==='ntfy'){ const c=ntfyForm(fd); if(!c) return; const was=Ntfy.cfg(); Ntfy.save(c); openNtfy(); Ntfy.sync(); toast(c.on?(was.on?'Gespeichert, plane neu ein':'Eingeschaltet, plane ein …'):(was.on?'Ausgeschaltet, eingeplante werden gelöscht':'Gespeichert')); return; }
   if(f.dataset.form==='settings'){ const p=prof(); const s=p.settings;
     s.start=mondayOf(parseKey(fd.get('start')||s.start)); s.kcal=+fd.get('kcal')||s.kcal; s.protein=+fd.get('protein')||s.protein; s.renegade=+fd.get('renegade')||1;
     ['plates','vary','bar','circuit45','iron','zinc'].forEach(x=>s[x]=fd.get(x)==='on'); ['barlh','barsz','barkh'].forEach(x=>{ const v=parseFloat(String(fd.get(x)).replace(',','.')); if(!isNaN(v)) s[x]=v; }); saveProf(p); UI.modal=null; $('#overlay').innerHTML=''; render(); toast('Einstellungen gespeichert'); }
@@ -3617,6 +3791,10 @@ runRestore();
 (function resume(){ const open=workouts().find(w=>!w.finished && w.date===todayKey()); if(open) toast('Offene Einheit von heute: auf „Fortsetzen“ tippen'); })();
 Store.connect();
 setTimeout(()=>GitSync.sync(),300);
+goLink(); addEventListener('hashchange',goLink);
+setTimeout(()=>Ntfy.soon(10),2500);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') Ntfy.soon(1500); });
+setInterval(()=>{ if(document.visibilityState==='visible') Ntfy.soon(10); },30*60e3);
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') GitSync.sync(); });
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}</script></body></html>
