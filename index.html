@@ -288,7 +288,7 @@ nav.tabs svg{width:22px;height:22px}
 .stage .phase.work{color:var(--plate)} .stage .phase.rest{color:var(--good)}
 .stage .clock{font-family:var(--display);font-weight:700;font-size:clamp(4.5rem,22vw,9rem);line-height:.9;font-variant-numeric:tabular-nums}
 .stage .stepname{font-size:clamp(1.4rem,5vw,2.2rem)}
-.stage .gif{width:min(300px,70vw);aspect-ratio:4/3;background:#fff;border-radius:12px;overflow:hidden;max-width:100%}
+.stage .gif{width:min(420px,88vw);aspect-ratio:4/3;background:#fff;border-radius:12px;overflow:hidden;max-width:100%}
 .stage .gif img{width:100%;height:100%;object-fit:contain}
 .ring{width:min(260px,64vw);aspect-ratio:1;max-width:100%}
 .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
@@ -424,6 +424,17 @@ details summary{cursor:pointer;font-weight:600}
 .skwatch{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .skwatch .big{font-size:3rem;font-weight:700;line-height:1}
 textarea.search{resize:vertical;font:inherit}
+.phcap{font-size:.72rem;color:var(--muted);margin:4px 0 0;line-height:1.3}
+.phcap b{display:inline-grid;place-items:center;width:1.3em;height:1.3em;border-radius:50%;border:1px solid var(--muted);font-size:.68rem}
+.psysteps{margin:6px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.psyrun .ov-body{gap:18px;padding-top:28px}
+.psytext{font-size:1.25rem;line-height:1.45;max-width:34em;margin:8px 0;font-weight:500}
+.psytime{font-size:2.6rem;font-weight:700}
+.psyprog{width:min(360px,80vw);height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.psyprog i{display:block;height:100%;background:var(--accent);transition:width .25s linear}
+.psydots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.psydots i{width:9px;height:9px;border-radius:50%;background:var(--surface-2);border:1px solid var(--line)}
+.psydots i.on{background:var(--good);border-color:var(--good)} .psydots i.cur{background:var(--accent);border-color:var(--accent)}
 .hsk .li{background:none;border:0;border-top:1px solid var(--line);width:100%;cursor:pointer;color:var(--fg);font:inherit}
 .hsk .li:first-child{border-top:0}
 .hgrid .htile:last-child:nth-child(3n+1){grid-column:span 3}
@@ -473,6 +484,7 @@ const PNG = {'hollow-body-rock-hold':1,'side-plank':1};
 function imgSrc(slug){
   if(!slug) return '';
   if(window.GIF_DATA && GIF_DATA[slug]) return GIF_DATA[slug];
+  if(slug.startsWith('foto/')) return 'img/' + slug + '.webp';
   return 'img/' + slug + (PNG[slug] ? '.png' : '.gif');
 }
 // unit: kg = Gewicht + Wdh., bw = Körpergewicht (Wdh.), band = Band (Wdh.), sec = Sekunden, carry = kg + Meter
@@ -1182,6 +1194,142 @@ Object.assign(EX,{
   stairs:X('kondi','unk','sec','Treppenläufe','Kondition, Beine','Treppe','Zügig hoch, locker runter. Jede zweite Stufe für mehr Beinarbeit.'),
   jogplace:X('kondi','bw','sec','Joggen am Platz','Kondition','–','Locker am Platz laufen, zwischendurch kurze schnelle Phasen.'),
 });
+/* ============================== FOTOS UND NEUE ÜBUNGEN (free-exercise-db, gemeinfrei) ============================== */
+// Fotos Start/Ende aus github.com/yuhonas/free-exercise-db (Unlicense = gemeinfrei), als kleine WebP-Animation in img/foto/. Details: docs/quellen-und-lizenzen.md
+Object.assign(EX,{
+  rdrow:X("schulter","lh","kg","Rudern zur Brust, weite Ellbogen","Hintere Schulter, oberer Rücken","Langhantel","Vorgebeugt wie beim Rudern, weiter Griff. Stange zur unteren Brust ziehen, Ellbogen zeigen nach außen. Leichter als normales Rudern.",oL),
+  uhrow:X("ruecken","lh","kg","Rudern im Untergriff","Lat, Bizeps","Langhantel","Untergriff schulterbreit, Oberkörper ca. 45° vorgebeugt. Stange zum Bauchnabel, Ellbogen eng am Körper.",oL),
+  stiffdl:X("beine","lh","kg","Kreuzheben mit gestreckten Beinen","Beinbeuger, Po, unterer Rücken","Langhantel","Knie fast gestreckt, Rücken lang. Nur so tief, wie der Rücken gerade bleibt. Leichter als beim normalen Kreuzheben.",oL),
+  deficitdl:X("beine","lh","kg","Defizit-Kreuzheben","Po, Beinbeuger, Rücken, Start vom Boden","Langhantel, Scheibe zum Draufstellen","Auf einer Scheibe (2–5 cm) stehen, dadurch längerer Weg. Gleiche Technik wie Kreuzheben, 10–20 % weniger Gewicht.",oL),
+  hangclean:X("ganz","lh","kg","Umsetzen aus dem Hang","Ganzkörper, Schnellkraft","Langhantel","Stange über den Knien. Hüfte explosiv strecken, Schultern hoch, unter die Stange ziehen und auf den Schultern fangen. Leicht beginnen.",oL),
+  pushpress:X("schulter","lh","kg","Push Press","Schultern, Trizeps, Beine","Langhantel","Stange auf den Schultern (vorher umsetzen). Kurz in die Knie, mit dem Beinschwung explosiv über Kopf drücken.",oL),
+  seatcalf:X("beine","lh bank","kg","Wadenheben sitzend","Waden (Schollenmuskel)","Langhantel, Bank, Scheibe","Auf der Bankkante, Ballen auf einer Scheibe, Stange mit Polster auf den Oberschenkeln. Fersen tief, oben 1 s halten.",oL),
+  bbsidebend:X("core","lh","kg","Seitbeuge mit Langhantel","Core seitlich","Langhantel","Leichte Stange auf dem oberen Rücken, langsam zur Seite neigen und zurück. Nicht nach vorn kippen.",oL),
+  szwide:X("arme","sz","kg","Curls weiter Griff","Bizeps (kurzer Kopf)","SZ-Stange","Griff etwas breiter als die Schultern, Ellbogen am Körper, kein Schwung.",oZ),
+  szclosecurl:X("arme","sz","kg","Curls enger Griff","Bizeps (langer Kopf)","SZ-Stange","Enger Griff an der inneren Biegung, Ellbogen bleiben am Körper.",oZ),
+  szbehind:X("arme","sz bank","kg","French Press hinter den Kopf","Trizeps (langer Kopf)","SZ-Stange, Bank","Auf der Bank liegend Stange hinter den Kopf absenken, Oberarme leicht nach hinten geneigt. Mehr Dehnung als klassisches French Press.",oZ),
+  jmpress:X("arme","sz bank","kg","JM Press","Trizeps","SZ-Stange, Bank","Mischung aus engem Drücken und French Press: Stange Richtung Kinn absenken, Ellbogen zeigen zu den Füßen, dann hochdrücken.",oZ),
+  szprecurl:X("arme","sz bank","kg","Spider Curls auf der Bank","Bizeps","SZ-Stange, Bank","Bäuchlings auf der Bank, Arme hängen senkrecht. Ohne Schwung bis oben curlen, unten ganz strecken.",oZ),
+  dbfloor:X("brust","kh","kg","Bodendrücken Kurzhanteln","Brust, Trizeps","Kurzhanteln","Am Boden liegend, Oberarme berühren kurz den Boden, dann drücken. Schont die Schultern.",oK2),
+  dbneutral:X("brust","kh bank","kg","Bankdrücken Neutralgriff","Brust, Trizeps","Kurzhanteln, Bank","Handflächen zeigen zueinander, Ellbogen nah am Körper. Schulterfreundlich.",oK2),
+  dbrow2:X("ruecken","kh","kg","Rudern vorgebeugt beidarmig","Rücken","Kurzhanteln","Oberkörper ca. 45° vorgebeugt, beide Hanteln zur Hüfte ziehen, Schulterblätter zusammen.",oK2),
+  scaption:X("schulter","kh","kg","Y-Heben im Stand (Scaption)","Schultern, unterer Trapez","Kurzhanteln","Daumen nach oben, Arme schräg nach vorn (ca. 30°) bis Augenhöhe heben. Leicht, sauber.",oK2),
+  dbuprow:X("schulter","kh","kg","Aufrechtes Rudern Kurzhanteln","Schultern, Trapez","Kurzhanteln","Hanteln am Körper bis Brusthöhe ziehen, Ellbogen führen und bleiben über den Händen.",oK2),
+  dbsquat:X("beine","kh","kg","Kniebeuge mit Kurzhanteln","Oberschenkel, Po","Kurzhanteln","Hanteln seitlich hängen lassen, Brust hoch, tief beugen. Gute Kniebeuge ohne Ablage.",oK2),
+  splitsq:X("beine","kh","kg","Split Squat","Oberschenkel, Po","Kurzhanteln","Schrittstellung bleibt stehen, senkrecht nach unten bis das hintere Knie fast den Boden berührt.",{imp: "kh2", step: 1, sd: 1}),
+  crosshammer:X("arme","kh","kg","Hammer Curls über den Körper","Oberarmmuskel, Unterarm","Kurzhanteln","Hantel im Hammergriff diagonal Richtung gegenüberliegende Schulter heben.",oK2),
+  revwrist:X("arme","kh bank","kg","Handgelenk-Strecken","Unterarme (Strecker)","Kurzhanteln, Bank","Unterarme auf der Bank, Handflächen nach unten. Nur die Handgelenke heben und senken. Gut gegen Ellbogenbeschwerden.",oK2),
+  dbclean:X("ganz","kh","kg","Umsetzen mit Kurzhanteln","Ganzkörper, Schnellkraft","Kurzhanteln","Hanteln vom Knie explosiv hochreißen, Hüfte strecken, auf den Schultern fangen.",oK2),
+  frontdb:X("schulter","kh","kg","Frontheben Kurzhanteln","Schultern vorn","Kurzhanteln","Arme fast gestreckt bis Augenhöhe heben, langsam ablassen, kein Schwung.",oK2),
+  seesaw:X("schulter","kh","kg","Wechseldrücken (See-Saw)","Schultern, Core seitlich","Kurzhanteln","Eine Hantel hoch, eine runter, wechselnd drücken. Rumpf neigt sich leicht zur Gegenseite.",oK2),
+  atw:X("brust","kh bank","kg","Around the World","Brust, Schultern","Leichte Kurzhanteln, Bank","Auf der Bank liegend die Hanteln mit fast gestreckten Armen in einem großen Bogen von der Hüfte über den Kopf führen.",oK2),
+  cuban:X("schulter","kh","kg","Cuban Press","Rotatorenmanschette, Schultern","Leichte Kurzhanteln","Aufrecht rudern bis Oberarme waagerecht, Unterarme nach oben drehen, dann über Kopf drücken. Sehr leicht, für gesunde Schultern.",oK2),
+  svend:X("brust","unk","kg","Svend Press","Brust innen","Hantelscheibe","Scheibe zwischen den Handflächen pressen und vor der Brust nach vorn strecken. Druck die ganze Zeit halten.",{step: 1.25}),
+  inclinepush:X("brust","bank bw","bw","Liegestütze, Hände erhöht","Brust, Trizeps","Bank","Hände auf der Bank, Körper eine Linie. Leichter Einstieg oder Pump am Ende."),
+  kickbackbw:X("beine","bw","bw","Po-Kickback im Vierfüßler","Po","Matte","Vierfüßlerstand, ein Bein gebeugt nach hinten oben drücken, Rücken bleibt gerade.",{sd: 1}),
+  crunch:X("core","bw","bw","Crunches","Gerade Bauchmuskeln","Matte","Füße am Boden, Schulterblätter nur leicht abheben, Rippen Richtung Becken. Nicht am Kopf ziehen."),
+  crosscrunch:X("core","bw","bw","Crunch diagonal","Bauch schräg","Matte","Ellbogen diagonal zum gegenüberliegenden Knie, langsam abwechseln."),
+  heeltouch:X("core","bw","bw","Fersentippen seitlich","Bauch seitlich","Matte","Schultern leicht abheben, abwechselnd seitlich zur Ferse greifen."),
+  scissor:X("core","bw","sec","Scherenschlag","Unterer Bauch, Hüftbeuger","Matte","Rücken am Boden, gestreckte Beine knapp über dem Boden über Kreuz bewegen."),
+  legpullin:X("core","bw","bw","Knie zur Brust sitzend","Bauch","Matte","Auf den Unterarmen zurückgelehnt, Knie zur Brust ziehen und Beine wieder strecken."),
+  vacuum:X("core","bw","sec","Bauch-Vakuum","Tiefe Bauchmuskeln","–","Ganz ausatmen, dann den Bauchnabel Richtung Wirbelsäule ziehen und 10–20 s halten, ohne einzuatmen."),
+  spidercrawl:X("core","bw","bw","Spiderman-Gang","Core, Schultern, Hüfte","–","Tiefe Liegestützposition, abwechselnd Knie zum Ellbogen ziehen und so vorwärts krabbeln."),
+  benchjump:X("kondi","bank","bw","Sprünge über die Bank","Beine, Schnellkraft","Bank","Seitlich neben der Bank, beidbeinig darüber springen, weich landen. Nur auf rutschfestem Boden."),
+  starjump:X("kondi","bw","sec","Sternsprung","Ganzkörper, Kondition","–","Aus der leichten Hocke hochspringen und Arme und Beine zum Stern spreizen."),
+  muscleup:X("ruecken","stange cali","bw","Muscle-up","Rücken, Brust, Trizeps","Klimmzugstange","Explosiver Klimmzug bis zur Hüfte, über die Stange kippen und hochdrücken. Erst mit 10 sauberen Klimmzügen angehen.",{bar: true}),
+  sidechin:X("ruecken","stange cali","bw","Klimmzüge seitlich (Archer)","Rücken, Bizeps","Klimmzugstange","Breit greifen, abwechselnd zu einer Hand hochziehen. Vorstufe zum einarmigen Klimmzug.",{bar: true}),
+  mixedchin:X("ruecken","stange cali","bw","Klimmzüge Mischgriff","Rücken, Bizeps","Klimmzugstange","Eine Hand Obergriff, eine Untergriff. Seiten pro Satz wechseln.",{bar: true}),
+  pikehang:X("core","stange cali","bw","Hängendes Hechten","Core, Hüftbeuger","Klimmzugstange","Gestreckte Beine bis zur Stange heben, langsam ablassen. Kein Schwung.",{bar: true}),
+  onearmchin:X("ruecken","stange cali","bw","Einarmiger Klimmzug","Rücken, Bizeps, Griff","Klimmzugstange","Endziel: freie Hand anfangs am Handgelenk. Vorher Archer und Negative üben.",{bar: true, sd: 1}),
+  bandadd:X("beine","band","band","Adduktion mit Band","Oberschenkel innen","Band","Band seitlich in Knöchelhöhe fixieren, Bein zum Standbein ziehen.",{sd: 1}),
+  bandhipext:X("beine","band","band","Bein nach hinten mit Band","Po","Band","Band um den Knöchel, Bein gestreckt nach hinten drücken, Hüfte bleibt gerade.",{sd: 1}),
+  introt:X("schulter","band","band","Innenrotation mit Band","Rotatorenmanschette","Band","Ellbogen 90° am Körper, Unterarm nach innen zum Bauch drehen. Gegenstück zur Außenrotation.",{sd: 1}),
+  bandskull:X("arme","band","band","French Press mit Band","Trizeps","Band","Liegend, Band unter dem Rücken, nur die Unterarme strecken."),
+  bandcross:X("brust","band","band","Band-Crossover","Brust","Band","Band hinter dir in Schulterhöhe, Arme leicht gebeugt vor der Brust zusammenführen."),
+  bandsquat:X("beine","band","band","Kniebeuge mit Band","Oberschenkel, Po","Band","Auf dem Band stehen, Enden auf Schulterhöhe halten, tief beugen."),
+  // Dehnungen und Mobility mit Fotos
+  ham9090:X('mobil','bw','sec',"Beinbeuger 90/90","Beinbeuger",'Matte',"Rückenlage, Oberschenkel senkrecht halten, Unterschenkel langsam strecken."),
+  quad4:X('mobil','bw','sec',"Oberschenkel-Dehnung im Vierfüßler","Oberschenkel vorn",'Matte',"Aus dem Vierfüßler einen Fuß greifen und die Ferse zum Po ziehen."),
+  ankle:X('mobil','bw','sec',"Fußkreisen","Sprunggelenke",'Matte',"Fuß anheben und langsam große Kreise in beide Richtungen ziehen."),
+  armcirc:X('mobil','bw','sec',"Armkreisen","Schultern",'Matte',"Arme seitlich gestreckt, kleine bis große Kreise vorwärts und rückwärts."),
+  chinchest:X('mobil','bw','sec',"Nacken-Dehnung Kinn zur Brust","Nacken hinten",'Matte',"Kinn sanft zur Brust sinken lassen, Hände nur leicht auflegen, nicht ziehen."),
+  dancer:X('mobil','bw','sec',"Tänzer-Drehung liegend","Rücken, Po",'Matte',"Rückenlage, ein Knie über den Körper zur Gegenseite legen, Blick zur anderen Seite."),
+  groiner:X('mobil','bw','sec',"Groiner","Leiste, Hüfte",'Matte',"Aus dem Liegestütz einen Fuß neben die Hand setzen, Hüfte sinken lassen, Seite wechseln."),
+  kneehug:X('mobil','bw','sec',"Knie zur Brust","Unterer Rücken",'Matte',"Rückenlage, beide Knie umarmen und sanft zur Brust ziehen."),
+  itglute:X('mobil','bw','sec',"Po-Dehnung im Stand überkreuzt","Po, Hüfte außen",'Matte',"Ein Bein über das andere kreuzen, Hüfte zur Seite schieben, Oberkörper leicht neigen."),
+  groin:X('mobil','bw','sec',"Leisten-Dehnung im Ausfallschritt","Oberschenkel innen",'Matte',"Breiter Stand, Gewicht auf ein gebeugtes Bein verlagern, anderes Bein gestreckt."),
+  forearm:X('mobil','bw','sec',"Unterarm-Dehnung kniend","Unterarme, Handgelenke",'Matte',"Kniend, Handflächen mit Fingern zu den Knien auf den Boden, Po langsam nach hinten."),
+  legupham:X('mobil','bw','sec',"Beinbeuger-Dehnung im Liegen","Beinbeuger",'Matte',"Rückenlage, ein Bein gestreckt nach oben, mit Händen oder Band halten."),
+  sidequad:X('mobil','bw','sec',"Oberschenkel-Dehnung seitlich liegend","Oberschenkel vorn, Hüftbeuger",'Matte',"Seitlich liegend den oberen Fuß zum Po ziehen, Hüfte nach vorn schieben."),
+  kneechest1:X('mobil','bw','sec',"Ein Knie zur Brust","Po, unterer Rücken",'Matte',"Rückenlage, ein Knie zur Brust, anderes Bein lang am Boden."),
+  runner:X('mobil','bw','sec',"Läufer-Dehnung","Beinbeuger, Wade",'Matte',"Aus dem Ausfallschritt das vordere Bein strecken, Hüfte nach hinten, Rücken lang."),
+  seatham:X('mobil','bw','sec',"Vorbeuge sitzend einbeinig","Beinbeuger, Rücken",'Matte',"Ein Bein lang, der andere Fuß am Oberschenkel, mit langem Rücken zum Fuß beugen."),
+  sidelying:X('mobil','bw','sec',"Flanken-Dehnung liegend","Flanke, Lat",'Matte',"Seitlich liegend, oberen Arm lang über den Kopf strecken, Atem in die Flanke."),
+  seattwist:X('mobil','bw','sec',"Drehsitz","Wirbelsäule, Po",'Matte',"Sitzend ein Bein über das andere stellen, mit langem Rücken zum aufgestellten Knie drehen."),
+  latstand:X('mobil','bw','sec',"Seitneige im Stand","Flanke",'Matte',"Arme über Kopf, Hände verschränkt, langsam zur Seite neigen."),
+  hipcirc:X('mobil','bw','sec',"Hüftkreisen im Stand","Hüfte",'Matte',"Hände an der Hüfte, Becken langsam in großen Kreisen bewegen."),
+  tristretch:X('mobil','bw','sec',"Trizeps-Dehnung","Trizeps, Schulter",'Matte',"Hand hinter den Kopf zwischen die Schulterblätter, Ellbogen sanft mit der anderen Hand ziehen."),
+  upback:X('mobil','bw','sec',"Oberer Rücken rund","Oberer Rücken",'Matte',"Hände vor der Brust verschränken, Arme nach vorn schieben, Rücken rund machen."),
+  wristcirc:X('mobil','bw','sec',"Handgelenkkreisen","Handgelenke",'Matte',"Hände locker kreisen lassen, beide Richtungen. Vor Liegestützen und Handstand."),
+  straddle:X('mobil','bw','sec',"Grätsche sitzend","Oberschenkel innen, Beinbeuger",'Matte',"Beine weit gegrätscht, mit langem Rücken nach vorn neigen."),
+  shstretch:X('mobil','bw','sec',"Schulter-Dehnung vor dem Körper","Hintere Schulter",'Matte',"Arm vor dem Körper zur Gegenseite ziehen, Schulter bleibt tief."),
+  pelvtilt:X('mobil','bw','sec',"Becken kippen bis zur Brücke","Unterer Rücken, Po",'Matte',"Rückenlage, Becken einrollen und Wirbel für Wirbel zur Brücke heben und abrollen."),
+  midback:X('mobil','bw','sec',"Drehung im Stand","Mittlerer Rücken",'Matte',"Hände an der Hüfte, Oberkörper langsam zu jeder Seite drehen."),
+  locust:X('mobil','bw','sec',"Halbe Heuschrecke","Hüftbeuger, Oberschenkel vorn",'Matte',"Bauchlage, ein Knie beugen und den Fuß zum Po ziehen."),
+});
+const PH = {"deadlift":["barbell_deadlift"],"dbbench":["dumbbell_bench_press"],"pullup":["pullups"],"chinup":["chin-up"],"bandpull":["wide-grip_lat_pulldown","Foto am Latzug, mit Band oben fixiert gleich"],"lateral":["side_lateral_raise"],"pallof":["pallof_press","Foto am Kabelzug, mit Band gleich"],"revcrunch":["reverse_crunch"],"calf":["standing_dumbbell_calf_raise"],"goblet":["goblet_squat","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"hipbridge":["barbell_glute_bridge"],"ohp":["standing_military_press"],"row":["one-arm_dumbbell_row"],"curl":["ez-bar_curl"],"french":["ez-bar_skullcrusher"],"rdl":["romanian_deadlift"],"lunge":["dumbbell_lunges"],"fwdlunge":["dumbbell_lunges"],"revlunge":["dumbbell_rear_lunge"],"pushup":["push-ups_with_feet_elevated"],"pullover":["straight-arm_dumbbell_pullover"],"facepull":["face_pull","Foto am Kabelzug, mit Band gleich"],"rollout":["barbell_ab_rollout_-_on_knees"],"sideplank":["side_bridge"],"bandlat":["lateral_raise_-_with_bands"],"closepush":["push-ups_-_close_triceps_position"],"benchdip":["bench_dips"],"revcurl":["reverse_barbell_curl"],"bandfly":["back_flyes_-_with_bands"],"deadbug":["dead_bug"],"plank":["plank"],"bridge":["butt_lift_bridge"],"pullapart":["band_pull_apart"],"climber":["mountain_climbers"],"renegade":["alternating_renegade_row","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"thruster":["kettlebell_thruster","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"wgs":["worlds_greatest_stretch"],"hipflex":["kneeling_hip_flexor"],"child":["childs_pose"],"calfst":["calf_stretch_hands_against_wall"],"neck":["side_neck_stretch"],"catcow":["cat_stretch"],"bbrow":["bent_over_barbell_row"],"floorpress":["floor_press"],"hipthrust":["barbell_hip_thrust"],"cleanpress":["clean_and_press"],"powerclean":["power_clean"],"zercher":["zercher_squats"],"sumodl":["sumo_deadlift"],"shrug":["barbell_shrug"],"suitdl":["one-arm_side_deadlift"],"lmrow":["bent_over_two-arm_long_bar_row"],"lmrot":["landmine_180s"],"uprow":["upright_barbell_row"],"szclose":["close-grip_ez-bar_press"],"szoh":["standing_overhead_barbell_triceps_extension"],"szpullover":["bent-arm_barbell_pullover"],"dragcurl":["drag_curl"],"wristcurl":["seated_palm-up_barbell_wrist_curl"],"dbfly":["dumbbell_flyes"],"squeeze":["close-grip_dumbbell_press"],"dbohp":["dumbbell_shoulder_press"],"arnold":["arnold_dumbbell_press"],"dbrdl":["stiff-legged_dumbbell_deadlift"],"sldl":["kettlebell_one-legged_deadlift","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"stepup":["dumbbell_step_ups"],"sumosq":["plie_dumbbell_squat"],"dbcurl":["dumbbell_alternate_bicep_curl"],"hammer":["hammer_curls"],"conc":["concentration_curls"],"zottman":["zottman_curl"],"kickback":["tricep_dumbbell_kickback"],"dboh":["standing_dumbbell_triceps_extension"],"dbskull":["lying_dumbbell_tricep_extension"],"tate":["tate_press"],"rearfly":["seated_bent-over_rear_delt_raise"],"dbshrug":["dumbbell_shrug"],"swing":["one-arm_kettlebell_swings","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"snatch":["one-arm_kettlebell_snatch","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"farmer":["farmers_walk"],"russian":["russian_twist"],"tgu":["kettlebell_turkish_get-up_squat_style","Foto mit Kettlebell, Ablauf mit Kurzhantel gleich"],"nordic":["natural_glute_ham_raise"],"benchlr":["flat_bench_lying_leg_raise"],"tablerow":["inverted_row","Foto an einer Stange im Rack, unter einem stabilen Tisch gleich"],"bandrow":["seated_cable_rows","Foto am Kabelzug, mit Band gleich"],"bandgm":["band_good_morning"],"pullthrough":["band_good_morning_pull_through"],"monster":["monster_walk"],"extrot":["external_rotation_with_band"],"bandohp":["shoulder_press_-_with_bands"],"bandlegcurl":["seated_band_hamstring_curl"],"bandbridge":["hip_lift_with_band"],"assistpull":["band_assisted_pull-up"],"widepush":["push-up_wide"],"clap":["plyo_push-up"],"tpush":["push_up_to_side_plank"],"scappull":["scapular_pull-up"],"legraise":["hanging_leg_raise"],"weightpull":["weighted_pull_ups"],"sissy":["weighted_sissy_squat"],"slbridge":["single_leg_glute_bridge"],"hspu":["handstand_push-ups"],"superman":["superman"],"vup":["jackknife_sit-up"],"bicycle":["air_bike"],"flutter":["flutter_kicks"],"platepinch":["plate_pinch"],"inchworm":["inchworm"],"jumprope":["rope_jumping"],"tuckjump":["knee_tuck_jump"],"airsquat":["bodyweight_squat"],"jumpsquat":["freehand_jump_squat"],"jumplunge":["split_jump"],"rdrow":["barbell_rear_delt_row"],"uhrow":["reverse_grip_bent-over_rows"],"stiffdl":["stiff-legged_barbell_deadlift"],"deficitdl":["deficit_deadlift"],"hangclean":["hang_clean"],"pushpress":["push_press"],"seatcalf":["barbell_seated_calf_raise"],"bbsidebend":["barbell_side_bend"],"szwide":["wide-grip_standing_barbell_curl"],"szclosecurl":["close-grip_ez_bar_curl"],"szbehind":["lying_close-grip_barbell_triceps_extension_behind_the_head"],"jmpress":["jm_press"],"szprecurl":["spider_curl"],"dbfloor":["dumbbell_floor_press"],"dbneutral":["dumbbell_bench_press_with_neutral_grip"],"dbrow2":["bent_over_two-dumbbell_row"],"scaption":["dumbbell_scaption"],"dbuprow":["standing_dumbbell_upright_row"],"dbsquat":["dumbbell_squat"],"splitsq":["split_squat_with_dumbbells"],"crosshammer":["cross_body_hammer_curl"],"revwrist":["palms-down_dumbbell_wrist_curl_over_a_bench"],"dbclean":["dumbbell_clean"],"frontdb":["front_two-dumbbell_raise"],"seesaw":["see-saw_press_alternating_side_press"],"atw":["around_the_worlds"],"cuban":["cuban_press"],"svend":["svend_press"],"inclinepush":["incline_push-up"],"kickbackbw":["glute_kickback"],"crunch":["crunches"],"crosscrunch":["cross-body_crunch"],"heeltouch":["alternate_heel_touchers"],"scissor":["scissor_kick"],"legpullin":["leg_pull-in"],"vacuum":["stomach_vacuum"],"spidercrawl":["spider_crawl"],"benchjump":["bench_jump"],"starjump":["star_jump"],"muscleup":["muscle_up"],"sidechin":["side_to_side_chins"],"mixedchin":["mixed_grip_chin"],"pikehang":["hanging_pike"],"onearmchin":["one_arm_chin-up"],"bandadd":["band_hip_adductions"],"bandhipext":["hip_extension_with_bands"],"introt":["internal_rotation_with_band"],"bandskull":["band_skull_crusher"],"bandcross":["cross_over_-_with_bands"],"bandsquat":["squats_-_with_bands"],"ham9090":["90_90_hamstring"],"quad4":["all_fours_quad_stretch"],"ankle":["ankle_circles"],"armcirc":["arm_circles"],"chinchest":["chin_to_chest_stretch"],"dancer":["dancers_stretch"],"groiner":["groiners"],"kneehug":["hug_knees_to_chest"],"itglute":["it_band_and_glute_stretch"],"groin":["intermediate_groin_stretch"],"forearm":["kneeling_forearm_stretch"],"legupham":["leg-up_hamstring_stretch"],"sidequad":["on_your_side_quad_stretch"],"kneechest1":["one_knee_to_chest"],"runner":["runners_stretch"],"seatham":["seated_floor_hamstring_stretch"],"sidelying":["side-lying_floor_stretch"],"seattwist":["spinal_stretch"],"latstand":["standing_lateral_stretch"],"hipcirc":["standing_hip_circles"],"tristretch":["triceps_stretch"],"upback":["upper_back_stretch"],"wristcirc":["wrist_circles"],"straddle":["the_straddle"],"shstretch":["shoulder_stretch"],"pelvtilt":["pelvic_tilt_into_bridge"],"midback":["middle_back_stretch"],"locust":["one_half_locust"]};
+// Neue Yoga-Haltungen (eigene Animationen, img/yoga-*.gif)
+Object.assign(EX,{
+  cobra:{cat:'mobil',eqk:['bw'],n:'Kobra',img:'yoga-kobra',eq:'Matte',unit:'sec',cue:'Bauchlage, Hände unter den Schultern. Mit dem Einatmen Brust heben, Ellbogen bleiben nah am Körper und leicht gebeugt, Schambein bleibt am Boden.',mg:'Rücken, Bauch, Brust'},
+  seatfold:{cat:'mobil',eqk:['bw'],n:'Vorbeuge sitzend',img:'yoga-vorbeuge-sitzend',eq:'Matte',unit:'sec',cue:'Beine lang, Füße aktiv. Erst den Rücken lang machen, dann aus der Hüfte nach vorn kippen. Knie dürfen leicht gebeugt sein.',mg:'Beinbeuger, Rücken'},
+  chair:{cat:'mobil',eqk:['bw'],n:'Stuhl',img:'yoga-stuhl',eq:'Matte',unit:'sec',cue:'Füße hüftbreit, Hüfte nach hinten wie auf einen Stuhl, Arme in Verlängerung des Rückens nach oben. Gewicht auf den Fersen.',mg:'Oberschenkel, Po, Schultern'},
+  garland:{cat:'mobil',eqk:['bw'],n:'Girlande (tiefe Hocke)',img:'yoga-girlande',eq:'Matte',unit:'sec',cue:'Füße etwas breiter, Zehen leicht nach außen, tief in die Hocke. Hände vor der Brust, Ellbogen schieben die Knie sanft auseinander. Fersen ggf. auf eine gerollte Matte.',mg:'Hüfte, Leiste, Sprunggelenke'},
+  tree:{cat:'mobil',eqk:['bw'],n:'Baum',img:'yoga-baum',eq:'–',unit:'sec',cue:'Fuß an die Innenseite von Wade oder Oberschenkel (nicht aufs Knie). Knie zeigt zur Seite, Blick auf einen festen Punkt, Hände vor der Brust oder nach oben.',mg:'Gleichgewicht, Hüfte, Fußgewölbe'},
+  triangle:{cat:'mobil',eqk:['bw'],n:'Dreieck',img:'yoga-dreieck',eq:'Matte',unit:'sec',cue:'Breiter Stand, vorderer Fuß nach außen. Hüfte nach hinten schieben, Oberkörper seitlich über das vordere Bein, untere Hand ans Schienbein, obere Hand zur Decke.',mg:'Beinbeuger, Leiste, Flanke'},
+  butterfly:{cat:'mobil',eqk:['bw'],n:'Schmetterling',img:'yoga-schmetterling',eq:'Matte',unit:'sec',cue:'Sitzend Fußsohlen zusammen, Knie sinken nach außen. Füße halten, Rücken lang, mit dem Ausatmen sanft nach vorn neigen.',mg:'Oberschenkel innen, Hüfte'},
+});
+
+Object.assign(TIPS,{
+  cobra:{a:['Hände unter den Schultern, Finger weit, Ellbogen eng am Körper.','Schambein und Fußrücken drücken leicht in den Boden.','Mit dem Einatmen das Brustbein nach vorn oben schieben, nicht den Kopf in den Nacken werfen.','Schultern weg von den Ohren, Schulterblätter sinken Richtung Gesäß.'],f:['Arme ganz durchdrücken und ins Hohlkreuz hängen.','Schultern hochziehen.'],b:'Einatmen beim Heben, ausatmen beim Ablegen.',s:'Dehnung im Bauch und in der Brust, Arbeit im Rücken, kein Stechen im unteren Rücken.'},
+  seatfold:{a:['Sitzbeinhöcker spüren, ggf. auf ein gefaltetes Handtuch setzen.','Erst wachsen: Scheitel nach oben, Rücken lang.','Aus der Hüfte nach vorn kippen, Brust Richtung Knie, nicht Kopf Richtung Knie.','Knie dürfen gebeugt bleiben, die Füße bleiben aktiv.'],f:['Rund nach vorn ziehen und an den Füßen zerren.'],b:'Mit jedem Ausatmen ein kleines Stück tiefer.',s:'Zug in den Oberschenkelrückseiten, nicht in der Kniekehle.'},
+  chair:{a:['Füße hüftbreit, Gewicht auf den Fersen.','Hüfte nach hinten schieben, als ob du dich auf einen Stuhl setzt.','Knie bleiben hinter oder über den Zehen.','Arme in Verlängerung des Rückens, Rippen bleiben unten.'],f:['Knie schieben weit nach vorn, Fersen heben ab.','Hohlkreuz mit herausgestrecktem Bauch.'],b:'Ruhig und gleichmäßig weiteratmen.',s:'Brennen in den Oberschenkeln, Spannung im Po.'},
+  garland:{a:['Füße etwas breiter als die Hüfte, Zehen leicht nach außen.','Tief in die Hocke sinken, Fersen am Boden oder auf einer gerollten Matte.','Hände vor der Brust, Ellbogen drücken sanft gegen die Knie.','Brustbein hebt sich, Rücken möglichst lang.'],f:['Fersen hoch und auf den Zehen balancieren.'],b:'Lang in den Bauch und den Beckenboden atmen.',s:'Öffnung in Hüfte und Leiste, Dehnung in den Waden.'},
+  tree:{a:['Gewicht auf ein Bein, ganzer Fuß verwurzelt.','Fuß an Wade oder Oberschenkel, nicht aufs Knie.','Fuß und Bein drücken gegeneinander, Becken bleibt gerade.','Blick auf einen festen Punkt, Hände vor der Brust oder nach oben.'],f:['Hüfte schiebt zur Seite des Standbeins.','Fuß drückt gegen das Knie.'],b:'Ruhig atmen hilft beim Gleichgewicht.',s:'Arbeit im Standfuß und in der Hüfte, Öffnung im angewinkelten Bein.'},
+  triangle:{a:['Breiter Stand, vorderer Fuß zeigt nach außen, hinterer leicht nach innen.','Beide Beine gestreckt, aber Knie nicht durchdrücken.','Hüfte nach hinten schieben, Oberkörper kippt seitlich über das vordere Bein.','Untere Hand ans Schienbein oder einen Block, obere Hand zur Decke, Brust öffnet sich.'],f:['Oberkörper kippt nach vorn statt zur Seite.','Hand drückt aufs Knie.'],b:'Einatmen lang machen, ausatmen tiefer sinken.',s:'Dehnung in der Beinrückseite und der Flanke.'},
+  butterfly:{a:['Sitzend Fußsohlen zusammen, Fersen in angenehmem Abstand.','Füße mit den Händen halten, Rücken lang aufrichten.','Knie sinken lassen, nicht runterdrücken.','Mit dem Ausatmen mit langem Rücken nach vorn neigen.'],f:['Mit den Ellbogen die Knie herunterpressen.','Rund nach vorn fallen.'],b:'Lang ausatmen, beim Ausatmen loslassen.',s:'Dehnung an der Oberschenkel-Innenseite.'},
+});
+/* Bildstil: Fotos (free-exercise-db) oder Zeichnungen (WorkoutLabs bzw. eigene Animationen) */
+GLOW_EX.add('cobra').add('seatfold').add('chair').add('garland').add('tree').add('triangle').add('butterfly');
+Object.keys(EX).forEach(k=>{ const e=EX[k]; e.anim=e.img||''; const p=PH[k]; if(p){ e.ph='foto/'+p[0]; if(p[1]) e.phn=p[1]; } });
+const OWN_ANIM=k=>{ const a=EX[k].anim; return !!a && (GLOW_EX.has(k)||/^(yoga-|aufwaermsaetze|unterarmstuetz|hueft|bws-|brust-dehnung|waden-dehnung|nacken-|schulterkreisen)/.test(a)); };
+const IMG_STYLE={auto:'Automatisch: Fotos für Kraft, eigene Animationen für Yoga und Mobility',foto:'Fotos bevorzugen',zeichnung:'Zeichnungen und Animationen bevorzugen'};
+function applyImgStyle(st){ st=IMG_STYLE[st]?st:'auto'; applyImgStyle.cur=st;
+  Object.keys(EX).forEach(k=>{ const e=EX[k]; e.img = st==='zeichnung' ? (e.anim||e.ph||'') : st==='foto' ? (e.ph||e.anim||'') : (OWN_ANIM(k) ? e.anim : (e.ph||e.anim||'')); e.isPh=!!e.img&&e.img===e.ph; }); }
+applyImgStyle('auto');
+function picNote(k){ const e=EX[k]; if(!e||!e.img) return ''; if(!e.isPh) return e.ph?`<p class="phcap">Zeichnung · Foto-Ansicht in den Einstellungen</p>`:'';
+  return `<p class="phcap"><b>1</b> Start · <b>2</b> Ende${e.phn?' · '+esc(e.phn):''} · Foto: free-exercise-db (gemeinfrei)</p>`; }
+/* Mehr Auswahl in Mobility nach Gefühl und Yoga */
+(()=>{ const add=(k,arr)=>{ const a=MOB_AREAS.find(x=>x.k===k); arr.forEach(x=>a.pool.push(x)); };
+  add('nacken',[{ex:'chinchest',sec:40,note:'Hände nur auflegen, nicht ziehen'}]);
+  add('schulter',[{ex:'armcirc',sec:40,dyn:1,note:'10 kleine, dann 10 große Kreise, beide Richtungen'},{ex:'shstretch',sec:35,side:1},{ex:'tristretch',sec:35,side:1}]);
+  add('bws',[{ex:'midback',sec:40,dyn:1,note:'8 langsame Drehungen pro Seite'},{ex:'upback',sec:35},{ex:'seattwist',sec:45,side:1},{ex:'cobra',sec:40,dyn:1,note:'6 langsame Wiederholungen, oben kurz halten'}]);
+  add('lws',[{ex:'pelvtilt',sec:50,dyn:1,note:'8 Wiederholungen, Wirbel für Wirbel'},{ex:'kneehug',sec:45},{ex:'dancer',sec:40,side:1}]);
+  add('huefte',[{ex:'hipcirc',sec:40,dyn:1,note:'8 Kreise in jede Richtung'},{ex:'groiner',sec:50,dyn:1,note:'5 pro Seite'},{ex:'garland',sec:50},{ex:'sidequad',sec:40,side:1}]);
+  add('po',[{ex:'itglute',sec:40,side:1},{ex:'kneechest1',sec:40,side:1}]);
+  add('hinten',[{ex:'runner',sec:40,side:1},{ex:'seatham',sec:45,side:1},{ex:'legupham',sec:45,side:1},{ex:'seatfold',sec:60}]);
+  add('leiste',[{ex:'butterfly',sec:60,note:'Mit dem Ausatmen Knie sinken lassen'},{ex:'groin',sec:40,side:1},{ex:'straddle',sec:60}]);
+  add('waden',[{ex:'ankle',sec:40,dyn:1,note:'10 Kreise pro Fuß und Richtung'}]);
+  Object.assign(MOB_POS,{chinchest:3,armcirc:0,shstretch:0,tristretch:0,midback:0,upback:0,hipcirc:0,ankle:0,itglute:4,seattwist:3,cobra:4,pelvtilt:4,kneehug:4,dancer:4,groiner:1,garland:1,sidequad:4,kneechest1:4,runner:1,seatham:3,legupham:4,seatfold:3,butterfly:3,groin:1,straddle:3,tree:0,chair:0,triangle:1,quad4:2,locust:4,ham9090:4,sidelying:4,latstand:0,forearm:3,wristcirc:0});
+  YOGA_POOL.push(
+    {ex:'tree',sec:40,side:1,act:1,r:[],note:'Blick auf einen Punkt, ruhig atmen'},
+    {ex:'chair',sec:30,act:2,r:['po'],note:'Gewicht auf den Fersen, Arme lang'},
+    {ex:'triangle',sec:45,side:1,act:1,r:['hinten','leiste'],note:'Brust öffnet sich zur Seite, beide Beine aktiv'},
+    {ex:'garland',sec:60,act:0,r:['huefte','leiste','waden']},
+    {ex:'cobra',sec:40,act:1,r:['lws','bws'],note:'3 Atemzüge halten, ablegen, 2× wiederholen'},
+    {ex:'seatfold',sec:75,act:0,r:['hinten','lws']},
+    {ex:'butterfly',sec:75,act:0,r:['leiste','huefte']},
+    {ex:'seattwist',sec:45,side:1,act:0,r:['bws','po']});
+})();
 const ytUrl=e=>'https://www.youtube.com/results?search_query='+encodeURIComponent(e.n+' Übung Ausführung');
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');
 function libState(ctx){ return ctx==='ted'?UI.ted:(UI.lib=UI.lib||{q:'',eq:'',cat:'',open:null}); }
@@ -1199,7 +1347,7 @@ function libList(ctx){ const st=libState(ctx), keys=libKeys(st), bar=prof().sett
   const inTed=ctx==='ted'?new Set(UI.ted.d.items.map(i=>i.ex)):null;
   return `<div class="small muted" style="padding:8px 12px">${keys.length} Übungen</div>`+keys.map(k=>{ const e=EX[k], open=st.open===k;
     return `<div class="lr">${thumb(k)}<button class="nm" data-act="libopen" data-ctx="${ctx}" data-k="${k}" aria-expanded="${open}"><b>${esc(e.n)}</b><span class="small muted">${esc(CATS[e.cat])} · ${esc(e.eq)}</span></button>${ctx==='ted'?`<button class="btn small ${inTed.has(k)?'':'primary'}" data-act="tedadd" data-k="${k}" aria-label="${esc(e.n)} hinzufügen">${inTed.has(k)?'+ nochmal':'+ Hinzu'}</button>`:''}</div>
-    ${open?`<div class="lrx">${e.img?`<img src="${imgSrc(e.img)}" alt="Animation ${esc(e.n)}" loading="lazy">`:''}<p class="small">${esc(e.cue)}</p><p class="small muted">Trainiert: ${esc(e.mg)}${e.bar&&!bar?' · braucht die Klimmzugstange':''}</p>${tipsHtml(k,false)}<div class="row small">${GUIDE_SLUG[k]?`<a href="${GUIDE(GUIDE_SLUG[k])}" target="_blank" rel="noopener">Anleitung (WorkoutLabs)</a>`:''}<a href="${ytUrl(e)}" target="_blank" rel="noopener">Video suchen (YouTube)</a></div></div>`:''}`; }).join(''); }
+    ${open?`<div class="lrx">${e.img?`<img src="${imgSrc(e.img)}" alt="Animation ${esc(e.n)}" loading="lazy">${picNote(k)}`:''}<p class="small">${esc(e.cue)}</p><p class="small muted">Trainiert: ${esc(e.mg)}${e.bar&&!bar?' · braucht die Klimmzugstange':''}</p>${tipsHtml(k,false)}<div class="row small">${GUIDE_SLUG[k]?`<a href="${GUIDE(GUIDE_SLUG[k])}" target="_blank" rel="noopener">Anleitung (WorkoutLabs)</a>`:''}<a href="${ytUrl(e)}" target="_blank" rel="noopener">Video suchen (YouTube)</a></div></div>`:''}`; }).join(''); }
 function libRefresh(ctx){ const el=$(ctx==='ted'?'#tedlist':'#exlist'); if(el) el.innerHTML=libList(ctx); }
 
 /* ============================== WORKOUT-VORLAGEN ============================== */
@@ -1573,6 +1721,7 @@ function syncBadge(){
 
 /* ============================== ANSICHTEN ============================== */
 function render(){
+  const ist=prof().settings.imgStyle||'auto'; if(ist!==applyImgStyle.cur) applyImgStyle(ist);
   $('#tabs').innerHTML=TABS.map(([k,l])=>`<button data-tab="${k}" ${UI.tab===k?'aria-current="page"':''}>${ICONS[k]||HICO[k]}<span>${l}</span></button>`).join('');
   const v={home:vHome,today:vToday,skills:vSkills,week:vWeek,tpl:vTpl,ex:vEx,food:vFood,progress:vProgress}[UI.tab]||vHome;
   $('#main').innerHTML=v();
@@ -1652,6 +1801,7 @@ function vHome(){
     {act:`data-act="yogapick" data-key="${day.blocks.some(b=>b.key==='yoga')?'yoga':rk}"`,ico:HICO.yoga,n:'Yoga-Flow',s:'Stil und Dauer wählen'},
     {act:`data-act="brquick" data-id="${bm.id}"`,ico:ICONS.breath,n:'Atmung',s:bm.n},
     {act:'data-act="seq" data-seq="med" data-key="med"',ico:HICO.med,n:'Meditation',s:medMinutes()+' min'+(doc.done.med?' · erledigt':'')},
+    {act:'data-act="psyopen"',ico:HICO.med,n:'Kopf frei',s:PSY.length+' Selbsthilfe-Übungen'},
     {act:'data-act="tabskills"',ico:SKICO.skills,n:'Skillbank',s:SKILLS.length+' Skills mit Stufen'},
     {act:'data-act="fxopen"',ico:SKICO.geist,n:'Fokusblock',s:'25 bis 90 min'},
     {act:'data-act="rdopen"',ico:HICO.book,n:'Lesen',s:(()=>{ const b=booksDoc().list.filter(x=>x.status==='lese').pop(); return b?b.t:'Lese-Timer'; })()}];
@@ -1749,6 +1899,7 @@ function vToday(){
   <section class="timeline" aria-label="Tagesablauf">${tl}</section>
   ${regenCard(key)}
   ${breathCard()}
+  ${psyCard()}
   ${(()=>{ const mine=workouts().filter(w=>w.date===key&&w.type==='tpl'&&!w.slot); const op=mine.filter(w=>!w.finished), fin=mine.filter(w=>w.finished);
     return `<section class="card"><div class="row"><div class="grow" style="min-width:200px"><h3>Workout aus deinen Vorlagen</h3><p class="small muted">Kraft, Core, Ausdauer, Calisthenics: Grundgerüst wählen und los.</p>${fin.length?`<p class="small" style="color:var(--good);font-weight:600;margin-top:4px">Heute erledigt: ${esc(fin.map(wname).join(', '))}</p>`:''}</div><button class="btn" data-act="tplpick">Vorlage wählen</button></div>${op.length?`<div class="row" style="margin-top:10px">${op.map(w=>`<button class="btn primary" data-act="resume" data-id="${w.id}">Fortsetzen: ${esc(wname(w))}</button>`).join('')}</div>`:''}</section>`; })()}
   <section class="section">
@@ -1804,7 +1955,7 @@ function vEx(){
   const groups={A:exs(WORKOUTS.A),B:exs(WORKOUTS.B),C:exs(WORKOUTS.C),
     E:['jj','catcow','wgs','deadbug','birddog','plank','bridge','pullapart','warmsets'],Z:['thruster','climber','renegade','burpee','woodchop','hollow'],
     M:['shroll','neck','catcow','wgs','hipflex','tspine','dog','child','chest','calfst','pullapart','birddog'],
-    Y:['seiza','catcow','sun','dog','warrior','lowlunge','pyramid','pigeon','frog','bridge','twist','baby','sava'],X:['bandpull','revcrunch']};
+    Y:['seiza','catcow','sun','dog','warrior','lowlunge','pyramid','pigeon','frog','bridge','twist','baby','sava','tree','chair','triangle','garland','cobra','seatfold','butterfly'],X:['bandpull','revcrunch']};
   const labels={A:'Kraft A',B:'Kraft B',C:'Kraft C',E:'Einstieg',Z:'Zirkel',M:'Mobility',Y:'Yoga',X:'Ersatzübungen'};
   const list=[...new Set(groups[f])];
   const item=(e)=>{ if(!WORKOUTS[f]) return null; const raw=WORKOUTS[f].items.find(i=>i.ex===e||(i.v&&i.v.ex===e)); return raw?itemFor(raw,e):null; };
@@ -1812,7 +1963,7 @@ function vEx(){
   ${exModeChips()}
   <div class="chips" role="group" aria-label="Filter">${Object.keys(labels).map(k=>`<button class="chip" data-act="exf" data-f="${k}" aria-pressed="${f===k}">${labels[k]}</button>`).join('')}</div>
   <section class="exgrid">${list.map(e=>{ const ex=EX[e], it=item(e);
-    return `<article class="ex"><div class="img ${ex.img?'':'none'}">${exImg(e)}</div><div class="b">
+    return `<article class="ex"><div class="img ${ex.img?'':'none'}">${exImg(e)}</div><div class="b">${picNote(e)}
     <h3>${it?`<span class="gnum">${it.g}</span>`:''}${esc(ex.n)}</h3>${it&&it.isVar?'<span class="pill accent" style="align-self:flex-start">Variante, gerade Wochen</span>':''}
     ${it?`<div class="num" style="font-size:1.1rem">${setsLabel(it)}</div>`:''}
     <p class="small">${esc(ex.cue)}</p>
@@ -2093,7 +2244,7 @@ function renderGuide(){
   const st=guideStep(), next=g.steps[g.i+1], ex=st.ex?EX[st.ex]:null;
   const visual = st.kind==='box'
     ? `<svg class="ring" viewBox="0 0 220 220" aria-hidden="true"><rect x="20" y="20" width="180" height="180" rx="6" fill="none" stroke="var(--line)" stroke-width="6"/><circle id="boxdot" cx="20" cy="200" r="11" fill="var(--accent)"/><text id="boxlab" x="110" y="118" text-anchor="middle" fill="var(--fg)" style="font:700 24px var(--display)">Einatmen</text></svg>`
-    : ex&&ex.img ? `<div class="gif"><img src="${imgSrc(ex.img)}" alt="Animation ${esc(ex.n)}"></div>`
+    : ex&&ex.img ? `<div class="gif"><img src="${imgSrc(ex.img)}" alt="Animation ${esc(ex.n)}"></div>${picNote(st.ex)}`
     : `<svg class="ring" viewBox="0 0 240 240" aria-hidden="true"><circle cx="120" cy="120" r="110" fill="none" stroke="var(--surface-2)" stroke-width="12"/><circle id="gring" cx="120" cy="120" r="110" fill="none" stroke="${st.kind==='rest'?'var(--good)':'var(--accent)'}" stroke-width="12" stroke-linecap="round" stroke-dasharray="691" stroke-dashoffset="${st.sec?691*(g.remain/st.sec):0}" transform="rotate(-90 120 120)"/></svg>`;
   $('#overlay').innerHTML=`<div class="overlay"><div class="player">
     <div class="ov-head"><button class="iconbtn" data-act="closeGuide" aria-label="Schließen">✕</button><div class="grow"><h2>${esc(g.title)}</h2><div class="small muted">Schritt ${g.i+1} von ${g.steps.length}</div></div></div>
@@ -2470,6 +2621,264 @@ function renderBreathEnd(){
     <div class="controls"><button class="btn" data-act="brpick">Andere Übung</button><button class="btn primary" data-act="brclose">Fertig</button></div>
   </div></div>`;
 }
+
+/* ============================== SELBSTHILFE: KOPF UND GEFÜHLE ============================== */
+// Übungen aus Verhaltenstherapie (KVT), ACT, DBT-Skills, Achtsamkeit und Selbstmitgefühl, in eigenen Worten beschrieben.
+// Selbsthilfe, kein Ersatz für Therapie. Quellen pro Übung, Übersicht in docs/quellen-und-lizenzen.md.
+// Aufbau passt zur geplanten Wissenskarte (Säule 'geist'): id, n, kat, use, min, kurz, why, steps[{t,s}], form[], src, ev.
+const PSY_KAT = {kvt:'Verhaltenstherapie (KVT)',act:'ACT',dbt:'DBT-Skills',acht:'Achtsamkeit',mitg:'Selbstmitgefühl',schlaf:'Schlaf',pos:'Positive Psychologie'};
+const PSY_USE = {
+  akut:{n:'Akut angespannt',d:'Puls hoch, Gedanken rasen, gleich platzt etwas'},
+  gruebeln:{n:'Grübeln und Sorgen',d:'Gedanken drehen sich im Kreis'},
+  angst:{n:'Angst und Unruhe',d:'Nervös, angespannt, etwas fühlt sich bedrohlich an'},
+  tief:{n:'Stimmung tief',d:'Antriebslos, leer, alles ist zäh'},
+  kritik:{n:'Selbstkritik',d:'Innere Stimme ist hart, nichts ist genug'},
+  wut:{n:'Ärger',d:'Gereizt, kurz vor dem Ausrasten'},
+  schlaf:{n:'Einschlafen',d:'Müde, aber der Kopf ist wach'},
+  werte:{n:'Richtung und Motivation',d:'Was ist mir wichtig, wie fange ich an'},
+  alltag:{n:'Vorbeugen im Alltag',d:'Kurz, regelmäßig, damit es gar nicht so weit kommt'},
+};
+const PSY_EV = BR_EV; // gleiche Einstufung wie bei den Atemübungen
+const PS=(t,s)=>({t,s:s||0});
+const PF=(k,l,type,ph)=>({k,l,type:type||'text',ph:ph||''});
+const PSY = [
+  // ---------- Akut ----------
+  {id:'54321',n:'5-4-3-2-1 Erdung',kat:'acht',use:['akut','angst'],min:3,ev:'mittel',
+   kurz:'Mit allen Sinnen zurück ins Hier und Jetzt.',
+   why:'Lenkt die Aufmerksamkeit weg von Gedankenschleifen hin zu dem, was gerade wirklich da ist. Das Nervensystem bekommt das Signal: hier und jetzt ist es sicher.',
+   steps:[PS('Füße fest auf den Boden stellen. Einmal lang ausatmen.',10),PS('Nenne 5 Dinge, die du siehst. Ruhig laut oder leise benennen.',35),PS('Nenne 4 Dinge, die du spürst: Stuhl, Kleidung, Luft, Boden.',30),PS('Nenne 3 Dinge, die du hörst.',30),PS('Nenne 2 Dinge, die du riechst (oder magst zu riechen).',20),PS('Nenne 1 Sache, die du schmeckst.',15),PS('Wie stark ist die Anspannung jetzt, von 0 bis 10? Kurz nachspüren.',15)],
+   src:'Achtsamkeitsbasierte Erdungstechnik, verbreitet in der Traumatherapie und DBT. Beschreibung in eigenen Worten.'},
+  {id:'stop',n:'STOP-Skill',kat:'dbt',use:['akut','wut'],min:1,ev:'mittel',
+   kurz:'Vier Schritte, bevor du etwas tust, das du später bereust.',
+   why:'Starke Gefühle drängen zu sofortigem Handeln. STOP schafft eine Lücke von wenigen Sekunden zwischen Impuls und Handlung.',
+   steps:[PS('S wie Stopp: Erstarre kurz. Nichts sagen, nichts tun.',8),PS('T wie Tritt zurück: Ein Schritt weg von der Situation, einmal tief ausatmen.',12),PS('O wie Observieren: Was passiert gerade? In dir, um dich, bei den anderen?',25),PS('P wie Plan: Was bringt dich deinem Ziel näher? Erst dann handeln.',20)],
+   src:'DBT-Skill aus dem Modul Stresstoleranz (M. Linehan, DBT Skills Training Manual). In eigenen Worten.'},
+  {id:'tipp',n:'TIPP: Körper runterfahren',kat:'dbt',use:['akut','wut','angst'],min:5,ev:'mittel',
+   kurz:'Wenn nichts mehr geht: über den Körper die Anspannung senken.',
+   why:'Bei sehr hoher Anspannung kommt man mit Denken nicht weiter. Kälte im Gesicht aktiviert den Tauchreflex und senkt den Puls, Bewegung baut Stresshormone ab, langes Ausatmen und Muskelentspannung beruhigen.',
+   steps:[PS('T wie Temperatur: Kaltes Wasser ins Gesicht oder einen kalten Waschlappen 20 bis 30 s auf Augen und Stirn, dabei die Luft anhalten.',30),PS('I wie Intensive Bewegung: 1 bis 2 Minuten schnell bewegen, z. B. Hampelmann, Treppe, Kniebeugen.',90),PS('P wie Paced Breathing: 4 s ein, 6 bis 8 s aus. Ausatmen ist länger als einatmen.',90),PS('P wie Progressive Entspannung: Fäuste, Schultern und Gesicht 5 s fest anspannen, dann loslassen. Zweimal.',30)],
+   safe:'Kältereiz nicht bei Herzerkrankungen, niedrigem Puls oder Essstörung ohne ärztliche Rücksprache.',
+   src:'DBT-Skill aus dem Modul Stresstoleranz (M. Linehan). In eigenen Worten.'},
+  {id:'anker',n:'Anker werfen',kat:'act',use:['akut','angst','gruebeln'],min:3,ev:'mittel',
+   kurz:'Gefühle wie ein Sturm: nicht wegmachen, sondern festen Stand finden.',
+   why:'Statt gegen schwierige Gedanken anzukämpfen, verankerst du dich im Körper und in der Umgebung. Der Sturm darf weiterziehen, du bleibst handlungsfähig.',
+   steps:[PS('Benennen: Was ist gerade da? „Ich bemerke Angst, Druck in der Brust, den Gedanken …“',20),PS('Körper spüren: Füße in den Boden drücken, Rücken aufrichten, Hände aneinander pressen.',25),PS('Umgebung: Schau dich um. Was siehst und hörst du? Wo bist du, was tust du gerade?',25),PS('Noch einmal: Gefühl benennen, Füße spüren, umschauen. Der Sturm ist da, und du bist auch da.',40),PS('Was willst du als Nächstes tun, das dir wichtig ist?',15)],
+   src:'ACT-Übung „Dropping Anchor“ (R. Harris) und WHO-Leitfaden „Doing What Matters in Times of Stress“ (2020, CC BY-NC-SA 3.0 IGO). In eigenen Worten.'},
+  {id:'benennen',n:'Gefühle benennen',kat:'dbt',use:['akut','wut','angst','tief'],min:2,ev:'stark',
+   kurz:'Name it to tame it: Ein Gefühl genau zu benennen, macht es leiser.',
+   why:'Studien mit Hirnbildgebung zeigen: Wer ein Gefühl in Worte fasst, beruhigt die Amygdala. Je genauer das Wort, desto besser (nicht nur „schlecht“, sondern z. B. „enttäuscht“ oder „übergangen“).',
+   steps:[PS('Was fühlst du? Wähle ein Grundgefühl: Angst, Wut, Traurigkeit, Scham, Schuld, Ekel, Freude.',20),PS('Geht es genauer? Z. B. Wut: gereizt, frustriert, gekränkt, ungerecht behandelt.',25),PS('Wo im Körper spürst du es? Wie stark von 0 bis 10?',20),PS('Sag dir: „Da ist gerade … Das ist ein Gefühl, und Gefühle kommen und gehen.“',15)],
+   form:[PF('gef','Gefühl, so genau wie möglich'),PF('st','Stärke 0–10','num'),PF('ausl','Was hat es ausgelöst?','area')],
+   src:'DBT-Modul Emotionsregulation (M. Linehan); Affect-Labeling-Studien (Lieberman et al., 2007). In eigenen Worten.'},
+  // ---------- Grübeln und Sorgen ----------
+  {id:'protokoll',n:'Gedankenprotokoll',kat:'kvt',use:['gruebeln','tief','angst','kritik'],min:10,ev:'stark',
+   kurz:'Einen belastenden Gedanken prüfen wie ein Detektiv.',
+   why:'Nicht die Situation, sondern wie wir sie bewerten, bestimmt oft das Gefühl. Wer Gedanken aufschreibt und prüft, findet ausgewogenere Sichtweisen. Kernstück der kognitiven Verhaltenstherapie.',
+   steps:[PS('Situation: Wann, wo, mit wem? Nur Fakten, wie eine Kamera.'),PS('Gedanke: Was ging dir durch den Kopf? Der Satz, der am meisten wehtut.'),PS('Gefühl: Welches Gefühl, wie stark (0 bis 100)?'),PS('Was spricht für den Gedanken? Nur Fakten.'),PS('Was spricht dagegen? Was würde eine gute Freundin sagen? Gab es Ausnahmen?'),PS('Ausgewogener Gedanke: Was ist eine faire, realistische Sicht?'),PS('Gefühl jetzt: Wie stark ist es noch (0 bis 100)?')],
+   form:[PF('sit','Situation','area','Mo 14 Uhr, Meeting, Chef unterbricht mich'),PF('ged','Gedanke','area','„Ich mache alles falsch“'),PF('gef','Gefühl und Stärke 0–100','text','Scham 70'),PF('pro','Spricht dafür','area'),PF('con','Spricht dagegen','area'),PF('neu','Ausgewogener Gedanke','area'),PF('nach','Gefühl jetzt 0–100','num')],
+   src:'Kognitive Therapie nach A. T. Beck, Spaltenprotokoll (z. B. Beck, „Kognitive Therapie der Depression“). In eigenen Worten.'},
+  {id:'denkfallen',n:'Denkfallen erkennen',kat:'kvt',use:['gruebeln','kritik','angst','tief'],min:5,ev:'stark',
+   kurz:'Typische Verzerrungen, in die jeder Kopf mal tappt.',
+   why:'Wer die eigene Lieblings-Denkfalle kennt, erkennt sie schneller und kann gegensteuern. Hake an, was dir bekannt vorkommt.',
+   steps:[PS('Schwarz-weiß: Alles oder nichts, perfekt oder versagt.'),PS('Katastrophisieren: Das Schlimmste annehmen („Das wird eine Katastrophe“).'),PS('Gedankenlesen: Wissen, was andere denken („Er hält mich für dumm“).'),PS('Wahrsagen: Die Zukunft negativ vorhersagen.'),PS('Verallgemeinern: „Immer“, „nie“, „jedes Mal“.'),PS('Muss-Sätze: „Ich muss“, „ich sollte“, „man darf nicht“.'),PS('Positives abwerten: „Das zählt nicht, war nur Glück.“'),PS('Gefühl als Beweis: „Ich fühle mich nutzlos, also bin ich es.“'),PS('Etikettieren: „Ich bin ein Versager“ statt „Das hat nicht geklappt“.'),PS('Personalisieren: Alles auf sich beziehen, Schuld bei sich suchen.')],
+   form:[PF('falle','Meine häufigste Denkfalle'),PF('bsp','Beispiel aus dieser Woche','area'),PF('gegen','Was sage ich mir das nächste Mal stattdessen?','area')],
+   src:'Kognitive Verzerrungen nach A. T. Beck und D. Burns. In eigenen Worten.'},
+  {id:'sorgenzeit',n:'Sorgenzeit',kat:'kvt',use:['gruebeln','schlaf','angst'],min:15,ev:'mittel',
+   kurz:'Sorgen bekommen einen festen Termin, statt den ganzen Tag zu stören.',
+   why:'Wer Sorgen tagsüber aufschiebt und gesammelt zu einer festen Zeit bearbeitet, grübelt in Studien weniger. Der Kopf lernt: Dafür gibt es später Raum.',
+   steps:[PS('Lege eine feste Zeit fest, täglich 15 min, nicht kurz vor dem Schlafen (z. B. 18 Uhr).'),PS('Tagsüber: Kommt eine Sorge, schreib sie kurz auf und sag dir „Später, um 18 Uhr“.'),PS('In der Sorgenzeit: Liste durchgehen. Ist die Sorge lösbar? Dann einen ersten Schritt notieren.',300),PS('Nicht lösbar? Anerkennen: „Das kann ich nicht ändern.“ Gedanke darf da sein.',240),PS('Nach 15 min Schluss, bewusst etwas anderes tun, z. B. Spaziergang oder Kochen.',60)],
+   form:[PF('sorge','Sorge','area'),PF('loes','Lösbar? Erster Schritt','area')],
+   src:'Stimuluskontrolle für Sorgen (T. D. Borkovec et al., 1983); Bestandteil vieler KVT-Programme. In eigenen Worten.'},
+  {id:'problem',n:'Problemlösen in 6 Schritten',kat:'kvt',use:['gruebeln','tief','werte'],min:15,ev:'stark',
+   kurz:'Vom Grübeln ins Handeln: ein Problem strukturiert angehen.',
+   why:'Grübeln fühlt sich an wie Nachdenken, bringt aber nichts voran. Strukturiertes Problemlösen ist gut untersucht und Teil des WHO-Programms „Problem Management Plus“.',
+   steps:[PS('Problem genau beschreiben: Was genau ist das Problem, und was davon kann ich beeinflussen?'),PS('Ideen sammeln: Alles aufschreiben, auch Unsinniges. Noch nicht bewerten.'),PS('Ideen bewerten: Vor- und Nachteile, was ist machbar?'),PS('Eine Lösung wählen, oder eine Kombination.'),PS('Planen: Was genau, wann, wo, wer hilft? Erster Schritt so klein, dass er sicher klappt.'),PS('Ausprobieren und später prüfen: Hat es geholfen? Sonst nächste Idee.')],
+   form:[PF('prob','Problem','area'),PF('ideen','Ideen','area'),PF('wahl','Gewählte Lösung','area'),PF('schritt','Erster Schritt (was, wann)','area')],
+   src:'Problemlösetraining (D’Zurilla und Goldfried); WHO „Problem Management Plus“ (2016, CC BY-NC-SA 3.0 IGO). In eigenen Worten.'},
+  {id:'defusion',n:'Abstand zu Gedanken',kat:'act',use:['gruebeln','kritik','angst'],min:3,ev:'mittel',
+   kurz:'„Ich habe den Gedanken, dass …“ – Gedanken sind Gedanken, keine Tatsachen.',
+   why:'Defusion heißt: Du schaust auf deine Gedanken statt durch sie hindurch. Der Inhalt bleibt, aber er verliert an Macht. Kernstück der Akzeptanz- und Commitment-Therapie.',
+   steps:[PS('Nimm den Gedanken, der dich gerade am meisten plagt. Sag ihn dir innerlich: „Ich bin nicht gut genug.“',15),PS('Jetzt: „Ich habe den Gedanken, dass ich nicht gut genug bin.“',15),PS('Und: „Ich bemerke, dass ich den Gedanken habe, dass ich nicht gut genug bin.“',15),PS('Was hat sich verändert? Meist entsteht ein kleiner Abstand.',15),PS('Variante: Sag den Gedanken innerlich mit Micky-Maus-Stimme oder singe ihn zu „Happy Birthday“.',30),PS('Bedank dich bei deinem Kopf: „Danke, Kopf, für den Hinweis.“ Und mach weiter mit dem, was dir wichtig ist.',15)],
+   src:'Kognitive Defusion (S. C. Hayes, ACT; R. Harris, „Wer dem Glück hinterherrennt, läuft daran vorbei“). In eigenen Worten.'},
+  {id:'blaetter',n:'Blätter auf dem Fluss',kat:'act',use:['gruebeln','angst','schlaf'],min:6,ev:'mittel',
+   kurz:'Geführte Vorstellung: Gedanken kommen und ziehen vorbei.',
+   why:'Übt, Gedanken zu bemerken, ohne sich in sie hineinziehen zu lassen. Abschweifen gehört dazu, das Zurückkommen ist die eigentliche Übung.',
+   steps:[PS('Setz oder leg dich bequem hin, Augen zu oder Blick zum Boden. Ein paar ruhige Atemzüge.',30),PS('Stell dir einen Bach vor. Blätter treiben langsam auf dem Wasser vorbei.',30),PS('Jeder Gedanke, der auftaucht, kommt auf ein Blatt. Ob Wort, Bild oder Gefühl. Lass es vorbeitreiben.',90),PS('Wenn du merkst, dass du mitgegangen bist: Kein Problem. Gedanke aufs Blatt, zurück ans Ufer.',90),PS('Weiter so. Du musst nichts festhalten und nichts wegschieben.',60),PS('Langsam zurückkommen: Atem spüren, Finger bewegen, Augen öffnen.',20)],
+   src:'ACT-Übung „Leaves on a Stream“ (S. C. Hayes et al.). In eigenen Worten.'},
+  {id:'raum',n:'Einem Gefühl Raum geben',kat:'act',use:['angst','tief','akut'],min:5,ev:'mittel',
+   kurz:'Statt dagegen zu kämpfen: das Gefühl neugierig anschauen und Platz machen.',
+   why:'Unangenehme Gefühle wegzudrücken macht sie oft stärker. Akzeptanz heißt nicht gutheißen, sondern aufhören zu kämpfen. Dann wird das Gefühl meist kleiner.',
+   steps:[PS('Wo im Körper spürst du das Gefühl am stärksten? Brust, Bauch, Hals?',30),PS('Beschreibe es wie ein Forscher: Größe, Form, Temperatur, bewegt es sich?',40),PS('Atme in das Gefühl hinein, als ob sich um es herum Raum öffnet.',60),PS('Sag dir: „Ich muss es nicht mögen. Ich kann Platz dafür machen.“',30),PS('Leg eine Hand auf die Stelle. Wie fühlt es sich jetzt an?',40)],
+   src:'ACT-Übung „Expansion“ (R. Harris); WHO „Doing What Matters in Times of Stress“ (2020, CC BY-NC-SA 3.0 IGO). In eigenen Worten.'},
+  // ---------- Stimmung tief ----------
+  {id:'aktiv',n:'Aktivitäten planen',kat:'kvt',use:['tief','werte'],min:10,ev:'stark',
+   kurz:'Erst handeln, dann kommt die Lust: kleine angenehme und sinnvolle Dinge einplanen.',
+   why:'Bei gedrückter Stimmung zieht man sich zurück, das macht die Stimmung noch schlechter. Verhaltensaktivierung durchbricht den Kreis und wirkt in Studien ähnlich gut wie andere Therapieformen.',
+   steps:[PS('Schreib 3 Dinge auf, die dir früher gutgetan haben (Freude) und 3, die dir wichtig sind (Sinn).'),PS('Wähle eine Sache für heute oder morgen. So klein, dass sie sicher klappt: 10 min Spaziergang statt Joggen.'),PS('Leg einen festen Zeitpunkt fest, wie einen Termin.'),PS('Vorher: Stimmung 0 bis 10 notieren.'),PS('Machen, auch ohne Lust. Die Lust kommt oft erst beim Tun.'),PS('Nachher: Stimmung 0 bis 10 notieren. Was hat sich verändert?')],
+   form:[PF('akt','Aktivität'),PF('wann','Wann?'),PF('vor','Stimmung vorher 0–10','num'),PF('nach','Stimmung nachher 0–10','num')],
+   src:'Verhaltensaktivierung (P. Lewinsohn; C. Martell, N. Jacobson); Wirksamkeit z. B. Cuijpers et al., 2007. In eigenen Worten.'},
+  {id:'gegenteil',n:'Entgegengesetzt handeln',kat:'dbt',use:['tief','angst','wut'],min:3,ev:'mittel',
+   kurz:'Wenn ein Gefühl nicht zur Situation passt: das Gegenteil von dem tun, wozu es drängt.',
+   why:'Jedes Gefühl hat einen Handlungsdrang: Angst will vermeiden, Traurigkeit will sich zurückziehen, Wut will angreifen. Das Gegenteil zu tun, verändert das Gefühl mit der Zeit.',
+   steps:[PS('Welches Gefühl ist da, und wozu drängt es dich?',20),PS('Passt das Gefühl zu den Fakten, oder ist es zu stark oder unpassend?',20),PS('Wenn es nicht passt: Was wäre das Gegenteil? Angst: hingehen. Traurigkeit: aktiv werden, Kontakt suchen. Wut: freundlich bleiben, sanft sprechen, Abstand nehmen.',30),PS('Ganz machen, auch Körperhaltung, Stimme und Gesichtsausdruck.',20)],
+   form:[PF('gef','Gefühl und Drang'),PF('tat','Was habe ich stattdessen getan?','area'),PF('wirk','Wie war es danach?','area')],
+   src:'DBT-Skill „Opposite Action“ aus dem Modul Emotionsregulation (M. Linehan). In eigenen Worten.'},
+  {id:'dreigut',n:'Drei gute Dinge',kat:'pos',use:['tief','alltag','schlaf'],min:5,ev:'mittel',
+   kurz:'Abends drei Dinge notieren, die gut waren, und warum.',
+   why:'Trainiert den Blick für Positives, das der Kopf sonst schnell übersieht. In Studien hob es die Stimmung über Wochen, wenn man es eine Woche lang täglich macht.',
+   steps:[PS('Denk an heute. Was ist gut gelaufen, auch klein? Ein Kaffee, ein Satz, ein geschaffter Satz im Training.'),PS('Schreib drei Dinge auf.'),PS('Zu jedem: Warum ist es passiert? Was war dein Anteil?')],
+   form:[PF('g1','1. Gut war …'),PF('g2','2. Gut war …'),PF('g3','3. Gut war …'),PF('warum','Warum ist es passiert?','area')],
+   src:'„Three Good Things“ (M. Seligman et al., 2005, American Psychologist). In eigenen Worten.'},
+  // ---------- Selbstkritik ----------
+  {id:'mitgefuehl',n:'Selbstmitgefühls-Pause',kat:'mitg',use:['kritik','tief','akut'],min:3,ev:'mittel',
+   kurz:'Drei Sätze für dich, wenn es gerade schwer ist.',
+   why:'Mit sich selbst so freundlich zu sein wie mit einem guten Freund senkt Stress und Selbstkritik, ohne die Motivation zu verlieren. Gut untersucht in der Forschung zu Selbstmitgefühl.',
+   steps:[PS('Denk an die Situation, die dich gerade belastet. Spür, wo es im Körper sitzt.',20),PS('Achtsamkeit: Sag dir „Das ist gerade ein Moment von Schmerz“ oder „Das tut weh“.',20),PS('Verbundenheit: „Schwierige Momente gehören zum Leben. Anderen geht es auch so.“',20),PS('Freundlichkeit: Hand aufs Herz. „Möge ich freundlich zu mir sein. Was brauche ich jetzt?“',40),PS('Was würdest du einem guten Freund in dieser Lage sagen? Sag es dir selbst.',30)],
+   src:'„Self-Compassion Break“ (K. Neff, C. Germer, Mindful Self-Compassion). In eigenen Worten.'},
+  {id:'freund',n:'Mit den Augen eines Freundes',kat:'kvt',use:['kritik','tief'],min:5,ev:'mittel',
+   kurz:'Die harte innere Stimme gegen eine faire Stimme tauschen.',
+   why:'Wir sind zu uns selbst oft viel strenger als zu anderen. Die Freundes-Perspektive macht Doppelstandards sichtbar.',
+   steps:[PS('Schreib auf, was deine innere Kritik gerade sagt, wörtlich.'),PS('Stell dir vor, ein guter Freund erzählt dir genau das über sich. Was würdest du ihm antworten?'),PS('Schreib diese Antwort auf und lies sie dir einmal laut vor.'),PS('Was ist ein kleiner, freundlicher nächster Schritt für dich?')],
+   form:[PF('krit','Meine innere Kritik sagt','area'),PF('fr','Ein Freund bekäme von mir zu hören','area'),PF('schritt','Kleiner nächster Schritt')],
+   src:'Doppelstandard-Technik der kognitiven Therapie (D. Burns); Compassion Focused Therapy (P. Gilbert). In eigenen Worten.'},
+  {id:'akzeptanz',n:'Radikale Akzeptanz',kat:'dbt',use:['wut','tief'],min:4,ev:'mittel',
+   kurz:'Was nicht zu ändern ist, ganz annehmen, damit aus Schmerz kein Leiden wird.',
+   why:'Gegen die Realität anzukämpfen kostet Kraft und hält das Leid am Leben. Akzeptieren heißt nicht gutheißen, sondern anerkennen, was ist, damit du wieder handeln kannst.',
+   steps:[PS('Was genau kannst du nicht ändern? Benenne es so sachlich wie möglich.',30),PS('Bemerk, wo du dagegen ankämpfst: „Das darf nicht sein“, „Das ist unfair“.',30),PS('Sag dir langsam: „Es ist, wie es ist. Ich kann es nicht ändern. Ich kann entscheiden, wie ich damit umgehe.“',30),PS('Entspann Gesicht und Hände, Handflächen nach oben. Körperlich loslassen.',30),PS('Was ist der nächste sinnvolle Schritt?',20)],
+   src:'DBT-Skill „Radical Acceptance“ aus dem Modul Stresstoleranz (M. Linehan). In eigenen Worten.'},
+  // ---------- Werte und Motivation ----------
+  {id:'werte',n:'Werte-Kompass',kat:'act',use:['werte','tief'],min:10,ev:'mittel',
+   kurz:'Was ist dir wirklich wichtig, und was ist ein kleiner Schritt in die Richtung?',
+   why:'Ziele kann man erreichen, Werte nicht, sie geben die Richtung. Wer nach eigenen Werten handelt, hält schwierige Gefühle besser aus. Passt gut zur Skillbank.',
+   steps:[PS('Geh die Bereiche durch: Gesundheit und Körper, Beziehungen, Arbeit und Lernen, Freizeit, Persönliches Wachstum.'),PS('Für jeden Bereich: Was für ein Mensch möchtest du dort sein? Ein bis zwei Worte (z. B. „verlässlich“, „neugierig“).'),PS('Wie wichtig ist dir der Bereich (0 bis 10)? Wie sehr lebst du gerade danach (0 bis 10)?'),PS('Wähle den Bereich mit dem größten Abstand.'),PS('Ein Schritt diese Woche, der zu deinem Wert passt. Konkret und klein.')],
+   form:[PF('bereich','Bereich'),PF('wert','Mein Wert dort'),PF('abst','Wichtig / gelebt (0–10)','text','9 / 4'),PF('schritt','Mein Schritt diese Woche','area')],
+   src:'Werte-Arbeit der ACT (S. C. Hayes; „Valued Living Questionnaire“, K. Wilson). In eigenen Worten.'},
+  {id:'wenndann',n:'Wenn-dann-Plan',kat:'kvt',use:['werte','alltag'],min:5,ev:'stark',
+   kurz:'Vorsätze, die wirklich halten: „Wenn X passiert, dann mache ich Y.“',
+   why:'Wenn-dann-Pläne verknüpfen ein Vorhaben mit einer festen Situation. In vielen Studien verdoppeln sie die Chance, dass man es wirklich tut.',
+   steps:[PS('Was willst du regelmäßig tun? (z. B. Atemübung, Dehnen, Lesen)'),PS('Welche Situation gibt es täglich sicher? (nach dem Zähneputzen, wenn ich den Laptop zuklappe)'),PS('Formuliere: „Wenn ich …, dann …“'),PS('Was könnte dazwischenkommen? Plane auch dafür: „Wenn ich keine Lust habe, dann mache ich nur 2 Minuten.“')],
+   form:[PF('plan','Wenn …, dann …','area'),PF('notfall','Wenn etwas dazwischenkommt, dann …','area')],
+   src:'Implementation Intentions (P. M. Gollwitzer; Meta-Analyse Gollwitzer und Sheeran, 2006). In eigenen Worten.'},
+  // ---------- Schlaf und Entspannung ----------
+  {id:'pmr',n:'Progressive Muskelentspannung',kat:'acht',use:['schlaf','akut','alltag'],min:10,ev:'stark',
+   kurz:'Muskelgruppen nacheinander anspannen und loslassen. Kurzform mit 7 Gruppen.',
+   why:'Der Wechsel aus Anspannung und Loslassen macht den Unterschied spürbar und senkt die körperliche Erregung. Eine der am besten untersuchten Entspannungsmethoden.',
+   steps:[PS('Bequem sitzen oder liegen. Spannung jeweils 5 bis 7 s halten, beim Loslassen ausatmen und 20 s nachspüren.',15),PS('Hände und Arme: Fäuste ballen, Arme anwinkeln. Halten … und loslassen.',30),PS('Gesicht: Stirn runzeln, Augen zukneifen, Zähne leicht aufeinander. Halten … loslassen.',30),PS('Nacken und Schultern: Schultern zu den Ohren ziehen. Halten … loslassen.',30),PS('Brust und Rücken: Schulterblätter zusammen, tief einatmen. Halten … ausatmen, loslassen.',30),PS('Bauch: Bauch fest machen, als ob jemand drauf drückt. Halten … loslassen.',30),PS('Po und Beine: Po anspannen, Knie strecken. Halten … loslassen.',30),PS('Füße und Waden: Zehen zu dir ziehen. Halten … loslassen.',30),PS('Ganzer Körper: Spür nach, wie schwer und warm er sich anfühlt. Ruhig weiteratmen.',60)],
+   src:'Progressive Relaxation nach E. Jacobson (1938), Kurzform nach Bernstein und Borkovec. In eigenen Worten.'},
+  {id:'bodyscan',n:'Body Scan',kat:'acht',use:['schlaf','alltag','angst'],min:10,ev:'stark',
+   kurz:'Mit der Aufmerksamkeit langsam durch den Körper wandern.',
+   why:'Schult die Wahrnehmung für Körpersignale und entspannt. Teil des Achtsamkeitsprogramms MBSR, das in vielen Studien Stress und Grübeln reduziert.',
+   steps:[PS('Leg dich hin, Arme neben dem Körper. Spür, wo der Körper den Boden berührt.',40),PS('Füße und Zehen: Was spürst du? Wärme, Kribbeln, nichts? Alles ist okay.',60),PS('Unterschenkel, Knie, Oberschenkel.',70),PS('Becken und Po, unterer Rücken.',60),PS('Bauch: wie er sich mit dem Atem hebt und senkt.',60),PS('Brust, oberer Rücken, Schultern.',60),PS('Arme bis in die Fingerspitzen.',60),PS('Nacken, Gesicht, Kiefer, Stirn. Lass den Kiefer locker.',60),PS('Jetzt den ganzen Körper auf einmal spüren, als Ganzes atmend.',60),PS('Langsam zurückkommen, strecken, Augen öffnen.',20)],
+   src:'Body Scan aus MBSR (J. Kabat-Zinn, „Gesund durch Meditation“). In eigenen Worten.'},
+  {id:'schlafregeln',n:'Bett ist zum Schlafen da',kat:'schlaf',use:['schlaf'],min:3,ev:'stark',
+   kurz:'Die wirksamsten Verhaltensregeln aus der Schlaftherapie.',
+   why:'Die kognitive Verhaltenstherapie bei Schlafstörungen (KVT-I) ist laut Leitlinie die erste Wahl, noch vor Schlafmitteln. Kern ist: das Bett wieder mit Schlaf verknüpfen.',
+   steps:[PS('Nur ins Bett, wenn du wirklich müde bist (Augen fallen zu), nicht nur erschöpft.'),PS('Bett nur für Schlaf und Sex. Kein Handy, keine Serien, kein Grübeln im Bett.'),PS('Nach ca. 20 min wach: aufstehen, in einen anderen Raum, bei gedämpftem Licht etwas Ruhiges tun, erst müde zurück.'),PS('Jeden Tag zur gleichen Zeit aufstehen, auch am Wochenende. Das ist wichtiger als die Zubettgehzeit.'),PS('Kein Mittagsschlaf über 20 min, kein Koffein nach 14 Uhr, Training möglichst nicht in den letzten 2 Stunden.'),PS('Gegen Grübeln: 1 bis 2 Stunden vor dem Schlafen Sorgen und To-dos aufschreiben (siehe Sorgenzeit).')],
+   src:'Stimuluskontrolle nach R. Bootzin; S3-Leitlinie „Nicht erholsamer Schlaf/Schlafstörungen“ (DGSM, 2017). In eigenen Worten.'},
+  {id:'gehen',n:'Achtsames Gehen',kat:'acht',use:['alltag','gruebeln','tief'],min:10,ev:'mittel',
+   kurz:'Ein Spaziergang, bei dem du wirklich da bist. Passt in jede Mittagspause.',
+   why:'Verbindet Bewegung mit Achtsamkeit. Gut für Leute, denen stilles Sitzen schwerfällt, und ideal an Bürotagen.',
+   steps:[PS('Geh etwas langsamer als sonst. Handy in die Tasche.',30),PS('Spür die Füße: Ferse, Abrollen, Abdruck.',90),PS('Hören: Welche Geräusche sind nah, welche fern?',90),PS('Sehen: Farben, Licht, Bewegungen. Wie ein Tourist zum ersten Mal hier.',90),PS('Atem und Schritte: Wie viele Schritte beim Einatmen, wie viele beim Ausatmen?',90),PS('Wenn Gedanken kommen: bemerken und sanft zurück zu den Füßen.',120)],
+   src:'Gehmeditation aus der Achtsamkeitspraxis (Thich Nhat Hanh; MBSR). In eigenen Worten.'},
+];
+const psyById=id=>PSY.find(p=>p.id===id);
+const psyMin=p=>{ const s=p.steps.reduce((t,x)=>t+(x.s||0),0); return s?Math.max(1,Math.round(s/60)):p.min; };
+const psyTimed=p=>p.steps.some(x=>x.s);
+function psyLog(k){ const out=[]; Object.keys(Store.cache).filter(x=>x.startsWith('d-')).sort().reverse().forEach(dk=>{ (Store.cache[dk].psy||[]).forEach(e=>out.push({...e,d:dk.slice(2)})); }); return k?out.filter(e=>e.id===k):out; }
+function psySave(entry){ const k=todayKey(), d=dayDoc(k); d.psy=[...(d.psy||[]),{...entry,t:Date.now()}]; saveDay(k,d); }
+function psySuggest(){ const h=new Date().getHours(), c=typeof ckGet==='function'?ckGet():null;
+  if(h>=21||h<5) return {id:'pmr',why:'Spät am Abend: Körper runterfahren fürs Einschlafen.'};
+  if(c&&+c.stress>=4) return {id:'anker',why:'Laut Check-in ist der Stress heute hoch.'};
+  if(h>=11&&h<15) return {id:'gehen',why:'Mittagszeit: kurz raus und abschalten.'};
+  if(h>=18) return {id:'dreigut',why:'Abends: den Tag mit Blick aufs Gute abschließen.'};
+  return {id:'defusion',why:'Drei Minuten, die überall gehen.'}; }
+const PSY_HELP = `<div class="card warnbox small"><b>Selbsthilfe, keine Therapie.</b> Die Übungen stammen aus gut untersuchten Therapieformen und helfen vielen Menschen im Alltag. Sie ersetzen aber keine Behandlung. Wenn es dir über Wochen schlecht geht, sprich mit deiner Hausärztin oder einem Psychotherapeuten (Termin über 116 117). <b>In einer Krise sofort Hilfe holen:</b> Telefonseelsorge <a href="tel:08001110111">0800 111 0 111</a> oder <a href="tel:08001110222">0800 111 0 222</a> (kostenlos, rund um die Uhr), Notruf <a href="tel:112">112</a>.</div>`;
+function psyCard(){ const s=psySuggest(), p=psyById(s.id), td=(dayDoc(todayKey()).psy||[]);
+  return `<section class="card brcard"><div class="row" style="align-items:flex-start"><div class="brico" aria-hidden="true">${HICO.med}</div><div class="grow" style="min-width:200px"><h3>Kopf und Gefühle</h3>
+    <p class="small muted">${PSY.length} Selbsthilfe-Übungen aus Verhaltenstherapie, ACT, DBT und Achtsamkeit. Jetzt passend: <b style="color:var(--fg)">${esc(p.n)}</b>. ${esc(s.why)}</p>
+    ${td.length?`<p class="small" style="color:var(--good);font-weight:600;margin-top:4px">Heute: ${esc(td.map(x=>(psyById(x.id)||{n:x.id}).n).join(', '))}</p>`:''}</div></div>
+    <div class="actcol" style="padding-left:0;margin-top:10px"><button class="btn primary" data-act="psyopen" data-id="${p.id}">${esc(p.n)}</button><button class="btn" data-act="psyopen">Was ist gerade los?</button></div></section>`; }
+function openPsy(id,use){ UI.psy={use:use||null,kat:null,sel:id||null,f:{},past:false}; UI.modal='psy'; renderPsy(true); }
+function renderPsy(top){
+  const P=UI.psy, ov=$('#overlay .overlay'), y=ov?ov.scrollTop:0;
+  if(P.run){ renderPsyRun(); return; }
+  if(P.sel){ renderPsyDetail(top); return; }
+  const list=PSY.filter(p=>(!P.use||p.use.includes(P.use))&&(!P.kat||p.kat===P.kat));
+  if(P.use) list.sort((a,b)=>a.use.indexOf(P.use)-b.use.indexOf(P.use));
+  const sug=psySuggest();
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="closeModal" aria-label="Schließen">✕</button><div class="grow"><h2>Kopf und Gefühle</h2><div class="small muted">Selbsthilfe-Übungen, geführt mit Timer oder zum Ausfüllen</div></div></div>
+  <div class="ov-body">
+    <div class="label">Was ist gerade los?</div>
+    <div class="chips" role="group" aria-label="Anlass"><button class="chip" data-act="psyuse" data-u="" aria-pressed="${!P.use}">Alle</button>${Object.entries(PSY_USE).map(([k,u])=>`<button class="chip" data-act="psyuse" data-u="${k}" aria-pressed="${P.use===k}" title="${esc(u.d)}">${esc(u.n)}</button>`).join('')}</div>
+    ${P.use?`<p class="small muted" style="margin-top:-6px">${esc(PSY_USE[P.use].d)}</p>`:''}
+    <div class="chips scroll" role="group" aria-label="Methode"><button class="chip" data-act="psykat" data-k="" aria-pressed="${!P.kat}">Alle Methoden</button>${Object.entries(PSY_KAT).map(([k,n])=>`<button class="chip" data-act="psykat" data-k="${k}" aria-pressed="${P.kat===k}">${esc(n)}</button>`).join('')}</div>
+    <div class="brgrid">${list.map(p=>`<button class="brc" data-act="psysel" data-id="${p.id}">
+      <div class="row" style="gap:6px"><span class="pill">${esc(PSY_KAT[p.kat])}</span><span class="pill ${PSY_EV[p.ev].c}">${esc(PSY_EV[p.ev].n)}</span>${p.id===sug.id?'<span class="pill accent">Jetzt passend</span>':''}</div>
+      <h3>${esc(p.n)}</h3><p class="small">${esc(p.kurz)}</p>
+      <p class="small muted">${psyMin(p)} min · ${psyTimed(p)?'geführt mit Timer':'Schritte'}${p.form?' · zum Ausfüllen':''} · Hilft bei: ${esc(p.use.map(u=>PSY_USE[u].n).join(', '))}</p></button>`).join('')||'<p class="muted">Keine Übung für diese Auswahl.</p>'}</div>
+    ${(()=>{ const l=psyLog(); return l.length?`<button class="btn ghost" data-act="psypast">${P.past?'Einträge ausblenden':'Meine Einträge ('+l.length+')'}</button>${P.past?psyPastHtml(l.slice(0,30)):''}`:''; })()}
+    ${PSY_HELP}
+  </div></div>`;
+  const nov=$('#overlay .overlay'); if(nov && !top) nov.scrollTop=y;
+}
+function psyPastHtml(l){ return `<div class="card list">${l.map(e=>{ const p=psyById(e.id)||{n:e.id,form:[]}; const f=e.f||{};
+  const txt=(p.form||[]).filter(x=>f[x.k]).map(x=>`<b>${esc(x.l)}:</b> ${esc(f[x.k])}`).join('<br>');
+  return `<div class="li" style="align-items:flex-start"><div class="grow"><b>${esc(p.n)}</b> <span class="small muted">${fmtShort(e.d)}${e.sec?' · '+Math.max(1,Math.round(e.sec/60))+' min':''}</span>${txt?`<div class="small" style="margin-top:4px">${txt}</div>`:''}</div></div>`; }).join('')}</div>`; }
+function renderPsyDetail(top){
+  const P=UI.psy, p=psyById(P.sel), past=psyLog(p.id).slice(0,5);
+  $('#overlay').innerHTML=`<div class="overlay"><div class="ov-head"><button class="iconbtn" data-act="psyback" aria-label="Zurück">←</button><div class="grow"><h2>${esc(p.n)}</h2><div class="small muted">${esc(PSY_KAT[p.kat])} · ${psyMin(p)} min</div></div></div>
+  <div class="ov-body">
+    <p><b>${esc(p.kurz)}</b></p>
+    <p class="small">${esc(p.why)}</p>
+    <div class="row" style="gap:6px"><span class="pill ${PSY_EV[p.ev].c}">${esc(PSY_EV[p.ev].n)}</span>${p.use.map(u=>`<span class="pill">${esc(PSY_USE[u].n)}</span>`).join('')}</div>
+    ${psyTimed(p)?`<div class="row"><button class="btn primary" data-act="psyrun">Geführt starten · ${psyMin(p)} min</button></div>`:''}
+    <section class="card"><h3>So geht’s</h3><ol class="psysteps">${p.steps.map(s=>`<li>${esc(s.t)}${s.s?` <span class="small muted">· ${secTxt(s.s)}</span>`:''}</li>`).join('')}</ol></section>
+    ${p.safe?`<div class="card warnbox small"><b>Achtung.</b> ${esc(p.safe)}</div>`:''}
+    ${p.form?`<section class="card"><h3>Aufschreiben</h3><p class="small muted" style="margin:2px 0 8px">Bleibt nur auf deinem Gerät (und in deiner verschlüsselten Sicherung).</p><form data-form="psy" class="formgrid">${p.form.map(x=>`<div class="field" style="grid-column:1/-1"><label class="label" for="psy-${x.k}">${esc(x.l)}</label>${x.type==='area'?`<textarea id="psy-${x.k}" name="${x.k}" rows="2" class="search" placeholder="${esc(x.ph)}"></textarea>`:`<input id="psy-${x.k}" name="${x.k}" ${x.type==='num'?'type="number" inputmode="numeric" min="0" max="100"':'type="text"'} placeholder="${esc(x.ph)}">`}</div>`).join('')}<div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">Speichern</button></div></form></section>`:`<div class="row"><button class="btn" data-act="psydone">Als gemacht eintragen</button></div>`}
+    ${past.length?`<section class="section"><h2>Zuletzt</h2>${psyPastHtml(past)}</section>`:''}
+    <p class="small muted">Quelle: ${esc(p.src)}</p>
+    ${PSY_HELP}
+  </div></div>`;
+  if(top){ const o=$('#overlay .overlay'); if(o) o.scrollTop=0; }
+}
+/* Geführter Ablauf: Schritt für Schritt mit Timer, Ton am Ende jedes Schritts */
+function psyStart(){ const P=UI.psy, p=psyById(P.sel); P.run={i:0,t0:Date.now(),end:0,paused:false,left:0}; psyStep(0); renderPsyRun(); }
+function psyStep(i){ const R=UI.psy.run, p=psyById(UI.psy.sel); R.i=i; const s=p.steps[i]; R.end=s&&s.s?Date.now()+s.s*1000:0; R.paused=false; clearInterval(psyStep.iv); psyStep.iv=setInterval(psyTick,250); }
+function psyTick(){ const P=UI.psy; if(UI.modal!=='psy'||!P||!P.run){ clearInterval(psyStep.iv); return; } const R=P.run; if(R.paused||!R.end) return;
+  const left=(R.end-Date.now())/1000, el=$('#psyt'); if(el) el.textContent=mmss(left); const bar=$('#psybar'); const s=psyById(P.sel).steps[R.i]; if(bar&&s.s) bar.style.width=Math.min(100,100-left/s.s*100)+'%';
+  if(left<=0){ beep(660,.18,1); psyNext(); } }
+function psyNext(){ const P=UI.psy, p=psyById(P.sel), R=P.run; if(R.i+1>=p.steps.length){ psyFinish(); return; } psyStep(R.i+1); renderPsyRun(); }
+function psyFinish(){ const P=UI.psy, R=P.run; clearInterval(psyStep.iv); psySave({id:P.sel,sec:Math.round((Date.now()-R.t0)/1000)}); P.run=null; P.doneMsg=true; toast('Eingetragen. Gut gemacht.'); renderPsyDetail(true); }
+function renderPsyRun(){ const P=UI.psy, p=psyById(P.sel), R=P.run, s=p.steps[R.i];
+  const left=R.paused?R.left:(R.end?(R.end-Date.now())/1000:0);
+  $('#overlay').innerHTML=`<div class="overlay psyrun"><div class="ov-head"><button class="iconbtn" data-act="psystop" aria-label="Beenden">✕</button><div class="grow"><h2>${esc(p.n)}</h2><div class="small muted">Schritt ${R.i+1} von ${p.steps.length}</div></div></div>
+  <div class="ov-body" style="align-items:center;text-align:center">
+    <div class="psydots" aria-hidden="true">${p.steps.map((_,j)=>`<i class="${j<R.i?'on':j===R.i?'cur':''}"></i>`).join('')}</div>
+    <p class="psytext">${esc(s.t)}</p>
+    ${s.s?`<div class="psytime num" id="psyt" aria-live="off">${mmss(left)}</div><div class="psyprog"><i id="psybar" style="width:${Math.min(100,100-left/s.s*100)}%"></i></div>`:'<p class="small muted">Nimm dir die Zeit, die du brauchst.</p>'}
+    <div class="row" style="justify-content:center">${R.i?'<button class="btn" data-act="psyprev">Zurück</button>':''}${s.s?`<button class="btn" data-act="psypause">${R.paused?'Weiter':'Pause'}</button>`:''}<button class="btn primary" data-act="psynext">${R.i+1>=p.steps.length?'Fertig':'Nächster Schritt'}</button></div>
+  </div></div>`; }
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]'); if(!t) return; const a=t.dataset.act; if(!/^psy/.test(a)) return;
+  const P=UI.psy;
+  switch(a){
+    case 'psyopen': openPsy(t.dataset.id,t.dataset.u); break;
+    case 'psyuse': P.use=t.dataset.u||null; renderPsy(); break;
+    case 'psykat': P.kat=t.dataset.k||null; renderPsy(); break;
+    case 'psysel': P.sel=t.dataset.id; renderPsy(true); break;
+    case 'psyback': P.sel=null; renderPsy(true); break;
+    case 'psypast': P.past=!P.past; renderPsy(); break;
+    case 'psyrun': psyStart(); break;
+    case 'psynext': psyNext(); break;
+    case 'psyprev': if(P.run.i>0){ psyStep(P.run.i-1); renderPsyRun(); } break;
+    case 'psypause': { const R=P.run; if(R.paused){ R.end=Date.now()+R.left*1000; R.paused=false; } else { R.left=Math.max(0,(R.end-Date.now())/1000); R.paused=true; } renderPsyRun(); break; }
+    case 'psystop': clearInterval(psyStep.iv); P.run=null; renderPsyDetail(true); break;
+    case 'psydone': psySave({id:P.sel}); toast('Eingetragen'); renderPsyDetail(); break;
+  }
+});
+document.addEventListener('submit',e=>{ const f=e.target; if(f.dataset.form!=='psy') return; e.preventDefault(); const P=UI.psy, p=psyById(P.sel), fd=new FormData(f), v={};
+  p.form.forEach(x=>{ const s=String(fd.get(x.k)||'').trim(); if(s) v[x.k]=s; }); if(!Object.keys(v).length){ toast('Bitte mindestens ein Feld ausfüllen'); return; }
+  psySave({id:p.id,f:v}); toast('Gespeichert'); renderPsyDetail(true); });
 
 /* ============================== SKILLBANK: INHALTE ============================== */
 /* Test-Arten: reps (Wdh.), hold (Sekunden), kgbw (Faktor × Körpergewicht, mit Wdh.), cm (kleiner ist besser), sess (Einheiten mit Mindestdauer), book (beendete Bücher) */
@@ -3603,6 +4012,7 @@ function openSettings(){
       <div class="field"><label class="label" for="st-blh">Langhantel-Stange kg</label><input id="st-blh" name="barlh" type="number" step="0.5" min="0" value="${s.barlh}"></div>
       <div class="field"><label class="label" for="st-bsz">SZ-Stange kg</label><input id="st-bsz" name="barsz" type="number" step="0.5" min="0" value="${s.barsz}"></div>
       <div class="field"><label class="label" for="st-bkh">Kurzhantel-Griff kg (je Hantel)</label><input id="st-bkh" name="barkh" type="number" step="0.25" min="0" value="${s.barkh}"></div>
+      <div class="field" style="grid-column:1/-1"><label class="label" for="st-img">Übungsbilder</label><select id="st-img" name="imgStyle">${Object.entries(IMG_STYLE).map(([k,n])=>`<option value="${k}" ${(s.imgStyle||'auto')===k?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
       <div class="field"><label class="label" for="st-rr">Renegade-Row-Stufe</label><select id="st-rr" name="renegade">${[1,2,3].map(n=>`<option value="${n}" ${+s.renegade===n?'selected':''}>Stufe ${n}</option>`).join('')}</select></div>
     </div>
     <div class="card list">
@@ -3770,7 +4180,7 @@ document.addEventListener('submit',e=>{
     GitSync.setCfg({repo,token,pass,branch:'daten'}); toast('Verbinde mit GitHub …'); GitSync.sync().then(()=>{ toast(GitSync.err?'GitHub: '+GitSync.err:'Mit GitHub abgeglichen'); if(UI.modal==='settings') openSettings(); }); return; }
   if(f.dataset.form==='ntfy'){ const c=ntfyForm(fd); if(!c) return; const was=Ntfy.cfg(); Ntfy.save(c); openNtfy(); Ntfy.sync(); toast(c.on?(was.on?'Gespeichert, plane neu ein':'Eingeschaltet, plane ein …'):(was.on?'Ausgeschaltet, eingeplante werden gelöscht':'Gespeichert')); return; }
   if(f.dataset.form==='settings'){ const p=prof(); const s=p.settings;
-    s.start=mondayOf(parseKey(fd.get('start')||s.start)); s.kcal=+fd.get('kcal')||s.kcal; s.protein=+fd.get('protein')||s.protein; s.renegade=+fd.get('renegade')||1;
+    s.start=mondayOf(parseKey(fd.get('start')||s.start)); s.kcal=+fd.get('kcal')||s.kcal; s.protein=+fd.get('protein')||s.protein; s.renegade=+fd.get('renegade')||1; s.imgStyle=IMG_STYLE[fd.get('imgStyle')]?fd.get('imgStyle'):'auto';
     ['plates','vary','bar','circuit45','iron','zinc'].forEach(x=>s[x]=fd.get(x)==='on'); ['barlh','barsz','barkh'].forEach(x=>{ const v=parseFloat(String(fd.get(x)).replace(',','.')); if(!isNaN(v)) s[x]=v; }); saveProf(p); UI.modal=null; $('#overlay').innerHTML=''; render(); toast('Einstellungen gespeichert'); }
 });
 async function doExport(){
